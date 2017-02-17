@@ -1,0 +1,7 @@
+&INDATA
+  i_real4 = 1.0,
+  i_real8 = 2.3d0,
+  i_integer = 2,
+  i_char = 'myname is ffr', 
+  i_bool = T
+/
