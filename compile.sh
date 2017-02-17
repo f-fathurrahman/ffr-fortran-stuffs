@@ -1,6 +1,9 @@
 #!/bin/bash
 #FC=gfortran
-#
+#OPTS="-Wall"
+
+#FC=g95
+#OPTS="-Wall"
 
 FC=ifort
 OPTS="-warn -no-gen-interfaces"
