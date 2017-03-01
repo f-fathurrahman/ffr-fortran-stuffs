@@ -1,0 +1,6 @@
+PROGRAM test_move_alloc
+
+  IMPLICIT NONE
+
+END PROGRAM 
+
