@@ -1,0 +1,44 @@
+MODULE m_simpleOps
+
+CONTAINS 
+
+!-------------------------------------------
+attributes(global) SUBROUTINE increment(a,b)
+!-------------------------------------------
+  IMPLICIT NONE 
+  INTEGER, INTENT(inout) :: a(:)
+  INTEGER, VALUE :: b
+  INTEGER :: i
+
+  i = threadIdx%x
+  a(i) = a(i) + b
+END SUBROUTINE
+
+END MODULE 
+
+!--------------------
+PROGRAM increment_GPU
+!--------------------
+  USE cudafor
+  USE m_simpleOps
+  IMPLICIT NONE 
+  INTEGER, PARAMETER :: N=256
+  INTEGER :: a(N), b
+  INTEGER, device :: a_d(n)
+
+  a = 1
+  b = 3
+
+  a_d = a
+  CALL increment<<<1,n>>>(a_d, b)
+  a = a_d
+
+  IF( any( a /= 4 ) ) THEN 
+    WRITE(*,*) '!!!! Program Failed !!!!'
+  ELSE 
+    WRITE(*,*) 'Program success !'
+  ENDIF 
+
+END PROGRAM 
+
+
