@@ -8,10 +8,13 @@ ATTRIBUTES(GLOBAL) SUBROUTINE increment(a,b)
   IMPLICIT NONE 
   INTEGER, INTENT(inout) :: a(:)
   INTEGER, VALUE :: b
-  INTEGER :: i
+  INTEGER :: i, N
 
-  i = threadIdx%x
-  a(i) = a(i) + b
+  i = blockDim%x * (blockIdx%x - 1) + threadIdx%x
+  N = size(a)
+
+  ! to make sure that we don't access out-of-bounds memory access
+  IF( i <= n ) a(i) = a(i) + b
 END SUBROUTINE
 
 END MODULE 
@@ -22,15 +25,20 @@ PROGRAM increment_GPU
   USE cudafor
   USE m_simpleOps
   IMPLICIT NONE 
-  INTEGER, PARAMETER :: N=256
-  INTEGER :: a(N), b
-  INTEGER, device :: a_d(n)
+  INTEGER, PARAMETER :: N=1024*1024
+  INTEGER, ALLOCATABLE :: a(:)
+  INTEGER, device, ALLOCATABLE :: a_d(:)
+  INTEGER :: b
+  INTEGER :: tPB = 256 ! threads per block
+
+  ALLOCATE( a(N) )
+  ALLOCATE( a_d(N) )
 
   a = 1
   b = 3
 
   a_d = a
-  CALL increment<<<1,n>>>(a_d, b)
+  CALL increment<<<ceiling(real(N)/tPB),tPB>>>(a_d, b)
   a = a_d
 
   IF( any( a /= 4 ) ) THEN 
@@ -39,6 +47,8 @@ PROGRAM increment_GPU
     WRITE(*,*) 'Program success !'
   ENDIF 
 
+  DEALLOCATE( a )
+  DEALLOCATE( a_d )
 END PROGRAM 
 
 
