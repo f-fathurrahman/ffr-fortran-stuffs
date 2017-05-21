@@ -39,3 +39,7 @@ Batas atas pada kodimensi terakhir untuk tiap nonallocatable coarray harus `*`.
 INTEGER :: Npoints[*]  ! coarray skalar
 ```
 
+Pada kode di atas, coarray `Npoints` adalah skalar dan nilainya pada tiap image dapat
+diakses oleh image lain. Kodimensi dari coarray skalar selalu `*`.
+
+Untuk array allocatable, semua dimensi dari kodimensi dari array harus `:`.
