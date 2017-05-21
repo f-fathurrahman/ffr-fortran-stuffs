@@ -2,6 +2,8 @@
 PROGRAM trig
 
   IMPLICIT NONE 
+  CHARACTER(*), PARAMETER :: STRFMT = '(1x,A,2F18.10)'
+
 
   REAL(8) :: x = 0.4d0
 
@@ -10,13 +12,13 @@ PROGRAM trig
   SELECT CASE( this_image() )
 
     CASE(1)
-      WRITE(*,*) 'sin(',x,') = ', sin(x)
+      WRITE(*,STRFMT) 'x, sin(x) = ', x, sin(x)
 
     CASE(2)
-      WRITE(*,*) 'cos(',x,') = ', cos(x)
+      WRITE(*,STRFMT) 'x, cos(x) = ', x, cos(x)
 
     CASE(3)
-      WRITE(*,*) 'tan(',x,') = ', tan(x)
+      WRITE(*,STRFMT) 'x, tan(x) = ', x, tan(x)
 
     CASE DEFAULT
       WRITE(*,*) 'Default case: not calculating anything'
