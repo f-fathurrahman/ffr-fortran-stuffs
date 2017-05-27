@@ -12,6 +12,12 @@ PROGRAM io_namelist
 
   NAMELIST /indata/ i_real4, i_real8, i_integer, i_char, i_bool
 
+  i_real4 = 1.0
+  i_real8 = 1.d0
+  i_integer = 1
+  i_char = 'satu'
+  i_bool = .TRUE.
+
   OPEN(IUNIT, file="IN_io_namelist", STATUS="old")
   READ(IUNIT, nml=indata)
   CLOSE(IUNIT)
