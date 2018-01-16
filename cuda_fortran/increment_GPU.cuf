@@ -1,7 +1,11 @@
+!
+! Every CUDA kernels must be defined in a module, so here we are.
+!
 MODULE m_simpleOps
 
 CONTAINS 
 
+! This subroutine is roughly equal to CUDA kernel in C/C++
 !-------------------------------------------
 ATTRIBUTES(GLOBAL) SUBROUTINE increment(a,b)
 !-------------------------------------------
@@ -19,20 +23,30 @@ END MODULE
 !--------------------
 PROGRAM increment_GPU
 !--------------------
+  ! This module must be included
   USE cudafor
+  ! Include the module in which the kernel we will be using is defined.
   USE m_simpleOps
+  !
   IMPLICIT NONE 
+  !
   INTEGER, PARAMETER :: N=256
-  INTEGER :: a(N), b
-  INTEGER, device :: a_d(n)
+  !
+  INTEGER :: a(N), b         ! defined on CPU (host)
+  !
+  INTEGER, DEVICE :: a_d(n)  ! defined on GPU (device)
 
   a = 1
   b = 3
 
+  ! copy from CPU to GPU
   a_d = a
+  ! Call the kernel
   CALL increment<<<1,n>>>(a_d, b)
+  ! Copy the result back to CPU
   a = a_d
 
+  ! Check the result
   IF( any( a /= 4 ) ) THEN 
     WRITE(*,*) '!!!! Program Failed !!!!'
   ELSE 
