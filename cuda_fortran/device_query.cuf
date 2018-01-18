@@ -1,0 +1,43 @@
+PROGRAM device_query
+
+  USE cudafor
+  !
+  IMPLICIT NONE 
+
+  TYPE(cudaDeviceProp) :: prop
+  INTEGER :: nDevices = 0, i, ierr
+
+  ! Get number of CUDA-capable devices
+  ierr = cudaGetDeviceCount( nDevices )
+  IF( nDevices == 0 ) THEN 
+    WRITE(*,*) 'No CUDA devices found'
+    WRITE(*,*) 'The program will stop now'
+    STOP 
+  ELSEIF( nDevices == 1 ) THEN 
+    WRITE(*,*) 'One CUDA device found'
+  ELSE 
+    WRITE(*,'(1x,I4,A)') nDevices, ' CUDA devices found'
+  ENDIF 
+
+  ! Get some info
+  ! Notice that we start querying from index 0
+  WRITE(*,*)
+  DO i = 0, nDevices-1
+    WRITE(*,*) 'Device number: ', i
+    !
+    ierr = cudaGetDeviceProperties( prop, i )
+    !
+    WRITE(*,*) 'Device name: ', trim(prop%name)
+    WRITE(*,'(1x,A,I1,A,I1)') 'Compute capability = ', prop%major, '.', prop%minor
+    WRITE(*,*) 'Number of multiprocessors: ', prop%multiProcessorCount
+    WRITE(*,*) 'Max threads per multiprocessor: ', prop%maxThreadsPerMultiprocessor
+    WRITE(*,*) 'Global memory (GB): ', prop%totalGlobalMem/1024.d0**3
+    WRITE(*,*)
+    WRITE(*,*) 'Execution configuration limits'
+    WRITE(*,*) 'Max Grid Dims: ', prop%maxGridSize
+    WRITE(*,*) 'Max Block Dims: ', prop%maxThreadsDim
+    WRITE(*,*) 'Max Threads per Block: ', prop%maxThreadsPerBlock
+  ENDDO 
+
+END PROGRAM 
+
