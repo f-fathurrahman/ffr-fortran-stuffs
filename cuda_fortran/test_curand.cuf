@@ -1,0 +1,32 @@
+PROGRAM test_curand
+  USE m_curand
+  IMPLICIT NONE 
+  REAL(8), ALLOCATABLE :: hostData(:)
+  REAL(8), ALLOCATABLE, DEVICE :: deviceData(:)
+
+  INTEGER(8) :: gen, N, seed
+
+  ! How many numbers we want to generate
+  N = 20
+
+  ALLOCATE( hostData(N) )
+  ALLOCATE( deviceData(N) )
+
+  CALL curandCreateGenerator( gen, CURAND_RNG_PSEUDO_DEFAULT )
+
+  ! Set seed
+  seed = 1234
+  CALL curandSetPseudoRandomGeneratorSeed( gen, seed )
+
+  ! Generate random number
+  CALL curandGenerateUniform( gen, deviceData, N )
+
+  ! Copy to CPU
+  hostData = deviceData
+
+  DEALLOCATE( hostData )
+  DEALLOCATE( deviceData )
+
+  CALL curandDestroyGenerator( gen )
+
+END PROGRAM 
