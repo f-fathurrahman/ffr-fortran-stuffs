@@ -1,3 +1,9 @@
+Testing CURAND, not working on my laptop using emulation, probably need
+a GPU.
+
+
+---------------
+
 On `cng0001`, output of `deviceQuery` from CUDA NVidia samples:
 
 ```

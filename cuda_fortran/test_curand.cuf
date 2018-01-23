@@ -3,8 +3,10 @@ PROGRAM test_curand
   IMPLICIT NONE 
   REAL(8), ALLOCATABLE :: hostData(:)
   REAL(8), ALLOCATABLE, DEVICE :: deviceData(:)
-
+  !
   INTEGER(8) :: gen, N, seed
+  !
+  INTEGER :: i
 
   ! How many numbers we want to generate
   N = 20
@@ -23,6 +25,10 @@ PROGRAM test_curand
 
   ! Copy to CPU
   hostData = deviceData
+
+  DO i = 1,N
+    WRITE(*,*) i, hostData(i)
+  ENDDO 
 
   DEALLOCATE( hostData )
   DEALLOCATE( deviceData )
