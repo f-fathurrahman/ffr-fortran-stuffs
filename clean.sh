@@ -1,1 +1,1 @@
-rm -v *.x *.mod *.o
+rm -fv *.x *.mod *.o
