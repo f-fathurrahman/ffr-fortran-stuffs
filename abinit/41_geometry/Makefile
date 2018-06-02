@@ -3,11 +3,11 @@ include ../make.inc
 LIBNAME = lib41_geometry.a
 
 SRC = \
+interfaces_41_geometry.F90 \
 m_crystal.F90 \
 m_ab7_symmetry.F90 \
-interfaces_41_geometry.F90 \
-m_dynmat.F90 \
 m_ewald.F90 \
+m_dynmat.F90 \
 bldgrp.F90             gensymspgr.F90              mkrdim.F90            symanal.F90            symmetrize_xred.F90 \
 bonds_lgth_angles.F90  getptgroupma.F90            mksupercell.F90       symatm.F90             symplanes.F90 \
 chiscwrt.F90           getspinrot.F90              m_supercell.F90       symaxes.F90            symptgroup.F90 \
