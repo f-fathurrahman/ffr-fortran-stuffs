@@ -1,7 +1,10 @@
 PROGRAM test
+  
+  USE m_argparse, ONLY : args_t
+  USE m_argparse, ONLY : args_parser
 
   USE defs_basis, ONLY : abi_io_redirect
-
+  
   USE m_xmpi, ONLY : xmpi_world
   USE m_xmpi, ONLY : xmpi_init, xmpi_comm_rank, xmpi_end
 

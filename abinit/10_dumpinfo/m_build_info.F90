@@ -1,4 +1,4 @@
-!{\src2tex{textfont=tt}}
+!{src2tex{textfont=tt}}
 !!****m* ABINIT/m_build_info
 !! NAME
 !!  m_build_info
@@ -21,101 +21,101 @@
 
 module m_build_info
 
-  implicit none
+implicit none
 
 ! Try to prevent problems with the length of the argument 
 ! (should not exceed the line length of 132 character).
 ! So, always start the string to be replaced at the beginning of a line.
 
 ! Parameters set-up by Autoconf
-  character(len=8),parameter :: abinit_version = &
+character(len=8),parameter :: abinit_version = &
 &   "8.6.1"
-  character(len=*),parameter :: build_target   = &
-&   "linux-ffr"
+character(len=*),parameter :: build_target   = &
+&   "x86_64_linux_gnu5.4"
 
 ! More info on current version
-  character(len=*),parameter :: version_major = &
+character(len=*),parameter :: version_major = &
 &   "8"
-  character(len=*),parameter :: version_minor = &
+character(len=*),parameter :: version_minor = &
 &   "6"
-  character(len=*),parameter :: version_micro = &
+character(len=*),parameter :: version_micro = &
 &   "1"
-  character(len=*),parameter :: version_build = &
-&   "build-ver-ffr"
+character(len=*),parameter :: version_build = &
+&   "20180602"
 
 ! Info on compilers. Try to prevent problems with the length of the argument 
 ! (should not exceed the line length of 132 character).
-  character(len=*),parameter :: cc_info    = &
-&   "@abi_cc_vendor@@abi_cc_version@"
-  character(len=*),parameter :: cxx_info   = &
-&   "@abi_cxx_vendor@@abi_cxx_version@"
-  character(len=*),parameter :: fc_info    = &
-&   "@abi_fc_vendor@@abi_fc_version@"
-  character(len=*),parameter :: cc_flags   = &
-&   "@CFLAGS@"
-  character(len=*),parameter :: cxx_flags  = &
-&   "@CXXFLAGS@"
-  character(len=*),parameter :: fc_flags   = &
-&   "@FCFLAGS@"
-  character(len=*),parameter :: fc_ldflags = &
-&   "@FC_LDFLAGS@"
+character(len=*),parameter :: cc_info    = &
+&   "gnu5.4"
+character(len=*),parameter :: cxx_info   = &
+&   "gnu5.4"
+character(len=*),parameter :: fc_info    = &
+&   "gnu5.4"
+character(len=*),parameter :: cc_flags   = &
+&   " -g -O2 -mtune=native -march=native  "
+character(len=*),parameter :: cxx_flags  = &
+&   " -g -O2 -mtune=native -march=native  "
+character(len=*),parameter :: fc_flags   = &
+&   " -g -ffree-line-length-none  "
+character(len=*),parameter :: fc_ldflags = &
+&   "    "
 
 ! Info on optimizations
-  character(len=*),parameter :: enable_debug    = &
-&   "@enable_debug@"
-  character(len=*),parameter :: enable_optim = &
-&   "@enable_optim@"
-  character(len=*),parameter :: cpu_info = &
-&   "@abi_cpu_vendor@_@abi_cpu_model@"
+character(len=*),parameter :: enable_debug    = &
+&   "basic"
+character(len=*),parameter :: enable_optim = &
+&   "standard"
+character(len=*),parameter :: cpu_info = &
+&   "unknown_unknown"
 
 ! Info on MPI
-  character(len=*),parameter :: enable_mpi       = &
-&   "@enable_mpi@"
-  character(len=*),parameter :: enable_mpi_io    = &
-&   "@enable_mpi_io@"
+character(len=*),parameter :: enable_mpi       = &
+&   "no"
+character(len=*),parameter :: enable_mpi_io    = &
+&   "no"
 
 ! Info on openMP
-  character(len=*),parameter :: enable_openmp = &
-&   "@enable_openmp@"
+character(len=*),parameter :: enable_openmp = &
+&   "no"
 
 ! Info on GPU
-  character(len=*),parameter :: enable_gpu    = &
-&   "@enable_gpu@"
+character(len=*),parameter :: enable_gpu    = &
+&   "no"
 
 ! Info on connectors / fallbacks
-  character(len=*),parameter :: enable_connectors = &
-&   "@enable_connectors@"
-  character(len=*),parameter :: enable_fallbacks  = &
-&   "@enable_fallbacks@"
-  character(len=*),parameter :: dft_flavor        = &
-&   "@lib_dft_flavor@"
-  character(len=*),parameter :: fft_flavor        = &
-&   "@lib_fft_flavor@"
-  character(len=*),parameter :: linalg_flavor     = &
-&   "@lib_linalg_flavor@"
-  character(len=*),parameter :: math_flavor       = &
-&   "@lib_math_flavor@"
-  character(len=*),parameter :: timer_flavor      = &
-&   "@lib_timer_flavor@"
-  character(len=*),parameter :: trio_flavor       = &
-&   "@lib_trio_flavor@"
+character(len=*),parameter :: enable_connectors = &
+&   "yes"
+character(len=*),parameter :: enable_fallbacks  = &
+&   "yes"
+character(len=*),parameter :: dft_flavor        = &
+&   "none"
+character(len=*),parameter :: fft_flavor        = &
+&   "none"
+character(len=*),parameter :: linalg_flavor     = &
+&   "netlib"
+character(len=*),parameter :: math_flavor       = &
+&   "none"
+character(len=*),parameter :: timer_flavor      = &
+&   "abinit"
+character(len=*),parameter :: trio_flavor       = &
+&   "none"
 
 ! Info on experimental features
-  character(len=*),parameter :: enable_bindings = &
+character(len=*),parameter :: enable_bindings = &
 &   "@enable_bindings@"
-  character(len=*),parameter :: enable_exports = &
-&   "@enable_exports@"
-  character(len=*),parameter :: enable_gw_dpc = &
-&   "@enable_gw_dpc@"
- 
+character(len=*),parameter :: enable_exports = &
+&   "no"
+character(len=*),parameter :: enable_gw_dpc = &
+&   "no"
+
 #if defined HAVE_BZR_BRANCH
 ! Info on Bazaar branch (if applies)
-  character(len=*),parameter :: bzr_branch = &
-&   "@bzr_branch@"
-  character(len=*),parameter :: bzr_revno  = &
-&   "@bzr_revno@"
-  character(len=*),parameter :: bzr_clean  = &
-&   "@bzr_clean@"
+character(len=*),parameter :: bzr_branch = &
+&   ""
+character(len=*),parameter :: bzr_revno  = &
+&   ""
+character(len=*),parameter :: bzr_clean  = &
+&   ""
 #endif
 
 contains  !===========================================================
@@ -145,70 +145,70 @@ contains  !===========================================================
 
 subroutine dump_config(my_unit)
 
-  implicit none
+implicit none
 
 !Arguments ------------------------------------
-  integer,intent(in) :: my_unit
+integer,intent(in) :: my_unit
 
 !Local variables-------------------------------
 
 ! *********************************************************************
- 
+
 ! TODO: things that might be added through preprocessing options, e.g.
 ! date and time of compilation 
 
-  write(my_unit,*)
-  write(my_unit,'(1x,a)') repeat('+',78)
-  write(my_unit,*)
-  write(my_unit,'(a)' )' === Build Information === '
-  write(my_unit,'(2a)')'  Version       : ',trim(abinit_version)
-  write(my_unit,'(2a)')'  Build target  : ',trim(build_target)
-  write(my_unit,'(2a)')'  Build date    : ',trim(version_build)
-  write(my_unit,*)
-  write(my_unit,'(a)' )' === Compiler Suite === '
-  write(my_unit,'(2a)')'  C compiler       : ',trim(cc_info)
-  write(my_unit,'(2a)')'  C++ compiler     : ',trim(cxx_info)
-  write(my_unit,'(2a)')'  Fortran compiler : ',trim(fc_info)
-  write(my_unit,'(2a)')'  CFLAGS           : ',trim(cc_flags)
-  write(my_unit,'(2a)')'  CXXFLAGS         : ',trim(cxx_flags)
-  write(my_unit,'(2a)')'  FCFLAGS          : ',trim(fc_flags)
-  write(my_unit,'(2a)')'  FC_LDFLAGS       : ',trim(fc_ldflags)
-  write(my_unit,*)
-  write(my_unit,'(a) ')' === Optimizations === '
-  write(my_unit,'(2a)')'  Debug level        : ',trim(enable_debug)
-  write(my_unit,'(2a)')'  Optimization level : ',trim(enable_optim)
-  write(my_unit,'(2a)')'  Architecture       : ',trim(cpu_info)
-  write(my_unit,*)
-  write(my_unit,'(a) ')' === Multicore === '
-  write(my_unit,'(2a)')'  Parallel build : ',trim(enable_mpi)
-  write(my_unit,'(2a)')'  Parallel I/O   : ',trim(enable_mpi_io)
-  write(my_unit,'(2a)')'  openMP support : ',trim(enable_openmp)
-  write(my_unit,'(2a)')'  GPU support    : ',trim(enable_gpu)
-  write(my_unit,*)
-  write(my_unit,'(a) ')' === Connectors / Fallbacks === '
-  write(my_unit,'(2a)')'  Connectors on : ',trim(enable_connectors)
-  write(my_unit,'(2a)')'  Fallbacks on  : ',trim(enable_fallbacks)
-  write(my_unit,'(2a)')'  DFT flavor    : ',trim(dft_flavor)
-  write(my_unit,'(2a)')'  FFT flavor    : ',trim(fft_flavor)
-  write(my_unit,'(2a)')'  LINALG flavor : ',trim(linalg_flavor)
-  write(my_unit,'(2a)')'  MATH flavor   : ',trim(math_flavor)
-  write(my_unit,'(2a)')'  TIMER flavor  : ',trim(timer_flavor)
-  write(my_unit,'(2a)')'  TRIO flavor   : ',trim(trio_flavor)
-  write(my_unit,*)
-  write(my_unit,'(a)' )' === Experimental features === '
-  write(my_unit,'(2a)')'  Bindings            : ',trim(enable_bindings)
-  write(my_unit,'(2a)')'  Exports             : ',trim(enable_exports)
-  write(my_unit,'(2a)')'  GW double-precision : ',trim(enable_gw_dpc)
-  write(my_unit,*)
+write(my_unit,*)
+write(my_unit,'(1x,a)') repeat('+',78)
+write(my_unit,*)
+write(my_unit,'(a)' )' === Build Information === '
+write(my_unit,'(2a)')'  Version       : ',trim(abinit_version)
+write(my_unit,'(2a)')'  Build target  : ',trim(build_target)
+write(my_unit,'(2a)')'  Build date    : ',trim(version_build)
+write(my_unit,*)
+write(my_unit,'(a)' )' === Compiler Suite === '
+write(my_unit,'(2a)')'  C compiler       : ',trim(cc_info)
+write(my_unit,'(2a)')'  C++ compiler     : ',trim(cxx_info)
+write(my_unit,'(2a)')'  Fortran compiler : ',trim(fc_info)
+write(my_unit,'(2a)')'  CFLAGS           : ',trim(cc_flags)
+write(my_unit,'(2a)')'  CXXFLAGS         : ',trim(cxx_flags)
+write(my_unit,'(2a)')'  FCFLAGS          : ',trim(fc_flags)
+write(my_unit,'(2a)')'  FC_LDFLAGS       : ',trim(fc_ldflags)
+write(my_unit,*)
+write(my_unit,'(a) ')' === Optimizations === '
+write(my_unit,'(2a)')'  Debug level        : ',trim(enable_debug)
+write(my_unit,'(2a)')'  Optimization level : ',trim(enable_optim)
+write(my_unit,'(2a)')'  Architecture       : ',trim(cpu_info)
+write(my_unit,*)
+write(my_unit,'(a) ')' === Multicore === '
+write(my_unit,'(2a)')'  Parallel build : ',trim(enable_mpi)
+write(my_unit,'(2a)')'  Parallel I/O   : ',trim(enable_mpi_io)
+write(my_unit,'(2a)')'  openMP support : ',trim(enable_openmp)
+write(my_unit,'(2a)')'  GPU support    : ',trim(enable_gpu)
+write(my_unit,*)
+write(my_unit,'(a) ')' === Connectors / Fallbacks === '
+write(my_unit,'(2a)')'  Connectors on : ',trim(enable_connectors)
+write(my_unit,'(2a)')'  Fallbacks on  : ',trim(enable_fallbacks)
+write(my_unit,'(2a)')'  DFT flavor    : ',trim(dft_flavor)
+write(my_unit,'(2a)')'  FFT flavor    : ',trim(fft_flavor)
+write(my_unit,'(2a)')'  LINALG flavor : ',trim(linalg_flavor)
+write(my_unit,'(2a)')'  MATH flavor   : ',trim(math_flavor)
+write(my_unit,'(2a)')'  TIMER flavor  : ',trim(timer_flavor)
+write(my_unit,'(2a)')'  TRIO flavor   : ',trim(trio_flavor)
+write(my_unit,*)
+write(my_unit,'(a)' )' === Experimental features === '
+write(my_unit,'(2a)')'  Bindings            : ',trim(enable_bindings)
+write(my_unit,'(2a)')'  Exports             : ',trim(enable_exports)
+write(my_unit,'(2a)')'  GW double-precision : ',trim(enable_gw_dpc)
+write(my_unit,*)
 #if defined HAVE_BZR_BRANCH
-  write(my_unit,'(a)' )' === Bazaar branch information === '
-  write(my_unit,'(2a)')'  Branch ID : ',trim(bzr_branch)
-  write(my_unit,'(2a)')'  Revision  : ',trim(bzr_revno)
-  write(my_unit,'(2a)')'  Committed : ',trim(bzr_clean)
-  write(my_unit,*)
+write(my_unit,'(a)' )' === Bazaar branch information === '
+write(my_unit,'(2a)')'  Branch ID : ',trim(bzr_branch)
+write(my_unit,'(2a)')'  Revision  : ',trim(bzr_revno)
+write(my_unit,'(2a)')'  Committed : ',trim(bzr_clean)
+write(my_unit,*)
 #endif
-  write(my_unit,'(1x,a)') repeat('+',78)
-  write(my_unit,*)
+write(my_unit,'(1x,a)') repeat('+',78)
+write(my_unit,*)
 
 end subroutine dump_config
 !!***
