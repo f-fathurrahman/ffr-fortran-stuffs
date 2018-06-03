@@ -1,0 +1,32 @@
+acell 3*10.2631
+
+rprim  0.0  0.5  0.5
+       0.5  0.0  0.5
+       0.5  0.5  0.0
+
+ntypat 1
+znucl 14
+                         
+natom 2
+typat 1 1
+xred
+   0.0  0.0  0.0
+   1/4  1/4  1/4
+
+ixc -101130
+
+occopt 7
+nsppol 1
+
+ecut  15.0
+
+kptopt 1
+ngkpt 3 3 3
+chksymbreak 0
+nshiftk 1
+shiftk  0.0  0.0  0.0
+
+nstep 100
+toldfe 1.0d-6
+diemac 12.0
+
