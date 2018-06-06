@@ -28,7 +28,8 @@ m_dft_grid.f90 \
 m_hamiltonian_buffer.f90 \
 m_hamiltonian_onebody.f90 \
 m_hamiltonian_sca.f90 \
-m_hamiltonian.f90
+m_hamiltonian.f90 \
+io.f90
 
 
 

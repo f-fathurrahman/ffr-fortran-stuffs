@@ -10,6 +10,8 @@ PROGRAM test_basis_set
   CHARACTER(len=100), ALLOCATABLE :: ecp_basis_name(:)
   TYPE(basis_set) :: basis
 
+  CALL header()
+
   CALL do_init_atoms()
 
   gaussian_type = 'cart'

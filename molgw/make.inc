@@ -8,10 +8,10 @@ F90 = gfortran
 F90_OPTS = -cpp -Wall -O3 -ffree-line-length-none
 F90_OPTS_NOWARN = -cpp -O3
 
-LIBINT = /home/efefer/mysoftwares/libint-2.2.0
+LIBINT = /home/efefer/mysoftwares/libint-2.4.2
 
-CXX = g++
-CXX_OPTS = -O2 -I$(LIBINT)/include/ -I$(LIBINT)/include/libint2
+CXX = clang++
+CXX_OPTS = -std=c++11 -O2 -I$(LIBINT)/include/ -I$(LIBINT)/include/libint2
 
 LIB_LINALG = -lblas -llapack
 LIB_FFTW3 = -lfftw3
