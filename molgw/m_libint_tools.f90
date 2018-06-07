@@ -13,8 +13,6 @@ module m_libint_tools
  use m_cart_to_pure
  use m_basis_set
 
-
-
 !=========================================================================
 ! interfaces to libint wrappers in C/C++ with iso_c_binding
 !=========================================================================
@@ -277,6 +275,8 @@ subroutine transform_molgw_to_molgw_2d(gaussian_type,am1,am2,array_in,matrix_out
  integer :: gt_tag
  real(dp),allocatable :: matrix_tmp(:,:)
 !=====
+  integer :: get_gaussian_type_tag
+  integer :: number_basis_function_am
 
  gt_tag = get_gaussian_type_tag(gaussian_type)
  n1c = number_basis_function_am('CART',am1)
@@ -300,16 +300,18 @@ end subroutine transform_molgw_to_molgw_2d
 
 !=========================================================================
 subroutine transform_libint_to_molgw_2d(gaussian_type,am1,am2,array_in,matrix_out)
- implicit none
- character(len=4),intent(in)      :: gaussian_type
- integer,intent(in)               :: am1,am2
- real(C_DOUBLE),intent(in)        :: array_in(:)
- real(dp),allocatable,intent(out) :: matrix_out(:,:)
-!=====
- integer :: n1,n2,n1c,n2c
- integer :: gt_tag
- real(dp),allocatable :: matrix_tmp(:,:)
-!=====
+  implicit none
+  character(len=4),intent(in)      :: gaussian_type
+  integer,intent(in)               :: am1,am2
+  real(C_DOUBLE),intent(in)        :: array_in(:)
+  real(dp),allocatable,intent(out) :: matrix_out(:,:)
+  !=====
+  integer :: n1,n2,n1c,n2c
+  integer :: gt_tag
+  real(dp),allocatable :: matrix_tmp(:,:)
+  !=====
+  integer :: get_gaussian_type_tag
+  integer :: number_basis_function_am
 
  gt_tag = get_gaussian_type_tag(gaussian_type)
  n1c = number_basis_function_am('CART',am1)
@@ -345,6 +347,8 @@ subroutine transform_libint_to_molgw_3d(gaussian_type_left,am1,gaussian_type_rig
  real(dp),allocatable :: matrix_tmp1(:,:)
  real(dp),allocatable :: matrix_tmp2(:,:)
 !=====
+  integer :: get_gaussian_type_tag
+  integer :: number_basis_function_am
 
  gt_tagl = get_gaussian_type_tag(gaussian_type_left)
  gt_tagr = get_gaussian_type_tag(gaussian_type_right)
@@ -392,7 +396,9 @@ subroutine transform_libint_to_molgw_4d(gaussian_type,am1,am2,am3,am4,array_in,m
  real(dp),allocatable :: matrix_tmp1(:,:)
  real(dp),allocatable :: matrix_tmp2(:,:)
  real(dp),allocatable :: matrix_tmp3(:,:)
-!=====
+  !=====
+  integer :: get_gaussian_type_tag
+  integer :: number_basis_function_am
 
  gt_tag = get_gaussian_type_tag(gaussian_type)
  n1c = number_basis_function_am('CART',am1)

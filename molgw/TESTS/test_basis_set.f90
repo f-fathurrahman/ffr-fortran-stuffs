@@ -9,6 +9,7 @@ PROGRAM test_basis_set
   CHARACTER(len=100), ALLOCATABLE :: basis_name(:)
   CHARACTER(len=100), ALLOCATABLE :: ecp_basis_name(:)
   TYPE(basis_set) :: basis
+  INTEGER :: ibf
 
   CALL header()
 
@@ -26,6 +27,18 @@ PROGRAM test_basis_set
   ecp_basis_name(:) = ''
 
   CALL init_basis_set(basis_path,basis_name,ecp_basis_name,gaussian_type,basis)
+
+  WRITE(*,*)
+  WRITE(*,*) 'nbf = ', basis%nbf
+  WRITE(*,*) 'nbf_cart = ', basis%nbf_cart
+  WRITE(*,*)
+  !DO ibf = 1,basis%nbf
+  !  CALL print_basis_function(basis%bff(ibf))
+  !ENDDO 
+
+  DO ibf = 1,basis%nbf_cart
+    CALL print_basis_function(basis%bfc(ibf))
+  ENDDO 
 
   CALL destroy_atoms()
 
