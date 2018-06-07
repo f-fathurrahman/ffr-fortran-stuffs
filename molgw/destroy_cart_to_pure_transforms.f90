@@ -1,5 +1,7 @@
 !=========================================================================
 subroutine destroy_cart_to_pure_transforms()
+  use m_definitions
+  use m_cart_to_pure
  implicit none
 
 !=====

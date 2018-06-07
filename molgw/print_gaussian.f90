@@ -1,6 +1,8 @@
 !=========================================================================
 subroutine print_gaussian(ga)
- implicit none
+  USE m_definitions
+  USE m_gaussian
+ implicit NONE 
  type(gaussian),intent(in) :: ga
 !=====
 

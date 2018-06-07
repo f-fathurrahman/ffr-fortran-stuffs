@@ -1,5 +1,8 @@
 !=========================================================================
 subroutine evaluate_gos(ga,gb,qvec,gos_ab)
+  USE m_definitions
+  USE m_gaussian
+  USE m_gos
  implicit none
 !=====
  type(gaussian),intent(in) :: ga,gb

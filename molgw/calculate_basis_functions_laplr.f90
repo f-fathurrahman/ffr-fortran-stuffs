@@ -1,11 +1,13 @@
 !=========================================================================
-subroutine calculate_basis_functions_laplr(basis,rr,basis_function_gradr,basis_function_laplr)
- implicit none
-
- type(basis_set),intent(in) :: basis
- real(dp),intent(in)        :: rr(3)
- real(dp),intent(out)       :: basis_function_gradr(3,basis%nbf)
- real(dp),intent(out)       :: basis_function_laplr(3,basis%nbf)
+SUBROUTINE calculate_basis_functions_laplr(basis,rr,basis_function_gradr,basis_function_laplr)
+  USE m_definitions
+  USE m_basis_set
+  USE m_cart_to_pure
+  implicit none
+  type(basis_set),intent(in) :: basis
+  real(dp),intent(in)        :: rr(3)
+  real(dp),intent(out)       :: basis_function_gradr(3,basis%nbf)
+  real(dp),intent(out)       :: basis_function_laplr(3,basis%nbf)
 !=====
  integer              :: gt
  integer              :: ishell,ibf1,ibf2,ibf1_cart
@@ -14,6 +16,26 @@ subroutine calculate_basis_functions_laplr(basis,rr,basis_function_gradr,basis_f
  real(dp),allocatable :: basis_function_gradr_cart(:,:)
  real(dp),allocatable :: basis_function_laplr_cart(:,:)
 !=====
+  integer :: get_gaussian_type_tag
+  integer :: number_basis_function_am
+
+  interface 
+    function eval_basis_function_grad(bf,x)
+      use m_definitions
+      use m_basis_set
+      type(basis_function), intent(in) :: bf
+      real(dp), intent(in) :: x(3)
+      real(dp) :: eval_basis_function_grad(3)
+    end function
+    function eval_basis_function_lapl(bf,x)
+      use m_definitions, only : dp
+      use m_basis_set
+      implicit none
+      type(basis_function),intent(in) :: bf
+      real(dp),intent(in)             :: x(3)
+      real(dp)                        :: eval_basis_function_lapl(3)
+    end function
+  end interface
 
  gt = get_gaussian_type_tag(basis%gaussian_type)
 

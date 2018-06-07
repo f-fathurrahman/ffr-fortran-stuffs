@@ -1,5 +1,6 @@
 !=========================================================================
 subroutine destroy_dft_grid()
+  use m_dft_grid
  implicit none
 
  deallocate(rr_grid)

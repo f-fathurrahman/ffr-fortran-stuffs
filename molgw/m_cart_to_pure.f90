@@ -13,8 +13,8 @@ module m_cart_to_pure
     real(dp),allocatable :: matrix(:,:)
   end type
 
-  type(transform), allocatable, protected :: cart_to_pure     (:,:)
-  type(transform), allocatable, protected :: cart_to_pure_norm(:,:)
+  type(transform), allocatable :: cart_to_pure     (:,:)
+  type(transform), allocatable :: cart_to_pure_norm(:,:)
 
   integer,parameter         :: CARTG=1
   integer,parameter         :: PUREG=2

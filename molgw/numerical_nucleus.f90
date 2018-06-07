@@ -1,6 +1,8 @@
 !=========================================================================
 subroutine numerical_nucleus(ga,gb)
- use m_tools,only: coeffs_gausslegint
+  use m_definitions
+  use m_tools,only: coeffs_gausslegint
+  use m_gaussian
  implicit none
  type(gaussian),intent(in) :: ga,gb
 !=====
@@ -13,6 +15,7 @@ subroutine numerical_nucleus(ga,gb)
  real(dp)           :: wu(nx),u(nx),weight
  real(dp)           :: x1(n1),y1(n1),z1(n1),w1(n1)
 !=====
+  real(dp) :: eval_gaussian
 
  dx = rmax/REAL(nx,dp)
 

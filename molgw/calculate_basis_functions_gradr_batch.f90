@@ -2,6 +2,7 @@
 subroutine calculate_basis_functions_gradr_batch(basis,nr,rr,basis_function_gradr)
   use m_definitions
   use m_basis_set
+  USE m_cart_to_pure
   implicit none
 
   type(basis_set),intent(in) :: basis

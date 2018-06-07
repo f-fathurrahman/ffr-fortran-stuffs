@@ -1,5 +1,8 @@
 !=========================================================================
 subroutine calculate_basis_functions_r(basis,rr,basis_function_r)
+  use m_definitions
+  use m_basis_set
+  USE m_cart_to_pure
  implicit none
 
  type(basis_set),intent(in) :: basis
@@ -12,7 +15,9 @@ subroutine calculate_basis_functions_r(basis,rr,basis_function_r)
  integer              :: ni_cart,li
  real(dp),allocatable :: basis_function_r_cart(:)
 !=====
-
+  integer :: get_gaussian_type_tag
+  real(dp) :: eval_basis_function
+  integer :: number_basis_function_am
 
  gt = get_gaussian_type_tag(basis%gaussian_type)
 

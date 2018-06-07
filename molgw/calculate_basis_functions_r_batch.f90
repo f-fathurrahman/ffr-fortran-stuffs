@@ -1,19 +1,25 @@
 !=========================================================================
 subroutine calculate_basis_functions_r_batch(basis,nr,rr,basis_function_r)
- implicit none
+  use m_definitions
+  use m_basis_set
+  USE m_cart_to_pure
+  implicit none
 
- type(basis_set),intent(in) :: basis
- integer,intent(in)         :: nr
- real(dp),intent(in)        :: rr(3,nr)
- real(dp),intent(out)       :: basis_function_r(basis%nbf,nr)
-!=====
- integer              :: gt
- integer              :: ir
- integer              :: ishell,ibf1,ibf2,ibf1_cart
- integer              :: i_cart
- integer              :: ni_cart,li
- real(dp),allocatable :: basis_function_r_cart(:,:)
-!=====
+  type(basis_set),intent(in) :: basis
+  integer,intent(in)         :: nr
+  real(dp),intent(in)        :: rr(3,nr)
+  real(dp),intent(out)       :: basis_function_r(basis%nbf,nr)
+  !=====
+  integer              :: gt
+  integer              :: ir
+  integer              :: ishell,ibf1,ibf2,ibf1_cart
+  integer              :: i_cart
+  integer              :: ni_cart,li
+  real(dp),allocatable :: basis_function_r_cart(:,:)
+  !=====
+  integer :: get_gaussian_type_tag
+  real(dp) :: eval_basis_function
+  integer :: number_basis_function_am
 
 
  gt = get_gaussian_type_tag(basis%gaussian_type)

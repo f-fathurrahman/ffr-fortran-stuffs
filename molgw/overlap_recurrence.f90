@@ -1,5 +1,7 @@
 !=========================================================================
 subroutine overlap_recurrence(ga,gb,s_ab)
+  use m_definitions
+  use m_gaussian
  implicit none
  type(gaussian),intent(in) :: ga,gb
  real(dp),intent(out) :: s_ab

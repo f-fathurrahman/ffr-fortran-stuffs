@@ -3,43 +3,65 @@ basis_function_dipole.o : basis_function_dipole.f90 m_basis_set.o m_definitions.
 basis_function_prod.o : basis_function_prod.f90 m_basis_set.o m_definitions.o 
 basis_function_quadrupole.o : basis_function_quadrupole.f90 m_basis_set.o m_definitions.o 
 boys_function.o : boys_function.f90 
-calculate_basis_functions_gradr_batch.o : calculate_basis_functions_gradr_batch.f90 m_basis_set.o m_definitions.o 
-calculate_basis_functions_gradr.o : calculate_basis_functions_gradr.f90 m_basis_set.o m_definitions.o 
-calculate_basis_functions_laplr.o : calculate_basis_functions_laplr.f90 
-calculate_basis_functions_r_batch.o : calculate_basis_functions_r_batch.f90 
-calculate_basis_functions_r.o : calculate_basis_functions_r.f90 
+calculate_basis_functions_gradr_batch.o : calculate_basis_functions_gradr_batch.f90 m_cart_to_pure.o m_basis_set.o m_definitions.o 
+calculate_basis_functions_gradr.o : calculate_basis_functions_gradr.f90 m_cart_to_pure.o m_basis_set.o m_definitions.o 
+calculate_basis_functions_laplr.o : calculate_basis_functions_laplr.f90 m_cart_to_pure.o m_basis_set.o m_definitions.o 
+calculate_basis_functions_r_batch.o : calculate_basis_functions_r_batch.f90 m_cart_to_pure.o m_basis_set.o m_definitions.o 
+calculate_basis_functions_r.o : calculate_basis_functions_r.f90 m_cart_to_pure.o m_basis_set.o m_definitions.o 
 cnk.o : cnk.f90 m_definitions.o 
 compare_basis_function.o : compare_basis_function.f90 m_basis_set.o 
 compare_basis_set.o : compare_basis_set.f90 m_basis_set.o 
 compare_gaussian.o : compare_gaussian.f90 m_gaussian.o 
+cost_function_eri.o : cost_function_eri.f90 m_definitions.o 
+deallocate_eri_4center.o : deallocate_eri_4center.f90 m_eri.o 
+deallocate_eri_4center_lr.o : deallocate_eri_4center_lr.f90 m_eri.o 
+deallocate_eri.o : deallocate_eri.f90 m_eri.o 
+deallocate_index_pair.o : deallocate_index_pair.f90 m_eri.o 
 destroy_basis_function.o : destroy_basis_function.f90 m_basis_set.o 
 destroy_basis_set.o : destroy_basis_set.f90 m_basis_set.o 
-destroy_cart_to_pure_transforms.o : destroy_cart_to_pure_transforms.f90 
-destroy_dft_grid.o : destroy_dft_grid.f90 
+destroy_cart_to_pure_transforms.o : destroy_cart_to_pure_transforms.f90 m_cart_to_pure.o m_definitions.o 
+destroy_dft_grid.o : destroy_dft_grid.f90 m_dft_grid.o 
+destroy_eri_3center_eigen.o : destroy_eri_3center_eigen.f90 m_eri_ao_mo.o 
+destroy_eri_3center_eigen_lr.o : destroy_eri_3center_eigen_lr.f90 m_eri_ao_mo.o 
+destroy_eri_3center_eigen_mixed.o : destroy_eri_3center_eigen_mixed.f90 m_eri_ao_mo.o 
+destroy_eri_3center.o : destroy_eri_3center.f90 m_eri.o 
+destroy_eri_3center_lr.o : destroy_eri_3center_lr.f90 m_eri.o 
+distribute_auxil_basis.o : distribute_auxil_basis.f90 m_eri.o m_scalapack.o 
+distribute_auxil_basis_lr.o : distribute_auxil_basis_lr.f90 m_scalapack.o 
 double_factorial.o : double_factorial.f90 m_definitions.o 
 dump_out_energy.o : dump_out_energy.f90 m_mpi.o m_definitions.o 
+dump_out_eri.o : dump_out_eri.f90 
 dump_out_matrix.o : dump_out_matrix.f90 m_mpi.o m_definitions.o 
 dump_out_occupation.o : dump_out_occupation.f90 m_mpi.o m_definitions.o 
 echo_input_variables.o : echo_input_variables.f90 
+eri_eigen_ri.o : eri_eigen_ri.f90 m_definitions.o 
+eri_eigen_ri_paral.o : eri_eigen_ri_paral.f90 
+eri.o : eri.f90 
+eri_lr.o : eri_lr.f90 
+eri_ri.o : eri_ri.f90 
+eri_ri_lr.o : eri_ri_lr.f90 
 eval_basis_function.o : eval_basis_function.f90 m_gaussian.o m_basis_set.o m_definitions.o 
-eval_basis_function_grad.o : eval_basis_function_grad.f90 m_basis_set.o m_definitions.o 
-eval_basis_function_lapl.o : eval_basis_function_lapl.f90 m_basis_set.o m_definitions.o 
-eval_gaussian.o : eval_gaussian.f90 
-eval_gaussian_grad.o : eval_gaussian_grad.f90 
-eval_gaussian_lapl.o : eval_gaussian_lapl.f90 
-evaluate_gos.o : evaluate_gos.f90 
-evaluate_wfn_r.o : evaluate_wfn_r.f90 m_dft_grid.o m_basis_set.o m_definitions.o 
-get_basis_functions_gradr_batch.o : get_basis_functions_gradr_batch.f90 
-get_basis_functions_gradr.o : get_basis_functions_gradr.f90 
-get_basis_functions_r_batch.o : get_basis_functions_r_batch.f90 
-get_basis_functions_r.o : get_basis_functions_r.f90 
-get_gaussian_type_tag.o : get_gaussian_type_tag.f90 
+eval_basis_function_grad.o : eval_basis_function_grad.f90 m_gaussian.o m_basis_set.o m_definitions.o 
+eval_basis_function_lapl.o : eval_basis_function_lapl.f90 m_gaussian.o m_basis_set.o m_definitions.o 
+eval_gaussian.o : eval_gaussian.f90 m_gaussian.o m_definitions.o 
+eval_gaussian_grad.o : eval_gaussian_grad.f90 m_gaussian.o m_definitions.o 
+eval_gaussian_lapl.o : eval_gaussian_lapl.f90 m_gaussian.o m_definitions.o 
+evaluate_gos.o : evaluate_gos.f90 m_gos.o m_gaussian.o m_definitions.o 
+evaluate_wfn_r.o : evaluate_wfn_r.f90 m_basis_set.o m_definitions.o 
+get_basis_functions_gradr_batch.o : get_basis_functions_gradr_batch.f90 m_dft_grid.o m_basis_set.o m_definitions.o 
+get_basis_functions_gradr.o : get_basis_functions_gradr.f90 m_dft_grid.o m_basis_set.o m_definitions.o 
+get_basis_functions_r_batch.o : get_basis_functions_r_batch.f90 m_dft_grid.o m_basis_set.o m_definitions.o 
+get_basis_functions_r.o : get_basis_functions_r.f90 m_dft_grid.o m_basis_set.o m_definitions.o 
+get_gaussian_type_tag.o : get_gaussian_type_tag.f90 m_cart_to_pure.o 
 gos_basis_function.o : gos_basis_function.f90 m_basis_set.o m_definitions.o 
 header.o : header.f90 INCLUDED/git_sha.f90 m_libint_tools.o m_tools.o m_warning.o m_mpi.o m_definitions.o 
+identify_negligible_shellpair.o : identify_negligible_shellpair.f90 m_timing.o m_eri.o m_mpi.o m_basis_set.o m_definitions.o 
+index_eri.o : index_eri.f90 m_eri.o 
+index_pair.o : index_pair.f90 m_eri.o 
 init_basis_function.o : init_basis_function.f90 m_tools.o m_basis_set.o m_definitions.o 
 init_basis_function_pure.o : init_basis_function_pure.f90 m_tools.o m_basis_set.o m_definitions.o 
 init_basis_set.o : init_basis_set.f90 m_ecp.o m_basis_set.o m_atoms.o m_definitions.o 
-init_dft_grid.o : init_dft_grid.f90 m_dft_grid.o m_basis_set.o m_tools.o m_atoms.o m_elements.o 
+init_dft_grid.o : init_dft_grid.f90 m_mpi.o m_timing.o m_inputparam.o m_dft_grid.o m_basis_set.o m_tools.o m_atoms.o m_elements.o 
 init_gaussian_general.o : init_gaussian_general.f90 m_gaussian.o m_tools.o m_definitions.o 
 kinetic_basis_function.o : kinetic_basis_function.f90 m_basis_set.o m_definitions.o 
 kinetic_recurrence.o : kinetic_recurrence.f90 m_gaussian.o m_definitions.o 
@@ -50,10 +72,10 @@ m_definitions.o : m_definitions.f90
 m_dft_grid.o : m_dft_grid.f90 m_definitions.o 
 m_ecp.o : m_ecp.f90 m_elements.o m_warning.o m_tools.o m_definitions.o 
 m_elements.o : m_elements.f90 m_warning.o m_definitions.o 
-m_eri_ao_mo.o : m_eri_ao_mo.f90 m_warning.o m_inputparam.o m_eri.o m_timing.o m_basis_set.o m_memory.o m_mpi.o m_definitions.o 
-m_eri_calculate.o : m_eri_calculate.f90 m_libint_tools.o m_eri.o m_inputparam.o m_cart_to_pure.o m_timing.o m_basis_set.o m_warning.o m_memory.o m_scalapack.o m_mpi.o m_definitions.o 
-m_eri.o : m_eri.f90 m_scalapack.o m_inputparam.o m_libint_tools.o m_cart_to_pure.o m_timing.o m_basis_set.o m_warning.o m_memory.o m_mpi.o m_definitions.o 
-m_gaussian.o : m_gaussian.f90 m_cart_to_pure.o m_gos.o m_mpi.o m_definitions.o 
+m_eri_ao_mo.o : m_eri_ao_mo.f90 m_definitions.o 
+m_eri_calculate.o : m_eri_calculate.f90 m_scalapack.o m_definitions.o 
+m_eri.o : m_eri.f90 m_definitions.o 
+m_gaussian.o : m_gaussian.f90 m_definitions.o 
 m_gos.o : m_gos.f90 m_definitions.o 
 m_hamiltonian_buffer.o : m_hamiltonian_buffer.f90 m_tools.o m_eri_calculate.o m_dft_grid.o m_eri.o m_atoms.o m_basis_set.o m_inputparam.o m_cart_to_pure.o m_scalapack.o m_memory.o m_warning.o m_timing.o m_mpi.o m_definitions.o 
 m_hamiltonian.o : m_hamiltonian.f90 m_eri_calculate.o m_dft_grid.o m_tools.o m_eri.o m_basis_set.o m_inputparam.o m_cart_to_pure.o m_memory.o m_warning.o m_scalapack.o m_mpi.o m_timing.o m_definitions.o 
@@ -75,29 +97,36 @@ m_timing.o : m_timing.f90 m_warning.o m_definitions.o
 m_tools.o : m_tools.f90 m_warning.o m_definitions.o 
 mulliken_pdos.o : mulliken_pdos.f90 m_basis_set.o m_atoms.o m_inputparam.o m_mpi.o m_definitions.o 
 m_warning.o : m_warning.f90 m_definitions.o 
+negligible_basispair.o : negligible_basispair.f90 m_eri.o 
+negligible_eri.o : negligible_eri.f90 m_eri.o m_definitions.o 
 nuclear_basis_function.o : nuclear_basis_function.f90 m_basis_set.o m_definitions.o 
 nucleus_recurrence.o : nucleus_recurrence.f90 m_gaussian.o m_definitions.o 
 number_basis_function_am.o : number_basis_function_am.f90 
-numerical_kinetic.o : numerical_kinetic.f90 
-numerical_nucleus.o : numerical_nucleus.f90 m_tools.o 
+numerical_kinetic.o : numerical_kinetic.f90 m_gaussian.o m_definitions.o 
+numerical_nucleus.o : numerical_nucleus.f90 m_gaussian.o m_tools.o m_definitions.o 
 output_new_homolumo.o : output_new_homolumo.f90 m_inputparam.o m_mpi.o m_definitions.o 
 overlap_basis_function.o : overlap_basis_function.f90 m_basis_set.o m_definitions.o 
-overlap_recurrence.o : overlap_recurrence.f90 
+overlap_recurrence.o : overlap_recurrence.f90 m_gaussian.o m_definitions.o 
 overlap_three_basis_function.o : overlap_three_basis_function.f90 m_basis_set.o m_definitions.o 
-plot_cube_wfn.o : plot_cube_wfn.f90 m_dft_grid.o m_basis_set.o m_atoms.o m_cart_to_pure.o m_inputparam.o m_mpi.o m_definitions.o 
+plot_cube_wfn.o : plot_cube_wfn.f90 m_basis_set.o m_atoms.o m_cart_to_pure.o m_inputparam.o m_mpi.o m_definitions.o 
 plot_rho.o : plot_rho.f90 m_dft_grid.o m_basis_set.o m_inputparam.o m_cart_to_pure.o m_atoms.o m_mpi.o m_definitions.o 
-plot_rho_list.o : plot_rho_list.f90 m_dft_grid.o m_basis_set.o m_inputparam.o m_cart_to_pure.o m_atoms.o m_mpi.o m_definitions.o 
-plot_wfn.o : plot_wfn.f90 m_dft_grid.o m_basis_set.o m_cart_to_pure.o m_atoms.o m_inputparam.o m_mpi.o m_definitions.o 
-prepare_basis_functions_gradr.o : prepare_basis_functions_gradr.f90 
-prepare_basis_functions_r.o : prepare_basis_functions_r.f90 
+plot_rho_list.o : plot_rho_list.f90 m_basis_set.o m_inputparam.o m_cart_to_pure.o m_atoms.o m_mpi.o m_definitions.o 
+plot_wfn.o : plot_wfn.f90 m_basis_set.o m_cart_to_pure.o m_atoms.o m_inputparam.o m_mpi.o m_definitions.o 
+prepare_basis_functions_gradr.o : prepare_basis_functions_gradr.f90 m_dft_grid.o m_basis_set.o m_definitions.o 
+prepare_basis_functions_r.o : prepare_basis_functions_r.f90 m_dft_grid.o m_basis_set.o 
+prepare_eri.o : prepare_eri.f90 m_inputparam.o m_eri.o m_basis_set.o m_definitions.o 
 print_basis_function.o : print_basis_function.f90 m_basis_set.o 
-print_gaussian.o : print_gaussian.f90 
-product_gaussian.o : product_gaussian.f90 
+print_gaussian.o : print_gaussian.f90 m_gaussian.o m_definitions.o 
+product_gaussian.o : product_gaussian.f90 m_gaussian.o 
 read_basis_function.o : read_basis_function.f90 m_basis_set.o 
 read_basis_set.o : read_basis_set.f90 m_basis_set.o 
 read_energy_qp.o : read_energy_qp.f90 m_inputparam.o m_warning.o m_mpi.o m_definitions.o 
+read_eri.o : read_eri.f90 
+setup_basispair.o : setup_basispair.f90 
 setup_bf_radius.o : setup_bf_radius.f90 
 setup_cart_to_pure_transforms.o : setup_cart_to_pure_transforms.f90 
+setup_shell_index.o : setup_shell_index.f90 
+setup_shellpair.o : setup_shellpair.f90 
 smooth_step.o : smooth_step.f90 m_definitions.o 
 wfn_parity.o : wfn_parity.f90 m_inputparam.o m_basis_set.o m_atoms.o m_mpi.o m_definitions.o 
 wfn_reflection.o : wfn_reflection.f90 m_inputparam.o m_basis_set.o m_atoms.o m_mpi.o m_definitions.o 

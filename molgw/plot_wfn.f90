@@ -6,7 +6,6 @@ subroutine plot_wfn(nstate,basis,c_matrix)
  use m_atoms
  use m_cart_to_pure
  use m_basis_set
- use m_dft_grid,only: calculate_basis_functions_r
  implicit none
  integer,intent(in)         :: nstate
  type(basis_set),intent(in) :: basis
@@ -25,6 +24,7 @@ subroutine plot_wfn(nstate,basis,c_matrix)
  real(dp)                   :: basis_function_r(basis%nbf)
  integer                    :: wfrfile
 !=====
+  INTEGER :: get_gaussian_type_tag
 
  if( .NOT. is_iomaster ) return
 

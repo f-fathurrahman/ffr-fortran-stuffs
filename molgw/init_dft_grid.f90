@@ -7,6 +7,7 @@ subroutine init_dft_grid(basis,grid_level_in,needs_gradient,precalculate_wfn,bat
   use m_dft_grid
   use m_inputparam, only : partition_scheme, grid_memory
   use m_timing, only : timing_grid_generation
+  USE m_mpi
   implicit none
 
  type(basis_set),intent(in) :: basis

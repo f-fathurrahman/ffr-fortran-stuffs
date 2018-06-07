@@ -1,7 +1,9 @@
 !=========================================================================
 subroutine get_basis_functions_r_batch(basis,igrid,nr,basis_function_r)
+  use m_definitions
+  use m_basis_set
+  use m_dft_grid
  implicit none
-
  type(basis_set),intent(in) :: basis
  integer,intent(in)         :: igrid,nr
  real(dp),intent(out)       :: basis_function_r(basis%nbf,nr)

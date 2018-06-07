@@ -1,5 +1,7 @@
 !=========================================================================
 subroutine numerical_kinetic(ga,gb)
+  use m_definitions
+  use m_gaussian
  implicit none
  type(gaussian),intent(in) :: ga,gb
 !=====
@@ -9,6 +11,7 @@ subroutine numerical_kinetic(ga,gb)
  real(dp)           :: dx,rtmp,x(3),dhx(3),dhy(3),dhz(3)
  integer            :: ix,iy,iz
 !=====
+  real(dp) :: eval_gaussian
 
  dx = rmax/REAL(nx,dp)
  dhx(:) = 0.0_dp

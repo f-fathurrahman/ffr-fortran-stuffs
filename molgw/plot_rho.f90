@@ -6,7 +6,7 @@ subroutine plot_rho(nstate,basis,occupation,c_matrix)
  use m_cart_to_pure
  use m_inputparam, only: nspin
  use m_basis_set
- use m_dft_grid,only: calculate_basis_functions_r
+ use m_dft_grid
  implicit none
  integer,intent(in)         :: nstate
  type(basis_set),intent(in) :: basis
@@ -26,6 +26,7 @@ subroutine plot_rho(nstate,basis,occupation,c_matrix)
  real(dp)                   :: basis_function_r(basis%nbf)
  integer                    :: rhorfile
 !=====
+  integer :: get_gaussian_type_tag
 
  if( .NOT. is_iomaster ) return
 

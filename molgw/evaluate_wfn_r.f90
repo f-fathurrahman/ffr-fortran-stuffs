@@ -2,7 +2,6 @@
 subroutine evaluate_wfn_r(nspin,nstate,basis,c_matrix,istate1,istate2,ispin,rr,wfn_i)
  use m_definitions
  use m_basis_set
- use m_dft_grid,only: calculate_basis_functions_r
  implicit none
  integer,intent(in)         :: nspin
  type(basis_set),intent(in) :: basis

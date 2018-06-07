@@ -1,5 +1,6 @@
 !=========================================================================
 function get_gaussian_type_tag(gaussian_type)
+  USE m_cart_to_pure
  implicit none
  character(len=4),intent(in) :: gaussian_type
  integer  :: get_gaussian_type_tag

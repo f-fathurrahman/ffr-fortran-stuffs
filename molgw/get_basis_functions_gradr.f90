@@ -1,7 +1,9 @@
 !=========================================================================
 subroutine get_basis_functions_gradr(basis,igrid,basis_function_gradr)
+  use m_definitions
+  use m_basis_set
+  use m_dft_grid
  implicit none
-
  type(basis_set),intent(in) :: basis
  integer,intent(in)         :: igrid
  real(dp),intent(out)       :: basis_function_gradr(3,basis%nbf)

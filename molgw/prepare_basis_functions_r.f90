@@ -1,5 +1,7 @@
 !=========================================================================
 subroutine prepare_basis_functions_r(basis,batch_size)
+  USE m_basis_set
+  USE m_dft_grid
  implicit none
 
  type(basis_set),intent(in) :: basis

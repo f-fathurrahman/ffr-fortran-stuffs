@@ -1,5 +1,7 @@
 !=========================================================================
 function eval_gaussian(ga,x)
+  USE m_definitions
+  USE m_gaussian
  implicit none
  type(gaussian),intent(in) :: ga
  real(dp),intent(in) :: x(3)

@@ -1,7 +1,9 @@
 !=========================================================================
 subroutine prepare_basis_functions_gradr(basis,batch_size)
- implicit none
-
+  USE m_definitions
+  USE m_basis_set
+  USE m_dft_grid
+ implicit NONE
  type(basis_set),intent(in) :: basis
  integer,intent(in)         :: batch_size
 !=====

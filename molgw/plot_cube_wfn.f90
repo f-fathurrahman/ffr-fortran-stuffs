@@ -6,7 +6,6 @@ subroutine plot_cube_wfn(nstate,basis,occupation,c_matrix)
  use m_cart_to_pure
  use m_atoms
  use m_basis_set
- use m_dft_grid,only: calculate_basis_functions_r
  implicit none
  integer,intent(in)         :: nstate
  type(basis_set),intent(in) :: basis
@@ -30,6 +29,7 @@ subroutine plot_cube_wfn(nstate,basis,occupation,c_matrix)
  character(len=200)         :: file_name
  integer                    :: icubefile
 !=====
+  integer :: get_gaussian_type_tag
 
  if( .NOT. is_iomaster ) return
 

@@ -1,5 +1,6 @@
 !=========================================================================
 subroutine product_gaussian(ga,gb,gprod)
+  USE m_gaussian
  implicit none
  type(gaussian),intent(in) :: ga,gb
  type(gaussian),intent(out) :: gprod
