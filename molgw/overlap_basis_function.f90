@@ -1,22 +1,24 @@
 !=========================================================================
-subroutine overlap_basis_function(bf1,bf2,overlap)
-  use m_definitions, only : dp
-  use m_basis_set
- implicit none
- type(basis_function),intent(in) :: bf1,bf2
- real(dp),intent(out)            :: overlap
-!=====
- integer                         :: ig,jg
- real(dp)                        :: overlap_one_gaussian
-!=====
+SUBROUTINE overlap_basis_function(bf1,bf2,overlap)
+  USE m_definitions, only : dp
+  USE m_basis_set
+  IMPLICIT NONE 
+  type(basis_function),intent(in) :: bf1,bf2
+  real(dp),intent(out)            :: overlap
+  !=====
+  INTEGER :: ig,jg
+  REAL(dp) :: overlap_one_gaussian
+  !=====
 
  overlap=0.0_dp
- do ig=1,bf1%ngaussian
-   do jg=1,bf2%ngaussian
+ DO ig=1,bf1%ngaussian
+   DO jg=1,bf2%ngaussian
      call overlap_recurrence(bf1%g(ig),bf2%g(jg),overlap_one_gaussian)
      overlap = overlap + overlap_one_gaussian * bf1%coeff(ig) * bf2%coeff(jg)
-   enddo
- enddo
+   ENDDO 
+ ENDDO 
 
 
-end subroutine overlap_basis_function
+END SUBROUTINE overlap_basis_function
+
+

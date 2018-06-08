@@ -29,17 +29,22 @@ PROGRAM test_basis_set
 
   CALL init_basis_set(basis_path,basis_name,ecp_basis_name,gaussian_type,basis)
 
+  CALL setup_cart_to_pure_transforms()
+
   WRITE(*,*)
-  WRITE(*,*) 'nbf = ', basis%nbf
-  WRITE(*,*) 'nbf_cart = ', basis%nbf_cart
+  WRITE(*,*) "gaussian_type = ", basis%gaussian_type
+  WRITE(*,*) "nbf = ", basis%nbf
+  WRITE(*,*) "nbf_cart = ", basis%nbf_cart
   WRITE(*,*)
   !DO ibf = 1,basis%nbf
   !  CALL print_basis_function(basis%bff(ibf))
   !ENDDO 
 
-  DO ibf = 1,basis%nbf_cart
-    CALL print_basis_function(basis%bfc(ibf))
-  ENDDO 
+  !DO ibf = 1,basis%nbf_cart
+  !  CALL print_basis_function(basis%bfc(ibf))
+  !ENDDO 
+
+  CALL test_integrals()
 
   CALL destroy_atoms()
 
@@ -48,6 +53,15 @@ PROGRAM test_basis_set
 
 
 CONTAINS 
+
+
+  SUBROUTINE test_integrals()
+    IMPLICIT NONE 
+    REAL(8) :: ovl
+    CALL print_basis_function( basis%bfc(1) )
+    CALL overlap_basis_function( basis%bfc(1), basis%bfc(1), ovl )
+    WRITE(*,*) 'ovl = ', ovl
+  END SUBROUTINE 
 
   SUBROUTINE do_init_atoms()
 
