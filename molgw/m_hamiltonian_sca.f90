@@ -11,6 +11,7 @@
 !=========================================================================
 module m_hamiltonian_sca
  use m_definitions
+ use m_atoms
  use m_mpi
  use m_scalapack
  use m_timing

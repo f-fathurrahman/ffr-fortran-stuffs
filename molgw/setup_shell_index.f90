@@ -1,5 +1,7 @@
 !=========================================================================
 subroutine setup_shell_index(basis)
+  use m_basis_set
+  use m_eri
  implicit none
 
  type(basis_set),intent(in)   :: basis

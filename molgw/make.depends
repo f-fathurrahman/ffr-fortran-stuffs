@@ -8,6 +8,8 @@ calculate_basis_functions_gradr.o : calculate_basis_functions_gradr.f90 m_cart_t
 calculate_basis_functions_laplr.o : calculate_basis_functions_laplr.f90 m_cart_to_pure.o m_basis_set.o m_definitions.o 
 calculate_basis_functions_r_batch.o : calculate_basis_functions_r_batch.f90 m_cart_to_pure.o m_basis_set.o m_definitions.o 
 calculate_basis_functions_r.o : calculate_basis_functions_r.f90 m_cart_to_pure.o m_basis_set.o m_definitions.o 
+calculate_dipole_basis.o : calculate_dipole_basis.f90 m_cart_to_pure.o m_basis_set.o m_definitions.o 
+calculate_quadrupole_basis.o : calculate_quadrupole_basis.f90 m_cart_to_pure.o m_basis_set.o m_definitions.o 
 cnk.o : cnk.f90 m_definitions.o 
 compare_basis_function.o : compare_basis_function.f90 m_basis_set.o 
 compare_basis_set.o : compare_basis_set.f90 m_basis_set.o 
@@ -26,20 +28,21 @@ destroy_eri_3center_eigen_lr.o : destroy_eri_3center_eigen_lr.f90 m_eri_ao_mo.o
 destroy_eri_3center_eigen_mixed.o : destroy_eri_3center_eigen_mixed.f90 m_eri_ao_mo.o 
 destroy_eri_3center.o : destroy_eri_3center.f90 m_eri.o 
 destroy_eri_3center_lr.o : destroy_eri_3center_lr.f90 m_eri.o 
+dft_approximate_vhxc.o : dft_approximate_vhxc.f90 m_inputparam.o m_atoms.o m_eri_calculate.o m_dft_grid.o m_mpi.o m_timing.o m_basis_set.o m_definitions.o 
+dft_exc_vxc_batch.o : dft_exc_vxc_batch.f90 m_hamiltonian_buffer.o m_timing.o m_dft_grid.o m_inputparam.o 
 distribute_auxil_basis.o : distribute_auxil_basis.f90 m_eri.o m_scalapack.o 
-distribute_auxil_basis_lr.o : distribute_auxil_basis_lr.f90 m_scalapack.o 
+distribute_auxil_basis_lr.o : distribute_auxil_basis_lr.f90 m_eri.o m_scalapack.o 
 double_factorial.o : double_factorial.f90 m_definitions.o 
 dump_out_energy.o : dump_out_energy.f90 m_mpi.o m_definitions.o 
-dump_out_eri.o : dump_out_eri.f90 
+dump_out_eri.o : dump_out_eri.f90 m_mpi.o m_eri.o m_definitions.o 
 dump_out_matrix.o : dump_out_matrix.f90 m_mpi.o m_definitions.o 
 dump_out_occupation.o : dump_out_occupation.f90 m_mpi.o m_definitions.o 
-echo_input_variables.o : echo_input_variables.f90 
 eri_eigen_ri.o : eri_eigen_ri.f90 m_definitions.o 
 eri_eigen_ri_paral.o : eri_eigen_ri_paral.f90 
-eri.o : eri.f90 
-eri_lr.o : eri_lr.f90 
-eri_ri.o : eri_ri.f90 
-eri_ri_lr.o : eri_ri_lr.f90 
+eri.o : eri.f90 m_eri.o m_definitions.o 
+eri_lr.o : eri_lr.f90 m_definitions.o 
+eri_ri.o : eri_ri.f90 m_eri.o m_definitions.o 
+eri_ri_lr.o : eri_ri_lr.f90 m_eri.o m_definitions.o 
 eval_basis_function.o : eval_basis_function.f90 m_gaussian.o m_basis_set.o m_definitions.o 
 eval_basis_function_grad.o : eval_basis_function_grad.f90 m_gaussian.o m_basis_set.o m_definitions.o 
 eval_basis_function_lapl.o : eval_basis_function_lapl.f90 m_gaussian.o m_basis_set.o m_definitions.o 
@@ -47,6 +50,7 @@ eval_gaussian.o : eval_gaussian.f90 m_gaussian.o m_definitions.o
 eval_gaussian_grad.o : eval_gaussian_grad.f90 m_gaussian.o m_definitions.o 
 eval_gaussian_lapl.o : eval_gaussian_lapl.f90 m_gaussian.o m_definitions.o 
 evaluate_gos.o : evaluate_gos.f90 m_gos.o m_gaussian.o m_definitions.o 
+evaluate_s2_operator.o : evaluate_s2_operator.f90 
 evaluate_wfn_r.o : evaluate_wfn_r.f90 m_basis_set.o m_definitions.o 
 get_basis_functions_gradr_batch.o : get_basis_functions_gradr_batch.f90 m_dft_grid.o m_basis_set.o m_definitions.o 
 get_basis_functions_gradr.o : get_basis_functions_gradr.f90 m_dft_grid.o m_basis_set.o m_definitions.o 
@@ -65,7 +69,10 @@ init_dft_grid.o : init_dft_grid.f90 m_mpi.o m_timing.o m_inputparam.o m_dft_grid
 init_gaussian_general.o : init_gaussian_general.f90 m_gaussian.o m_tools.o m_definitions.o 
 kinetic_basis_function.o : kinetic_basis_function.f90 m_basis_set.o m_definitions.o 
 kinetic_recurrence.o : kinetic_recurrence.f90 m_gaussian.o m_definitions.o 
+level_shifting_down.o : level_shifting_down.f90 m_inputparam.o m_definitions.o 
+level_shifting_up.o : level_shifting_up.f90 m_inputparam.o m_definitions.o 
 m_atoms.o : m_atoms.f90 m_lbfgs.o m_tools.o m_elements.o m_warning.o m_definitions.o 
+matrix_basis_to_eigen.o : matrix_basis_to_eigen.f90 m_inputparam.o m_definitions.o 
 m_basis_set.o : m_basis_set.f90 m_gaussian.o m_definitions.o 
 m_cart_to_pure.o : m_cart_to_pure.f90 m_definitions.o 
 m_definitions.o : m_definitions.f90 
@@ -77,11 +84,9 @@ m_eri_calculate.o : m_eri_calculate.f90 m_scalapack.o m_definitions.o
 m_eri.o : m_eri.f90 m_definitions.o 
 m_gaussian.o : m_gaussian.f90 m_definitions.o 
 m_gos.o : m_gos.f90 m_definitions.o 
-m_hamiltonian_buffer.o : m_hamiltonian_buffer.f90 m_tools.o m_eri_calculate.o m_dft_grid.o m_eri.o m_atoms.o m_basis_set.o m_inputparam.o m_cart_to_pure.o m_scalapack.o m_memory.o m_warning.o m_timing.o m_mpi.o m_definitions.o 
-m_hamiltonian.o : m_hamiltonian.f90 m_eri_calculate.o m_dft_grid.o m_tools.o m_eri.o m_basis_set.o m_inputparam.o m_cart_to_pure.o m_memory.o m_warning.o m_scalapack.o m_mpi.o m_timing.o m_definitions.o 
-m_hamiltonian_onebody.o : m_hamiltonian_onebody.f90 m_ecp.o m_dft_grid.o m_atoms.o m_libint_tools.o m_basis_set.o m_inputparam.o m_cart_to_pure.o m_memory.o m_warning.o m_scalapack.o m_mpi.o m_timing.o m_definitions.o 
+m_hamiltonian_buffer.o : m_hamiltonian_buffer.f90 m_tools.o m_eri_calculate.o m_dft_grid.o m_inputparam.o m_eri.o m_cart_to_pure.o m_scalapack.o m_atoms.o m_basis_set.o m_timing.o m_definitions.o 
 m_hamiltonian_sca.o : m_hamiltonian_sca.f90 m_dft_grid.o m_tools.o m_eri_calculate.o m_eri.o m_atoms.o m_basis_set.o m_inputparam.o m_cart_to_pure.o m_memory.o m_warning.o m_timing.o m_scalapack.o m_mpi.o m_definitions.o 
-m_inputparam.o : m_inputparam.f90 echo_input_variables.f90 INCLUDED/basis_path.f90 INCLUDED/input_variables.f90 m_tools.o m_elements.o m_ecp.o m_atoms.o m_warning.o m_mpi.o m_definitions.o 
+m_inputparam.o : m_inputparam.f90 INCLUDED/echo_input_variables.f90 INCLUDED/basis_path.f90 INCLUDED/input_variables.f90 m_tools.o m_elements.o m_ecp.o m_atoms.o m_warning.o m_mpi.o m_definitions.o 
 m_lbfgs.o : m_lbfgs.f90 m_definitions.o 
 m_libint_tools.o : m_libint_tools.f90 m_basis_set.o m_cart_to_pure.o m_definitions.o 
 m_memory.o : m_memory.f90 m_warning.o m_definitions.o 
@@ -121,13 +126,33 @@ product_gaussian.o : product_gaussian.f90 m_gaussian.o
 read_basis_function.o : read_basis_function.f90 m_basis_set.o 
 read_basis_set.o : read_basis_set.f90 m_basis_set.o 
 read_energy_qp.o : read_energy_qp.f90 m_inputparam.o m_warning.o m_mpi.o m_definitions.o 
-read_eri.o : read_eri.f90 
-setup_basispair.o : setup_basispair.f90 
-setup_bf_radius.o : setup_bf_radius.f90 
-setup_cart_to_pure_transforms.o : setup_cart_to_pure_transforms.f90 
+read_eri.o : read_eri.f90 m_eri.o m_definitions.o 
+set_occupation.o : set_occupation.f90 m_warning.o m_inputparam.o m_definitions.o 
+setup_basispair.o : setup_basispair.f90 m_eri.o 
+setup_bf_radius.o : setup_bf_radius.f90 m_dft_grid.o m_basis_set.o m_definitions.o 
+setup_cart_to_pure_transforms.o : setup_cart_to_pure_transforms.f90 m_cart_to_pure.o m_definitions.o 
+setup_density_matrix.o : setup_density_matrix.f90 m_inputparam.o m_timing.o m_definitions.o 
+setup_energy_density_matrix.o : setup_energy_density_matrix.f90 m_inputparam.o m_timing.o m_definitions.o 
+setup_exchange.o : setup_exchange.f90 m_inputparam.o m_timing.o m_eri.o m_definitions.o 
+setup_exchange_longrange.o : setup_exchange_longrange.f90 m_inputparam.o m_timing.o m_eri.o m_definitions.o 
+setup_exchange_longrange_ri.o : setup_exchange_longrange_ri.f90 m_mpi.o m_inputparam.o m_timing.o m_eri.o m_definitions.o 
+setup_exchange_ri.o : setup_exchange_ri.f90 m_mpi.o m_inputparam.o m_timing.o m_eri.o m_definitions.o 
+setup_hartree.o : setup_hartree.f90 m_eri.o 
+setup_hartree_ri.o : setup_hartree_ri.f90 m_eri.o 
+setup_kinetic.o : setup_kinetic.f90 
+setup_kinetic_grad.o : setup_kinetic_grad.f90 
+setup_nucleus_ecp.o : setup_nucleus_ecp.f90 m_ecp.o m_dft_grid.o m_atoms.o 
+setup_nucleus.o : setup_nucleus.f90 m_atoms.o 
+setup_nucleus_grad.o : setup_nucleus_grad.f90 m_atoms.o 
+setup_overlap.o : setup_overlap.f90 
+setup_overlap_grad.o : setup_overlap_grad.f90 
+setup_overlap_mixedbasis.o : setup_overlap_mixedbasis.f90 
 setup_shell_index.o : setup_shell_index.f90 
 setup_shellpair.o : setup_shellpair.f90 
+setup_sqrt_density_matrix.o : setup_sqrt_density_matrix.f90 m_tools.o 
+setup_sqrt_overlap.o : setup_sqrt_overlap.f90 m_tools.o 
 smooth_step.o : smooth_step.f90 m_definitions.o 
+test_density_matrix.o : test_density_matrix.f90 
 wfn_parity.o : wfn_parity.f90 m_inputparam.o m_basis_set.o m_atoms.o m_mpi.o m_definitions.o 
 wfn_reflection.o : wfn_reflection.f90 m_inputparam.o m_basis_set.o m_atoms.o m_mpi.o m_definitions.o 
 write_basis_function.o : write_basis_function.f90 m_basis_set.o 

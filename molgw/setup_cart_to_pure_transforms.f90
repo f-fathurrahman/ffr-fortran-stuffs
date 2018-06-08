@@ -1,5 +1,7 @@
 !=========================================================================
 subroutine setup_cart_to_pure_transforms()
+  use m_definitions, only: dp, MOLGW_LMAX, stdout
+  use m_cart_to_pure
  implicit none
 
 !=====
@@ -10,6 +12,9 @@ subroutine setup_cart_to_pure_transforms()
  integer  :: it,iu,is
  real(dp) :: rtmp
 !=====
+  real(dp) :: double_factorial
+  real(dp) :: cnk, ank
+  integer :: number_basis_function_am
 
  write(stdout,'(/,1x,a,i2)') 'Setting up the cartesian to pure transforms up to l= ',MOLGW_LMAX
 

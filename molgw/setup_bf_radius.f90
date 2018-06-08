@@ -1,5 +1,8 @@
 !=========================================================================
 subroutine setup_bf_radius(basis)
+  use m_definitions
+  use m_basis_set
+  use m_dft_grid
  implicit none
 
  type(basis_set),intent(in) :: basis

@@ -1,7 +1,8 @@
 !=========================================================================
 subroutine distribute_auxil_basis_lr(nbf_auxil_basis)
  use m_scalapack
- implicit none
+ USE m_eri
+ implicit NONE
 
  integer,intent(in)  :: nbf_auxil_basis
 !=====

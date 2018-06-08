@@ -1,5 +1,8 @@
 !=========================================================================
 subroutine dump_out_eri(rcut)
+  USE m_definitions
+  USE m_eri
+  USE m_mpi
  implicit none
  real(dp),intent(in) :: rcut
 !=====

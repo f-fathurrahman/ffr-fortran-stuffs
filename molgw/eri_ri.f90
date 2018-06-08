@@ -1,5 +1,7 @@
 !=========================================================================
 function eri_ri(ibf,jbf,kbf,lbf)
+  USE m_definitions
+  USE m_eri
  implicit none
  integer,intent(in) :: ibf,jbf,kbf,lbf
  real(dp)           :: eri_ri
@@ -7,6 +9,8 @@ function eri_ri(ibf,jbf,kbf,lbf)
  integer            :: index_ij,index_kl
  real(dp)           :: eri_1(1,1)
 !=====
+  LOGICAL :: negligible_basispair
+  INTEGER :: index_pair
 
  if( negligible_basispair(ibf,jbf) .OR. negligible_basispair(kbf,lbf) ) then
    eri_ri = 0.0_dp

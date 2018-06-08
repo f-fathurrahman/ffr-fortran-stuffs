@@ -9,8 +9,9 @@ function eval_basis_function(bf,x)
   !
   real(dp) :: eval_basis_function
   !=====
-  integer                         :: ig
+  INTEGER :: ig
   !=====
+  REAL(dp) :: eval_gaussian
 
   eval_basis_function=0.0_dp
   do ig=1,bf%ngaussian

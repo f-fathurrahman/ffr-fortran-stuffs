@@ -1,10 +1,12 @@
 !=========================================================================
 subroutine setup_basispair()
+  use m_eri
  implicit none
 !=====
  integer :: ishell,jshell
  integer :: ibf,jbf,ijbf
 !=====
+  logical :: negligible_basispair
 
  npair = 0
  do jbf=1,nbf_eri

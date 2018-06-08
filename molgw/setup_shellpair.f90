@@ -1,5 +1,7 @@
 !=========================================================================
 subroutine setup_shellpair(basis)
+  use m_basis_set
+  use m_eri
  implicit none
 
  type(basis_set),intent(in) :: basis
@@ -8,7 +10,7 @@ subroutine setup_shellpair(basis)
  integer :: ami,amj
  integer :: ishellpair,jshellpair
 !=====
-
+  
  ishellpair = 0
  jshellpair = 0
  do jshell=1,basis%nshell

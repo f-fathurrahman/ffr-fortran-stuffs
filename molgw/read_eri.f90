@@ -1,5 +1,7 @@
 !=========================================================================
 logical function read_eri(rcut)
+  USE m_definitions
+  USE m_eri
  implicit none
  real(dp),intent(in) :: rcut
 !=====

@@ -9,14 +9,6 @@
 !=========================================================================
 module m_hamiltonian_buffer
  use m_definitions
- use m_mpi
- use m_timing
- use m_warning
- use m_memory
- use m_scalapack
- use m_cart_to_pure
- use m_inputparam,only: nspin,spin_fact
-
 
  real(dp),private,allocatable :: buffer(:,:)
 
@@ -52,8 +44,8 @@ end subroutine destroy_parallel_buffer
 
 !=========================================================================
 subroutine reduce_hamiltonian_sca(m_ham,n_ham,matrix_local)
+  use m_timing
  implicit none
-
  integer,intent(in)   :: m_ham,n_ham
  real(dp),intent(out) :: matrix_local(m_ham,n_ham)
 !=====
@@ -97,6 +89,7 @@ end subroutine reduce_hamiltonian_sca
 
 !=========================================================================
 subroutine broadcast_hamiltonian_sca(m_ham,n_ham,matrix_local)
+  use m_timing
  implicit none
 
  integer,intent(in)   :: m_ham,n_ham
@@ -147,6 +140,9 @@ end subroutine broadcast_hamiltonian_sca
 subroutine setup_nucleus_buffer_sca(print_matrix_,basis,m_ham,n_ham,hamiltonian_nucleus)
  use m_basis_set
  use m_atoms
+ use m_scalapack
+ use m_timing
+ use m_cart_to_pure
  implicit none
  logical,intent(in)         :: print_matrix_
  type(basis_set),intent(in) :: basis
@@ -163,6 +159,8 @@ subroutine setup_nucleus_buffer_sca(print_matrix_,basis,m_ham,n_ham,hamiltonian_
  real(dp),allocatable :: matrix_cart(:,:)
  real(dp)             :: vnucleus_ij
 !=====
+  integer :: get_gaussian_type_tag
+  integer :: number_basis_function_am
 
  call start_clock(timing_hamiltonian_nuc)
  write(stdout,'(/,a)') ' Setup nucleus-electron part of the Hamiltonian: SCALAPACK buffer'
@@ -230,6 +228,9 @@ end subroutine setup_nucleus_buffer_sca
 !=========================================================================
 subroutine setup_hartree_ri_buffer_sca(print_matrix_,nbf,m_ham,n_ham,p_matrix,hartree_ij,ehartree)
  use m_eri
+ use m_timing
+ use m_scalapack
+ use m_inputparam, only: nspin
  implicit none
  logical,intent(in)   :: print_matrix_
  integer,intent(in)   :: nbf,m_ham,n_ham
@@ -304,6 +305,9 @@ end subroutine setup_hartree_ri_buffer_sca
 !=========================================================================
 subroutine setup_exchange_ri_buffer_sca(nbf,nstate,m_c,n_c,m_ham,n_ham,occupation,c_matrix,p_matrix,exchange_ij,eexchange)
  use m_eri
+ use m_scalapack
+ use m_timing
+ use m_inputparam, only: spin_fact, nspin
  implicit none
  integer,intent(in)   :: nbf,m_ham,n_ham
  integer,intent(in)   :: nstate,m_c,n_c
@@ -402,6 +406,9 @@ end subroutine setup_exchange_ri_buffer_sca
 !=========================================================================
 subroutine setup_exchange_longrange_ri_buffer_sca(nbf,nstate,m_c,n_c,m_ham,n_ham,occupation,c_matrix,p_matrix,exchange_ij,eexchange)
  use m_eri
+ use m_scalapack
+ use m_timing
+ use m_inputparam, only: spin_fact, nspin
  implicit none
  integer,intent(in)   :: nbf,m_ham,n_ham
  integer,intent(in)   :: nstate,m_c,n_c
@@ -503,6 +510,7 @@ subroutine dft_exc_vxc_buffer_sca(basis,nstate,m_c,n_c,m_ham,n_ham,occupation,c_
  use m_inputparam
  use m_basis_set
  use m_dft_grid
+ use m_timing
 #ifdef HAVE_LIBXC
  use libxc_funcs_m
  use xc_f90_lib_m
@@ -752,6 +760,10 @@ subroutine dft_approximate_vhxc_buffer_sca(basis,m_ham,n_ham,vhxc_ij)
  use m_dft_grid
  use m_eri_calculate
  use m_tools,only: matrix_trace
+ use m_scalapack
+ use m_atoms
+ use m_timing
+ use m_inputparam, only: nspin
  implicit none
 
  type(basis_set),intent(in) :: basis
