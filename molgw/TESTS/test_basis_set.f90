@@ -1,6 +1,7 @@
 PROGRAM test_basis_set
 
   USE m_atoms, ONLY : natom_basis
+  USE m_atoms, ONLY : destroy_atoms
   USE m_basis_set
 
   IMPLICIT NONE 

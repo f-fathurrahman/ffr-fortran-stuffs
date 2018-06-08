@@ -1,8 +1,10 @@
-============================================
+!============================================
 subroutine calculate_eri_3center_scalapack(basis,auxil_basis,rcut)
   USE m_definitions
   USE m_basis_set
   use m_eri
+  use m_eri_calculate
+  use m_cart_to_pure
   use m_timing
   use m_scalapack
  implicit none

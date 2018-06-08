@@ -1,5 +1,10 @@
 !=========================================================================
 subroutine calculate_eri_approximate_hartree(basis,mv,nv,x0_rho,ng_rho,coeff_rho,alpha_rho,vhrho)
+  use m_definitions
+  use m_basis_set
+  use m_scalapack
+  use m_eri
+  use m_cart_to_pure
  implicit none
  type(basis_set),intent(in)   :: basis
  integer,intent(in)           :: mv,nv
@@ -25,6 +30,7 @@ subroutine calculate_eri_approximate_hartree(basis,mv,nv,x0_rho,ng_rho,coeff_rho
  real(C_DOUBLE),allocatable   :: coeff1(:),coeff3(:),coeff4(:)
  real(C_DOUBLE),allocatable   :: int_shell(:)
 !=====
+  integer :: number_basis_function_am
 
  if( parallel_ham .AND. parallel_buffer ) then    
    if( mv /= basis%nbf .OR. nv /= basis%nbf ) call die('calculate_eri_approximate_hartree: wrong dimension for the buffer')
