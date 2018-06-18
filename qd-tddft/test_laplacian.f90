@@ -1,17 +1,3 @@
-!! This program is free software; you can redistribute it and/or modify
-!! it under the terms of the GNU General Public License as published by
-!! the Free Software Foundation; either version 2, or (at your option)
-!! any later version.
-!!
-!! This program is distributed in the hope that it will be useful,
-!! but WITHOUT ANY WARRANTY; without even the implied warranty of
-!! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-!! GNU General Public License for more details.
-!!
-!! You should have received a copy of the GNU General Public License
-!! along with this program; if not, write to the Free Software
-!! Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
-
 !/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! PROGRAM TEST_LAPLACIAN
 ! ======================
@@ -26,47 +12,46 @@
 ! changing the alpha parameter. You may also check how the error depends
 ! on the order of the discretization of the Laplacian. 
 !*/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-subroutine test_laplacian
-  use mesh
-  implicit none
+PROGRAM test_laplacian
+  USE mesh
+  IMPLICIT NONE 
+  INTEGER :: ix, iy
+  REAL(8), ALLOCATABLE :: rho(:,:), exl(:,:), apl(:,:)
+  REAL(8) :: r2, alpha
+  REAL(8), PARAMETER :: pi = 3.141592653589793d0
 
-  integer :: ix, iy
-  real(8), allocatable :: rho(:, :), exl(:, :), apl(:, :)
-  real(8) :: r2, alpha, z, ex, err
-  real(8), parameter :: pi = 3.141592653589793_8
-
-  allocate(rho(n, n), exl(n, n), apl(n, n))
-
+  ALLOCATE(rho(n, n), exl(n, n), apl(n, n))
 
   ! Define the problem density, which is just a Gaussian.
   alpha = 3.0d0
-  do ix = 1, n
-     do iy = 1, n
-        r2 = x(ix, iy)**2 + y(ix, iy)**2
-        rho(ix, iy) = exp(-r2/alpha**2)
-     enddo
-  enddo
-  rho(:, :) = rho(:, :)/(alpha**2*pi)
+  DO ix = 1, n
+     DO iy = 1, n
+        r2 = x(ix,iy)**2 + y(ix,iy)**2
+        rho(ix,iy) = exp(-r2/alpha**2)
+     ENDDO 
+  ENDDO 
+  rho(:,:) = rho(:,:)/(alpha**2*pi)
 
   ! The exact value of the Laplacian of the problem density is put in exl variable
-  do ix = 1, n
-     do iy = 1, n
-        r2 = x(ix, iy)**2 + y(ix, iy)**2
-        exl(ix, iy) = (4.0d0/alpha**2)*(r2/alpha**2-1.0d0)*rho(ix, iy)
-     enddo
-  enddo
+  DO ix = 1, n
+  DO iy = 1, n
+    r2 = x(ix, iy)**2 + y(ix, iy)**2
+    exl(ix,iy) = (4.0d0/alpha**2)*(r2/alpha**2-1.0d0)*rho(ix, iy)
+  ENDDO 
+  ENDDO 
 
   ! Calculate the Laplacian of the problem density throught the laplacian
   ! subroutine, and put the result into apl variable.
-  call laplacian(rho, apl)
+  CALL laplacian(rho, apl)
 
   ! For visualization purposes:
-  call output(rho,'rho')
-  call output(exl,'exact_laplacian')
-  call output(apl,'approximated_laplacian')
+  CALL output(rho,'rho.dat')
+  CALL output(exl,'exact_laplacian.dat')
+  CALL output(apl,'approximated_laplacian.dat')
 
   ! Outputs an estimation of the error of the laplacian subroutine.
-  write(*, '(a,es20.8)') 'Error: ', dotproduct(apl-exl,apl-exl)
+  WRITE(*,'(A,ES20.8)') 'Error: ', dotproduct(apl-exl,apl-exl)
 
-  deallocate(rho, exl, apl)
-end subroutine test_laplacian
+  DEALLOCATE(rho, exl, apl)
+END PROGRAM 
+

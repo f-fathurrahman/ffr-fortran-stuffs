@@ -2,7 +2,7 @@ include make.inc
 
 LIBS_EXT = 
 
-SRC = mesh.f90
+SRC = mesh.f90 output.f90
 
 C_SRC = gslwrappers.c
 
@@ -45,9 +45,11 @@ lib: $(OBJ)
 #main: lib ffr_LFDFT.f90
 #	$(F90) $(F90_OPTS) ffr_LFDFT.f90 -o $(EXE_MAIN) libmain.a $(LIBS_EXT)
 
+test_laplacian: lib test_laplacian.f90
+	$(F90) $(F90_OPTS) test_laplacian.f90 -o test_laplacian.x libmain.a
 
 # does not delete *.x files
 clean:
-	rm -rfv *.o *.mod
+	rm -rfv *.o *.mod *.x
 
 
