@@ -20,43 +20,7 @@ dfpt_etot.F90      dfptnl_resp.F90       dfpt_vtowfk.F90    m_ddk.F90           
 dfpt_ewald.F90     dfpt_nselt.F90        dfpt_wfkfermi.F90  m_dvdb.F90                  wrtloctens.F90 \
 dfptff_bec.F90     dfpt_nstdy.F90        eig2stern.F90      m_efmas.F90
 
-
-OBJ = $(SRC:.F90=.o)
-
-#
-# Suffix rule for Fortran 90
-#
-%.mod :
-	@if [! -f $@ ]; then \
-		rm $(*F).o; \
-		fi
-	$(MAKE) $<
-
-%.o : %.F90
-	$(F90) $(F90_OPTS) -c -o $(*F).o $<
-
-#
-# Fortran 77 sources
-# supress warning
-.SUFFIXES: .o .f
-.f.o:
-	$(F77) -c $(F77_OPTS) $<
-
-#
-# C source
-#
-.SUFFIXES: .o .c
-.c.o:
-	$(CC) -c $(CC_OPTS) $<
-
-# Targets
-lib: $(OBJ)
-	ar rcs $(LIBNAME) *.o; mv $(LIBNAME) ../libs; mv *.mod ../mods
-
-# does not delete *.x files
-clean:
-	rm -rf *.o *.mod $(LIBNAME)
-
+include ../make.inc.post
 
 
 corrmetalwf1.o : corrmetalwf1.F90 

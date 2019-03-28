@@ -19,42 +19,7 @@ cohsex_me.F90            gwls_model_polarisability.F90      m_model_screening.F9
 debug_tools.F90          gwls_polarisability.F90            m_ppmodel.F90
 
 
-OBJ = $(SRC:.F90=.o)
-
-#
-# Suffix rule for Fortran 90
-#
-%.mod :
-	@if [! -f $@ ]; then \
-		rm $(*F).o; \
-		fi
-	$(MAKE) $<
-
-%.o : %.F90
-	$(F90) $(F90_OPTS) -c -o $(*F).o $<
-
-#
-# Fortran 77 sources
-# supress warning
-.SUFFIXES: .o .f
-.f.o:
-	$(F77) -c $(F77_OPTS) $<
-
-#
-# C source
-#
-.SUFFIXES: .o .c
-.c.o:
-	$(CC) -c $(CC_OPTS) $<
-
-# Targets
-lib: $(OBJ)
-	ar rcs $(LIBNAME) *.o; mv $(LIBNAME) ../libs; mv *.mod ../mods
-
-# does not delete *.x files
-clean:
-	rm -rf *.o *.mod $(LIBNAME)
-
+include ../make.inc.post
 
 
 calc_rpa_functional.o : calc_rpa_functional.F90 

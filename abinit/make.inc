@@ -2,14 +2,14 @@ MAKE = make
 AR = ar
 
 F77 = gfortran
-F77_OPTS = -O3
+F77_OPTS = -O0 -g
 
 F90 = gfortran
-F90_OPTS = -cpp -Wall -O3 -I../mods -I../incs -I./ -DHAVE_CONFIG_H -ffree-line-length-none -ffree-form
-F90_OPTS_NOWARN = -cpp -O3
+F90_OPTS = -cpp -Wall -O0 -g -I../mods -I../incs -I./ -DHAVE_CONFIG_H -ffree-line-length-none -ffree-form
+F90_OPTS_NOWARN = -cpp -O0 -g
 
 CC = gcc
-CC_OPTS = -DHAVE_CONFIG_H -I. -I../incs -O2
+CC_OPTS = -DHAVE_CONFIG_H -I. -I../incs -O0 -g
 
 LIB_LINALG = -lblas -llapack
 LIB_FFTW3 = -lfftw3

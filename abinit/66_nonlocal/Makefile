@@ -11,43 +11,7 @@ cont24.F90     dfpt_mkffkg.F90             m_fock.F90         nonlop.F90      op
 cont33cso.F90  getcprj.F90                 m_gemm_nonlop.F90  nonlop_gpu.F90  opernl4b.F90     trace2.F90 \
 cont33so.F90   interfaces_66_nonlocal.F90  m_hamiltonian.F90  nonlop_pl.F90   opernla_ylm.F90
 
-
-OBJ = $(SRC:.F90=.o)
-
-#
-# Suffix rule for Fortran 90
-#
-%.mod :
-	@if [! -f $@ ]; then \
-		rm $(*F).o; \
-		fi
-	$(MAKE) $<
-
-%.o : %.F90
-	$(F90) $(F90_OPTS) -c -o $(*F).o $<
-
-#
-# Fortran 77 sources
-# supress warning
-.SUFFIXES: .o .f
-.f.o:
-	$(F77) -c $(F77_OPTS) $<
-
-#
-# C source
-#
-.SUFFIXES: .o .c
-.c.o:
-	$(CC) -c $(CC_OPTS) $<
-
-# Targets
-lib: $(OBJ)
-	ar rcs $(LIBNAME) *.o; mv $(LIBNAME) ../libs; mv *.mod ../mods
-
-# does not delete *.x files
-clean:
-	rm -rf *.o *.mod $(LIBNAME)
-
+include ../make.inc.post
 
 
 cont13.o : cont13.F90 

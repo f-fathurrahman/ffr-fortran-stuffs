@@ -8,42 +8,7 @@ dfpt_looppert.F90   dtfil_init_img.F90   gstateimg.F90            m_argparse.F90
 dfptnl_loop.F90     dtfil_init_time.F90  gwls_sternheimer.F90     mover_effpot.F90  respfn.F90       timana.F90 \
 driver.F90          eph.F90              interfaces_95_drive.F90  mover.F90         screening.F90    wfk_analyze.F90
 
-OBJ = $(SRC:.F90=.o)
-
-#
-# Suffix rule for Fortran 90
-#
-%.mod :
-	@if [! -f $@ ]; then \
-		rm $(*F).o; \
-		fi
-	$(MAKE) $<
-
-%.o : %.F90
-	$(F90) $(F90_OPTS) -c -o $(*F).o $<
-
-#
-# Fortran 77 sources
-# supress warning
-.SUFFIXES: .o .f
-.f.o:
-	$(F77) -c $(F77_OPTS) $<
-
-#
-# C source
-#
-.SUFFIXES: .o .c
-.c.o:
-	$(CC) -c $(CC_OPTS) $<
-
-# Targets
-lib: $(OBJ)
-	ar rcs $(LIBNAME) *.o; mv $(LIBNAME) ../libs; mv *.mod ../mods
-
-# does not delete *.x files
-clean:
-	rm -rf *.o *.mod $(LIBNAME)
-
+include ../make.inc.post
 
 
 bethe_salpeter.o : bethe_salpeter.F90 

@@ -1,159 +1,5 @@
 include make.inc
 
-LIBS_EXT = $(LIBS) libsparskit.a libpoisson_ISF.a
-
-
-SRC = \
-m_constants.f90 \
-m_options.f90 \
-m_atoms.f90 \
-m_LF3d.f90 \
-m_nabla2_sparse.f90 \
-m_hamiltonian.f90 \
-m_states.f90 \
-m_energies.f90 \
-m_xc.f90 \
-m_Ps_HGH.f90 \
-m_PsPot.f90 \
-m_input_vars.f90 \
-welcome.f90 \
-goodbye.f90 \
-timestamp.f90 \
-compile_info.f90 \
-get_month_name.f90 \
-init_PsPot.f90 \
-dealloc_PsPot.f90 \
-fft_fftw3.f90 \
-LDA_VWN.f90 \
-calc_Vxc.f90 \
-calc_Exc.f90 \
-init_atoms_xyz.f90 \
-init_grid_1d_p.f90 \
-init_grid_1d_c.f90 \
-init_grid_1d_sinc.f90 \
-init_deriv_matrix_p.f90 \
-init_deriv_matrix_c.f90 \
-init_deriv_matrix_sinc.f90 \
-init_LF3d_p.f90 \
-init_LF3d_c.f90 \
-init_LF3d_sinc.f90 \
-init_states.f90 \
-info_LF3d.f90 \
-info_PsPot.f90 \
-info_energies.f90 \
-info_atoms.f90 \
-mm_to_nn.f90 \
-init_gvec.f90 \
-init_V_ps_loc_G.f90 \
-init_V_ps_loc_G_long.f90 \
-init_V_coul_G.f90 \
-dealloc_LF3d.f90 \
-op_nabla2.f90 \
-op_nabla.f90 \
-init_nabla2_sparse.f90 \
-dealloc_nabla2_sparse.f90 \
-dealloc_atoms.f90 \
-Poisson_solve_cg.f90 \
-Poisson_solve_pcg.f90 \
-Poisson_solve_fft.f90 \
-Poisson_solve_fft_MT.f90 \
-op_H.f90 \
-op_V_ps_NL.f90 \
-init_betaNL.f90 \
-calc_betaNL_psi.f90 \
-diag_davidson_qe.f90 \
-rdiaghg.f90 \
-alloc_hamiltonian.f90 \
-dealloc_hamiltonian.f90 \
-init_V_ps_loc_harmonic.f90 \
-ortho_gram_schmidt.f90 \
-orthonormalize.f90 \
-ortho_check.f90 \
-Sch_solve_diag.f90 \
-calc_energies.f90 \
-calc_Rhoe.f90 \
-update_potentials.f90 \
-calc_grad.f90 \
-calc_dr_periodic.f90 \
-calc_dr.f90 \
-init_strfact.f90 \
-KS_solve_Emin_pcg.f90 \
-op_K.f90 \
-m_ilu0_prec.f90 \
-init_ilu0_prec.f90 \
-prec_ilu0.f90 \
-dealloc_ilu0_prec.f90 \
-diag_davidson.f90 \
-diag_lobpcg.f90 \
-calc_Ewald.f90 \
-calc_E_NN.f90 \
-mixadapt.f90 \
-mixbroyden.f90 \
-mixerifc.f90 \
-mixlinear.f90 \
-shift_atoms.f90 \
-bspline.f90 \
-init_V_ps_loc.f90 \
-init_V_ps_loc_G_interp.f90 \
-init_V_ps_loc_gaussian_G.f90 \
-init_V_ps_loc_gaussian.f90 \
-init_V_coul_G_interp.f90 \
-init_strfact_shifted.f90 \
-Ylm_real.f90 \
-xsf.f90 \
-calc_dr_periodic_1pnt.f90 \
-eval_LF1d_c.f90 \
-eval_LF1d_p.f90 \
-eval_LF1d_sinc.f90 \
-KS_solve_SCF.f90 \
-calc_evals.f90 \
-read_control.f90 \
-read_system.f90 \
-read_electrons.f90 \
-read_atomic_species.f90 \
-read_atomic_positions.f90 \
-read_input.f90 \
-setup_atoms.f90 \
-setup_PsPot.f90 \
-setup_LF3d.f90 \
-setup_from_input.f90 \
-setup_options.f90 \
-interp_LF1d_p.f90 \
-interp_LF3d_p.f90 \
-calc_Ewald_qe.f90 \
-rgen.f90 \
-hpsort.f90 \
-atmlength.f90 \
-atom_znucl.f90 \
-gen_guess_rho_gaussian.f90 \
-gen_random_evecs.f90 \
-gen_gaussian_evecs.f90 \
-calc_occupations.f90 \
-calc_entropy.f90 \
-fermi_dirac.f90 \
-calc_Entropy.f90 \
-normalize_rhoe.f90 \
-Poisson_solve_ISF.f90 \
-m_Faddeeva.f90 \
-Poisson_solve_DAGE.f90 \
-m_io_data.f90 \
-m_checkpoint.f90 \
-m_grid_atom_cube.f90 \
-dealloc_states.f90 \
-setup_ffr_LFDFT.f90 \
-cleanup_ffr_LFDFT.f90 \
-do_KS_solve.f90 \
-guess_KS_solutions.f90 \
-calc_Ebands.f90 \
-Sch_solve_Emin_pcg.f90 \
-beta_PR.f90 \
-beta_FR.f90 \
-beta_HS.f90 \
-beta_DY.f90 \
-calc_dir_deriv.f90
-
-C_SRC = 
-
 OBJ = $(SRC:.f90=.o) $(SRC:.f=.o) $(C_SRC:.c=.o)
 
 #
@@ -182,21 +28,76 @@ OBJ = $(SRC:.f90=.o) $(SRC:.f=.o) $(C_SRC:.c=.o)
 .c.o:
 	$(CC) -c $(CC_OPTS) $<
 
+
 # Libraries
-lib: sparskit poisson_ISF libxc Faddeeva $(OBJ)
-	ar rcs libmain.a *.o
+lib:
+	$(MAKE) -C 01_linalg_ext
+	$(MAKE) -C 02_clib
+	$(MAKE) -C 10_defs
+	$(MAKE) -C 10_dumpinfo
+	$(MAKE) -C 11_memory_mpi
+	$(MAKE) -C 11_qespresso_ext
+	$(MAKE) -C 12_hide_mpi
+	$(MAKE) -C 14_hidewrite
+	$(MAKE) -C 16_hideleave
+	$(MAKE) -C 17_libtetra_ext
+	$(MAKE) -C 18_timing
+	$(MAKE) -C 20_datashare
+	$(MAKE) -C 21_hashfuncs
+	$(MAKE) -C 27_toolbox_oop
+	$(MAKE) -C 28_numeric_noabirule
+	$(MAKE) -C 29_xgTools
+	$(MAKE) -C 30_diago
+	$(MAKE) -C 32_util
+	$(MAKE) -C 41_geometry
+	$(MAKE) -C 41_xc_lowlevel
+	$(MAKE) -C 42_libpaw
+	$(MAKE) -C 42_nlstrain
+	$(MAKE) -C 42_parser
+	$(MAKE) -C 43_ptgroups
+	$(MAKE) -C 43_wvl_wrappers
+	$(MAKE) -C 44_abitypes_defs
+	$(MAKE) -C 45_geomoptim
+	$(MAKE) -C 49_gw_toolbox_oop
+	$(MAKE) -C 51_manage_mpi
+	$(MAKE) -C 52_fft_mpi_noabirule
+	$(MAKE) -C 53_ffts
+	$(MAKE) -C 53_spacepar
+	$(MAKE) -C 54_abiutil
+	$(MAKE) -C 56_io_mpi
+	$(MAKE) -C 56_mixing
+	$(MAKE) -C 56_recipspace
+	$(MAKE) -C 56_xc
+	$(MAKE) -C 57_iopsp_parser
+	$(MAKE) -C 57_iovars
+	$(MAKE) -C 59_ionetcdf
+	$(MAKE) -C 61_occeig
+	$(MAKE) -C 62_cg_noabirule
+	$(MAKE) -C 62_ctqmc
+	$(MAKE) -C 62_iowfdenpot
+	$(MAKE) -C 62_poisson
+	$(MAKE) -C 62_wvl_wfs
+	$(MAKE) -C 64_atompaw
+	$(MAKE) -C 64_psp
+	$(MAKE) -C 65_paw
+	$(MAKE) -C 66_nonlocal
+	$(MAKE) -C 66_wfs
+	$(MAKE) -C 67_common
+	$(MAKE) -C 68_dmft
+	$(MAKE) -C 68_recursion
+	$(MAKE) -C 68_rsprc
+	$(MAKE) -C 69_wfdesc
+	$(MAKE) -C 70_gw
+	$(MAKE) -C 71_bse
+	$(MAKE) -C 72_response
+	$(MAKE) -C 77_ddb
+	$(MAKE) -C 77_suscep
+	$(MAKE) -C 78_effpot
+	$(MAKE) -C 78_eph
+	$(MAKE) -C 79_seqpar_mpi
+	$(MAKE) -C 94_scfcv
+	$(MAKE) -C 95_drive
 
-sparskit: 
-	cd extlibs/sparskit; $(MAKE); cd ../../
-
-poisson_ISF: 
-	cd extlibs/poisson_ISF; $(MAKE); cd ../../
-
-libxc:
-	cd extlibs/libxc; $(MAKE); cd ../../
-
-Faddeeva:
-	cd extlibs/Faddeeva; $(MAKE); cd ../../
 
 #
 # Main executable
@@ -204,23 +105,75 @@ Faddeeva:
 main: lib ffr_LFDFT.f90
 	$(F90) $(F90_OPTS) ffr_LFDFT.f90 -o $(EXE_MAIN) libmain.a $(LIBS_EXT)
 
-
-#
-# Postprocesing code
-#
-postproc: lib postproc.f90
-	$(F90) $(F90_OPTS) postproc.f90 -o postproc.x libmain.a $(LIBS_EXT)
-
-
-
-
 # does not delete *.x files
 clean:
-	cd extlibs/sparskit; $(MAKE) clean
-	cd extlibs/poisson_ISF; $(MAKE) clean
-	cd extlibs/libxc; $(MAKE) clean
-	cd extlibs/Faddeeva; $(MAKE) clean
-	rm -rf *.o *.mod libmain.a libpoisson_ISF.a libsparskit.a
+	cd 01_linalg_ext; make clean
+	cd 02_clib; make clean
+	cd 10_defs; make clean
+	cd 10_dumpinfo; make clean
+	cd 11_memory_mpi; make clean
+	cd 11_qespresso_ext; make clean
+	cd 12_hide_mpi; make clean
+	cd 14_hidewrite; make clean
+	cd 16_hideleave; make clean
+	cd 17_libtetra_ext; make clean
+	cd 18_timing; make clean
+	cd 20_datashare; make clean
+	cd 21_hashfuncs; make clean
+	cd 27_toolbox_oop; make clean
+	cd 28_numeric_noabirule; make clean
+	cd 29_xgTools; make clean
+	cd 30_diago; make clean
+	cd 32_util; make clean
+	cd 41_geometry; make clean
+	cd 41_xc_lowlevel; make clean
+	cd 42_libpaw; make clean
+	cd 42_nlstrain; make clean
+	cd 42_parser; make clean
+	cd 43_ptgroups; make clean
+	cd 43_wvl_wrappers; make clean
+	cd 44_abitypes_defs; make clean
+	cd 45_geomoptim; make clean
+	cd 49_gw_toolbox_oop; make clean
+	cd 51_manage_mpi; make clean
+	cd 52_fft_mpi_noabirule; make clean
+	cd 53_ffts; make clean
+	cd 53_spacepar; make clean
+	cd 54_abiutil; make clean
+	cd 56_io_mpi; make clean
+	cd 56_mixing; make clean
+	cd 56_recipspace; make clean
+	cd 56_xc; make clean
+	cd 57_iopsp_parser; make clean
+	cd 57_iovars; make clean
+	cd 59_ionetcdf; make clean
+	cd 61_occeig; make clean
+	cd 62_cg_noabirule; make clean
+	cd 62_ctqmc; make clean
+	cd 62_iowfdenpot; make clean
+	cd 62_poisson; make clean
+	cd 62_wvl_wfs; make clean
+	cd 64_atompaw; make clean
+	cd 64_psp; make clean
+	cd 65_paw; make clean
+	cd 66_nonlocal; make clean
+	cd 66_wfs; make clean
+	cd 67_common; make clean
+	cd 68_dmft; make clean
+	cd 68_recursion; make clean
+	cd 68_rsprc; make clean
+	cd 69_wfdesc; make clean
+	cd 70_gw; make clean
+	cd 71_bse; make clean
+	cd 72_response; make clean
+	cd 77_ddb; make clean
+	cd 77_suscep; make clean
+	cd 78_effpot; make clean
+	cd 78_eph; make clean
+	cd 79_seqpar_mpi; make clean
+	cd 94_scfcv; make clean
+	cd 95_drive; make clean
+
 
 # also delete *.x files
 cleanx:
@@ -229,11 +182,5 @@ cleanx:
 	cd extlibs/libxc; $(MAKE) clean
 	cd extlibs/Faddeeva; $(MAKE) clean
 	rm -rf *.o *.mod libmain.a libpoisson_ISF.a libsparskit.a *.x
-
-
-
-bspline.o: bspline.f90
-	$(F90) $(F90_OPTS_NOWARN) -c -o bspline.o bspline.f90
-
 
 
