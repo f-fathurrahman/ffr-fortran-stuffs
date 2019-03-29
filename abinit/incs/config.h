@@ -381,6 +381,7 @@
 
 /* Define to 1 if you have the LibXC library. */
 /* #undef HAVE_LIBXC */
+#define HAVE_LIBXC 1
 
 /* Define to 1 if you want to enable support for XML. */
 /* #undef HAVE_LIBXML */

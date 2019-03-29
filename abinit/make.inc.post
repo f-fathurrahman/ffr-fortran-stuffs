@@ -1,4 +1,4 @@
-OBJ = $(SRC:.F90=.o)
+OBJ = $(SRC:.F90=.o) $(C_SRC:.c=.o)
 
 # Suffix rule for Fortran 90
 %.mod :

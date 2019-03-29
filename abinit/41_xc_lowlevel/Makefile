@@ -11,6 +11,8 @@ drivexc.F90       invcb.F90   xchcth.F90     xcmult.F90      xcspol.F90  xcxalp.
 drivexc_main.F90  mkdenpos.F90 xchelu.F90     xcpbe.F90       xctetr.F90 \
 echo_xc_name.F90  xciit.F90      xcpositron.F90  xctfw.F90
 
+C_SRC = \
+libxc_tools.c
 
 include ../make.inc.post
 
