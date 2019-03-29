@@ -97,13 +97,8 @@ lib:
 	$(MAKE) -C 79_seqpar_mpi
 	$(MAKE) -C 94_scfcv
 	$(MAKE) -C 95_drive
+	ar rcs libs/libABINIT.a *_*/*.o
 
-
-#
-# Main executable
-#
-main: lib ffr_LFDFT.f90
-	$(F90) $(F90_OPTS) ffr_LFDFT.f90 -o $(EXE_MAIN) libmain.a $(LIBS_EXT)
 
 # does not delete *.x files
 clean:
@@ -173,7 +168,7 @@ clean:
 	cd 79_seqpar_mpi; make clean
 	cd 94_scfcv; make clean
 	cd 95_drive; make clean
-
+	rm -f libs/libABINIT.a
 
 # also delete *.x files
 cleanx:
