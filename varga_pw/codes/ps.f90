@@ -1,121 +1,145 @@
 MODULE PSEUDOPOTENTIAL
-implicit none
-! number of species
-integer                         :: N_species
-! number of atoms per species
-integer, allocatable            :: N_atom(:),z_atom(:)
-integer                         :: N_atom_max
-! positions
-double precision,allocatable    :: Position(:,:,:)
-integer                         :: N_orbitals
-integer                         :: N_electrons,N_conduction
-! max L in PS
-integer,parameter               :: L_pp_max=4
-! max number of radial points
-integer,parameter               :: N_pp_max=1000
-! pseudocore charge
-double precision,allocatable    :: charge_pp(:)
-! gaussian
-double precision,parameter      :: beta=1.d0
-! PP
-double precision,allocatable    :: vion(:,:,:),p(:,:,:),r(:,:),clog(:)
-integer,allocatable             :: l_loc(:),l_max(:),N_pp(:)
-double precision,allocatable    :: rhops(:,:),vps(:,:)
-complex*16      ,allocatable    :: fnl(:,:,:,:,:),ei1(:,:,:),ei2(:,:,:),ei3(:,:,:),eigr(:,:,:,:),sfac(:,:)
-double precision,allocatable    :: wnl(:,:)
-double precision,allocatable    :: pkg_a(:,:,:,:)
+
+  IMPLICIT NONE 
+  
+  ! number of species
+  INTEGER :: N_species
+  
+  ! number of atoms per species
+  INTEGER, ALLOCATABLE :: N_atom(:), z_atom(:)
+  INTEGER :: N_atom_max
+  
+  ! positions
+  REAL(8), ALLOCATABLE :: atpos(:,:,:)
+  INTEGER :: N_orbitals
+  INTEGER :: N_electrons,N_conduction
+  
+  ! max L in PS
+  INTEGER, PARAMETER :: L_pp_max=4
+  
+  ! max number of radial points
+  INTEGER, PARAMETER :: N_pp_max=1000
+  
+  ! pseudocore charge
+  REAL(8), ALLOCATABLE :: charge_pp(:)
+  
+  ! gaussian
+  REAL(8), PARAMETER :: beta=1.d0
+  
+  ! PP
+  REAL(8), ALLOCATABLE :: vion(:,:,:),p(:,:,:),r(:,:), cclog(:)
+  INTEGER, ALLOCATABLE :: l_loc(:),l_max(:),N_pp(:)
+  REAL(8), ALLOCATABLE :: rhops(:,:),vps(:,:)
+  COMPLEX(8), ALLOCATABLE :: fnl(:,:,:,:,:),ei1(:,:,:),ei2(:,:,:),ei3(:,:,:),eigr(:,:,:,:),sfac(:,:)
+  REAL(8), ALLOCATABLE :: wnl(:,:)
+  REAL(8),ALLOCATABLE :: pkg_a(:,:,:,:)
 
 
 
 CONTAINS
 
-subroutine input_atoms
-  implicit none
-  integer        :: i,j,k
+!=======================
+SUBROUTINE input_atoms()
+!=======================
+  IMPLICIT NONE 
+  INTEGER :: i,j,k
 
-  write(6,*)'?1'
-  N_atom_max=0
-  open(1,file='atom.inp')
-  read(1,*)N_electrons,N_conduction
-  read(1,*)n_species
-  allocate(N_atom(N_species),charge_pp(N_species),z_atom(N_species))
-  do i=1,n_species
-    read(1,*)n_atom(i),z_atom(i)
-    if(n_atom(i).gt.N_atom_max) N_atom_max=n_atom(i)
-  end do
-  allocate(Position(3,N_atom_max,N_species))
-  do i=1,N_species
-    do j=1,n_atom(i)
-      read(1,*)(Position(k,j,i),k=1,3)
-    end do
-  end do
-  N_orbitals=N_electrons/2+N_conduction
-  if((-1)**(N_electrons/2).lt.0) N_orbitals=N_electrons/2+1+N_conduction
-end subroutine input_atoms
+  WRITE(6,*) '?1'
+  
+  N_atom_max = 0
+  
+  OPEN(1,file='atom.inp')
+  READ(1,*) N_electrons,N_conduction
+  READ(1,*) n_species
+  
+  ALLOCATE( N_atom(N_species), charge_pp(N_species), z_atom(N_species) )
+  
+  DO i=1,n_species
+    READ(1,*) n_atom(i), z_atom(i)
+    IF( n_atom(i) > N_atom_max ) N_atom_max = n_atom(i)
+  ENDDO 
+  
+  
+  ALLOCATE( atpos(3,N_atom_max,N_species) )
+  DO i = 1,N_species
+    DO j = 1,n_atom(i)
+      READ(1,*) ( atpos(k,j,i), k=1,3 )
+    ENDDO 
+  ENDDO 
+
+  N_orbitals = N_electrons/2 + N_conduction
+  
+  IF( (-1)**(N_electrons/2) < 0) N_orbitals = N_electrons/2 + 1 + N_conduction
+
+END SUBROUTINE 
 
 
+!===================
+SUBROUTINE read_pp()
+!===================
+  IMPLICIT NONE 
+  INTEGER :: total_charge,i,l,j,is
 
-
-
-subroutine read_pp
-  implicit none
-  integer          :: total_charge,i,l,j,is
-
-  allocate (l_loc(N_species),l_max(N_species))
-  allocate (vion(N_pp_max,N_species,L_pp_max))
-  allocate (N_pp(N_species),clog(N_species))
-  allocate (p(N_pp_max,N_species,3),r(N_pp_max,N_species))
+  ALLOCATE( l_loc(N_species), l_max(N_species) )
+  ALLOCATE( vion(N_pp_max,N_species,L_pp_max) )
+  ALLOCATE( N_pp(N_species), cclog(N_species) )
+  ALLOCATE( p(N_pp_max,N_species,3), r(N_pp_max,N_species) )
   
   total_charge = 0
-  i=0
-  do is=1,n_species
+  i = 0
+  DO is = 1,n_species
+    IF(z_atom(is) == 1)  OPEN(1,file='hpp.dat')
+    IF(z_atom(is) == 3)  OPEN(1,file='lipp.dat')
+    IF(z_atom(is) == 4)  OPEN(1,file='bepp.dat')
+    IF(z_atom(is) == 5)  OPEN(1,file='bpp.dat')
+    IF(z_atom(is) == 6)  OPEN(1,file='cpp.dat')
+    IF(z_atom(is) == 7)  OPEN(1,file='npp.dat')
+    IF(z_atom(is) == 8)  OPEN(1,file='opp.dat')
+    IF(z_atom(is) == 11) OPEN(1,file='napp.dat')
+    IF(z_atom(is) == 13) OPEN(1,file='alpp.dat')
+    IF(z_atom(is) == 14) OPEN(1,file='sipp.dat')
+    IF(z_atom(is) == 16) OPEN(1,file='spp.dat')
+    IF(z_atom(is) == 28) OPEN(1,file='nipp.dat')
+    IF(z_atom(is) == 31) OPEN(1,file='gapp.dat')
+    IF(z_atom(is) == 33) OPEN(1,file='aspp.dat')
 
-    if(z_atom(is).eq.1) open(1,file='hpp.dat')
-    if(z_atom(is).eq.3) open(1,file='lipp.dat')
-    if(z_atom(is).eq.4) open(1,file='bepp.dat')
-    if(z_atom(is).eq.5) open(1,file='bpp.dat')
-    if(z_atom(is).eq.6) open(1,file='cpp.dat')
-    if(z_atom(is).eq.7) open(1,file='npp.dat')
-    if(z_atom(is).eq.8) open(1,file='opp.dat')
-    if(z_atom(is).eq.11) open(1,file='napp.dat')
-    if(z_atom(is).eq.13) open(1,file='alpp.dat')
-    if(z_atom(is).eq.14) open(1,file='sipp.dat')
-    if(z_atom(is).eq.16) open(1,file='spp.dat')
-    if(z_atom(is).eq.28) open(1,file='nipp.dat')
-    if(z_atom(is).eq.31) open(1,file='gapp.dat')
-    if(z_atom(is).eq.33) open(1,file='aspp.dat')
-
-    read(1,*) charge_pp(is), l_max(is), l_loc(is)
+    READ(1,*) charge_pp(is), l_max(is), l_loc(is)
 
     total_charge = total_charge + n_atom(is) * charge_pp(is)
 
-    do l=1,l_max(is)
-      read(1,*) N_pp(is),clog(is),(i,r(j,is),p(j,is,l),vion(j,is,l),j=1,N_pp(is))
-    enddo
-    clog(is) = log(clog(is))
-    close(1)
-  enddo
+    DO l=1,l_max(is)
+      READ(1,*) N_pp(is),cclog(is),(i,r(j,is),p(j,is,l),vion(j,is,l),j=1,N_pp(is))
+    ENDDO
+    cclog(is) = log( cclog(is) )
+    CLOSE(1)
+  ENDDO
 
-end subroutine read_pp
+END SUBROUTINE 
 
-subroutine initialize_pp
+!=========================
+SUBROUTINE initialize_pp()
+!=========================
+  
   USE GVECTOR
   USE PW_SMALL
-  implicit none
 
-  allocate (rhops(N_species,N_G_vector_max))
-  allocate (vps(N_species,N_G_vector_max))
-  allocate (fnl(N_G_wf_max,N_K_points,N_species,N_atom_max,(L_PP_max+1)**2))
-  allocate (wnl(N_species,(L_PP_max+1)**2))
-  allocate (pkg_a((L_PP_max+1)**2,N_G_K_vector_max,N_species,N_K_points))
-  allocate (ei1(-(N_L(1)+1)/2:(N_L(1)+1)/2,N_atom_max,N_species))
-  allocate (ei2(-(N_L(2)+1)/2:(N_L(2)+1)/2,N_atom_max,N_species))
-  allocate (ei3(-(N_L(3)+1)/2:(N_L(3)+1)/2,N_atom_max,N_species))
-  allocate (eigr(N_G_K_vector_max,N_atom_max,N_species,N_k_points))
-  allocate (sfac(N_species,N_G_vector_max))
+  IMPLICIT NONE 
 
-  call read_pp
+  ALLOCATE( rhops(N_species,N_G_vector_max) )
+  ALLOCATE( vps(N_species,N_G_vector_max) )
+  ALLOCATE( fnl(N_G_wf_max,N_K_points,N_species,N_atom_max,(L_PP_max+1)**2) )
+  ALLOCATE( wnl(N_species,(L_PP_max+1)**2) )
+  ALLOCATE( pkg_a((L_PP_max+1)**2,N_G_K_vector_max,N_species,N_K_points) )
+  ALLOCATE( ei1(-(N_L(1)+1)/2:(N_L(1)+1)/2,N_atom_max,N_species) )
+  ALLOCATE( ei2(-(N_L(2)+1)/2:(N_L(2)+1)/2,N_atom_max,N_species) )
+  ALLOCATE( ei3(-(N_L(3)+1)/2:(N_L(3)+1)/2,N_atom_max,N_species) )
+  ALLOCATE( eigr(N_G_K_vector_max,N_atom_max,N_species,N_k_points) )
+  ALLOCATE( sfac(N_species,N_G_vector_max) )
 
-end subroutine initialize_pp
+  CALL read_pp()
 
-END   MODULE PSEUDOPOTENTIAL
+END SUBROUTINE 
+
+
+END MODULE 
+

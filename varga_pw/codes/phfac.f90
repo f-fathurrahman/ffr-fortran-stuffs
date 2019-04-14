@@ -1,64 +1,68 @@
+SUBROUTINE phase_factor()
+  USE Gvector
+  USE PSEUDOPOTENTIAL
+  USE PW
+  IMPLICIT NONE 
 
-subroutine phase_factor
-      use Gvector
-      USE PSEUDOPOTENTIAL
-      USE PW
-      implicit none
+  INTEGER :: i, i1, i2, i3, is, ia, j, k, ik, ig, igp, iai,ii1,ii2,ii3
+  REAL(8) :: ss, phi1, phi2, phi3, xmat(3,3), xmati(3,3)
+  REAL(8) :: taup(3)
+  INTEGER, EXTERNAL :: iflip
 
-      integer i, i1, i2, i3, is, ia, j, k, ik, ig, igp, iai,ii1,ii2,ii3
-      real*8 sum, phi1, phi2, phi3, xmat(3,3),xmati(3,3)
-      real*8 taup(3)
-      integer,external :: iflip
-
-      xmat=Lattice_vector
-      call inv_r(xmat,3,xmati)
+  xmat = Lattice_vector
+  CALL inv_r(xmat,3,xmati)
        
-      do  is=1,n_species
-        do  ia=1,n_atom(is)
-          do i=1,3
-            sum=    xmati(i,1)*position(1,ia,is)
-            sum=sum+xmati(i,2)*position(2,ia,is)
-            sum=sum+xmati(i,3)*position(3,ia,is)
-            taup(i) = sum
-          end do
-          phi1 = -2.0*pi*taup(1)
-          phi2 = -2.0*pi*taup(2)
-          phi3 = -2.0*pi*taup(3)
+  DO is=1,n_species
 
-! G=0
-          ei1(0,ia,is)=(1.0,0.0)
-          ei2(0,ia,is)=(1.0,0.0)
-          ei3(0,ia,is)=(1.0,0.0)
+    DO ia=1,n_atom(is)
+      
+      DO i=1,3
+        ss =      xmati(i,1)*atpos(1,ia,is)
+        ss = ss + xmati(i,2)*atpos(2,ia,is)
+        ss = ss + xmati(i,3)*atpos(3,ia,is)
+        taup(i) = ss
+      ENDDO
+      
+      phi1 = -2.d0*pi*taup(1)
+      phi2 = -2.d0*pi*taup(2)
+      phi3 = -2.d0*pi*taup(3)
+      
+      ! G=0
+      ei1(0,ia,is) = (1.d0, 0.d0)
+      ei2(0,ia,is) = (1.d0, 0.d0)
+      ei3(0,ia,is) = (1.d0, 0.d0)
 
-
-          do  i=1,(N_L(1)+1)/2
-            ei1(i,ia,is) = cmplx(dcos(i*phi1),dsin(i*phi1))
-            ei1(-i,ia,is)= conjg(ei1(i,ia,is))
-          end do
-          do j=1,(N_L(2)+1)/2
-            ei2(j,ia,is) = cmplx(dcos(j*phi2),dsin(j*phi2))
-            ei2(-j,ia,is)= conjg(ei2(j,ia,is))
-          end do
+      DO i = 1,(N_L(1)+1)/2
+        ei1(i,ia,is)  = cmplx( cos(i*phi1), sin(i*phi1) )
+        ei1(-i,ia,is) = conjg( ei1(i,ia,is) )
+      ENDDO
+      
+      DO j = 1,(N_L(2)+1)/2
+        ei2(j,ia,is)  = cmplx( cos(j*phi2), sin(j*phi2) )
+        ei2(-j,ia,is) = conjg( ei2(j,ia,is) )
+      ENDDO 
           
-          do  k=1,(N_L(3)+1)/2
-            ei3(k,ia,is) = cmplx(dcos(k*phi3),dsin(k*phi3))
-            ei3(-k,ia,is) = conjg(ei3(k,ia,is))
-          end do
-        end do
-      end do
+      DO k = 1,(N_L(3)+1)/2
+        ei3(k,ia,is)  = cmplx( cos(k*phi3), sin(k*phi3) )
+        ei3(-k,ia,is) = conjg( ei3(k,ia,is) )
+      ENDDO
+
+    ENDDO ! loop over all atoms of species
+
+  ENDDO  ! loop over species species 
       
-      do ik=1,n_k_points
-        do  is=1,n_species
-          do  ia=1,n_atom(is)
-            do  ig=1,n_g_vector(ik)
-              igp=G_index(ig,ik)
-              ii1=iflip(G_vector(1,igp),N_L(1))
-              ii2=iflip(G_vector(2,igp),N_L(2))
-              ii3=iflip(G_vector(3,igp),N_L(3))
-              eigr(ig,ia,is,ik)=ei1(ii1,ia,is)*ei2(ii2,ia,is)*ei3(ii3,ia,is)
-            end do
-          end do
-        end do
-      end do
+  DO ik=1,n_k_points
+    DO  is=1,n_species
+      DO  ia=1,n_atom(is)
+        DO  ig=1,n_g_vector(ik)
+          igp = G_index(ig,ik)
+          ii1 = iflip(G_vector(1,igp),N_L(1))
+          ii2 = iflip(G_vector(2,igp),N_L(2))
+          ii3 = iflip(G_vector(3,igp),N_L(3))
+          eigr(ig,ia,is,ik) = ei1(ii1,ia,is)*ei2(ii2,ia,is)*ei3(ii3,ia,is)
+        ENDDO 
+      ENDDO 
+    ENDDO 
+  ENDDO 
       
-end subroutine phase_factor
+END SUBROUTINE

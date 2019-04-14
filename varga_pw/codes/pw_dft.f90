@@ -29,6 +29,7 @@ PROGRAM pw_dft
 
   WRITE(*,*)
   WRITE(*,*) 'Program pw_dft ended normally'
+  WRITE(*,*)
 
 END PROGRAM 
 

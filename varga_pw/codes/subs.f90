@@ -4,7 +4,7 @@
       FUNCTION Ylm(x,y,z,lm)
 
       real(8),intent(IN) :: x,y,z
-      integer,intent(IN) :: lm
+      INTEGER ,intent(IN) :: lm
       real(8) :: rrrr
       real(8) :: Ylm
 
@@ -206,42 +206,42 @@
        return
        END SUBROUTINE ludcmp_r
 
-subroutine inv_c(a,n,ai)
-implicit none
-  integer      :: n,i
+SUBROUTINE inv_c(a,n,ai)
+IMPLICIT NONE 
+  INTEGER       :: n,i
   complex*16   :: a(n,n),ai(n,n)
-  integer      :: indx(n)
+  INTEGER       :: indx(n)
   real*8       :: d
 
   ai=0.d0
   do i=1,n
     ai(i,i)=1.d0
-  end do
+  ENDDO 
   call ludcmp_c(a,n,n,indx,d)
   do i=1,n
     call lubksb_c(a,n,n,indx,ai(1,i))
-  end do
+  ENDDO 
 
-end subroutine inv_c
+end SUBROUTINE inv_c
 
 
-subroutine inv_r(a,n,ai)
-implicit none
-  integer      :: n,i
+SUBROUTINE inv_r(a,n,ai)
+IMPLICIT NONE 
+  INTEGER       :: n,i
   real*8       :: a(n,n),ai(n,n)
-  integer      :: indx(n)
+  INTEGER       :: indx(n)
   real*8       :: d
 
   ai=0.d0
   do i=1,n
     ai(i,i)=1.d0
-  end do
+  ENDDO 
   call ludcmp_r(a,n,n,indx,d)
   do i=1,n
     call lubksb_r(a,n,n,indx,ai(1,i))
-  end do
+  ENDDO 
 
-end subroutine inv_r
+end SUBROUTINE inv_r
 
 
 

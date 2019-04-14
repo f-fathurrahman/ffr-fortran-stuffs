@@ -1,13 +1,13 @@
-      subroutine calculate_potential(rho)
+      SUBROUTINE calculate_potential(rho)
 !     input density output potential
       use fft_data
       USE GVECTOR
       USE PSEUDOPOTENTIAL
       USE PW
-      implicit none
+      IMPLICIT NONE 
 
 
-      integer     :: k, is, ig, i, ind,ik, ir1,ir2,ir3
+      INTEGER      :: k, is, ig, i, ind,ik, ir1,ir2,ir3
       real*8      :: con,V_XC,wkk
 
 
@@ -31,7 +31,7 @@
 
       do is=1,n_species
         vp_loc=vp_loc+sfac(is,1)*vps(is,1)
-      enddo
+      ENDDO 
 
 !   E_ps is g=0 coulomb energy of the charge density and the
 !   local pseudopotential-field of gaussian pseudocharges
@@ -53,7 +53,7 @@
         do is=1,n_species
           vp_loc=vp_loc+sfac(is,ig)*vps(is,ig)
           ps_charge=ps_charge+sfac(is,ig)*rhops(is,ig)
-        enddo
+        ENDDO 
         rho_e=c_fft(G_vector(1,ig),G_vector(2,ig),G_vector(3,ig))
         rhog=rho_e+ps_charge
         rho_es=conjg(rho_e)
@@ -67,11 +67,11 @@
         E_G=E_G+0.5*con*ps_charge*rps
         E_ps=E_ps+rho_es*vp_loc
         vpoten(ig) = vcg+vp_loc
-      end do
+      ENDDO 
       
       do ig=1,N_G_vector_max
         c_fft(G_vector(1,ig),G_vector(2,ig),G_vector(3,ig)) = vpoten(ig)
-      enddo
+      ENDDO 
       call fft(c_fft,N_L(1),N_L(2),N_L(3),.true.)   
 
       ind = 0
@@ -80,9 +80,9 @@
           do ir1=1,N_L(1)
             ind=ind+1
             rv(ind) = rho(ir1,ir2,ir3)
-          enddo
-        enddo
-      enddo
+          ENDDO 
+        ENDDO 
+      ENDDO 
       call lda_xc(rv,vxc_pot,E_exchange,N_L(1)*N_L(2)*N_L(3))
 
       V_XC = 0.0
@@ -95,9 +95,9 @@
 
             write(66,*)ind,rho(ir1,ir2,ir3),real(c_fft(ir1,ir2,ir3)),vxc_pot(ind)
             rho(ir1,ir2,ir3)=real(c_fft(ir1,ir2,ir3))+vxc_pot(ind)
-          enddo
-        enddo
-      enddo
+          ENDDO 
+        ENDDO 
+      ENDDO 
 
 
 
@@ -113,8 +113,8 @@
         wkk=W_k_point(ik)*N_sym
         do i=1,n_orbitals
           E_eigen=E_eigen+wkk*occupation(i,ik)*eigenvalue(i,ik)
-        enddo
-      enddo
+        ENDDO 
+      ENDDO 
 
           write(16,100) E_total,E_kinetic,E_es,E_Hartree,E_Pseudo,E_non_local,E_exchange,V_XC,E_eigen,E_self,E_Gauss
 100    format(//&

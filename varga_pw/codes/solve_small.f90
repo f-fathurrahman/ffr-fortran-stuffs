@@ -1,12 +1,12 @@
-subroutine solve_small
+SUBROUTINE solve_small
   use fft_data
   USE GVECTOR
   USE PW_SMALL
   USE PW
   USE PSEUDOPOTENTIAL
-  implicit none
+  IMPLICIT NONE 
 
-  integer          :: iteration,i1,i2,i3
+  INTEGER           :: iteration,i1,i2,i3
   double precision :: rho(N_L(1)+fftinc1,N_L(2),N_L(3))
   
 
@@ -28,9 +28,9 @@ subroutine solve_small
           call hamiltonian_small(rho)
           call calculate_density(rho)
           call calculate_potential(rho)
-      end do
+      ENDDO 
 
-end subroutine solve_small
+end SUBROUTINE solve_small
 
 
 

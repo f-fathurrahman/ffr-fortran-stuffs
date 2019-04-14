@@ -4,9 +4,9 @@
   ! gets a list of allowed mesh points and dimension paddings, either from
   ! file or by using the default settings
   !
-  subroutine getmesh
+  SUBROUTINE getmesh
 
-    integer :: nm
+    INTEGER  :: nm
     logical :: called = .false.
     save    :: called
 
@@ -19,7 +19,7 @@
        allocate( fftmesh(nm) )                  ! alloc storage for meshpts
        do i=1,nm
           read(39,*) fftmesh(i)
-       enddo
+       ENDDO 
        read(39,fmt=*,err=998,end=998) fft_conf
  998   close(39)
        write(6,*) 'read fft mesh data from ''fftmesh.dat'''
@@ -28,6 +28,6 @@
  999   fftmesh => fft_defaultmesh
        return
     endif
-  end subroutine
+  end SUBROUTINE
 
 

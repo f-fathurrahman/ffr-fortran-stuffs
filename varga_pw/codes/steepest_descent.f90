@@ -1,17 +1,17 @@
-subroutine steepest_descent(rho)
+SUBROUTINE steepest_descent(rho)
 !   steepest_descent step on the wave function
 use fft_data
 use Gvector
 use PW
 use PW_SMALL
 use pseudopotential
-implicit none
+IMPLICIT NONE 
 
       
 double precision            ::  dt,delt,gamma
 double precision,parameter  ::  emass=33.333d0
 complex*16                  ::  s, eig
-integer                     ::  ik,i,ig,j
+INTEGER                      ::  ik,i,ig,j
 double precision            ::  rho((N_L(1)+fftinc1),N_L(2),N_L(3))
 
   delt=24.d0
@@ -26,17 +26,17 @@ double precision            ::  rho((N_L(1)+fftinc1),N_L(2),N_L(3))
       eig=(0.0, 0.0)
       do ig=1,n_g_vector(ik)
         eig = eig - conjg(wave_function_c(ig,i,ik))*Hpsi(ig)
-      end do
+      ENDDO 
       eigenvalue(i,ik) = real(eig)
 
       do j=1,n_g_vector(ik)
         s=wave_function_c(j,i,ik)
         wave_function_c(j,i,ik)=s+dt*(Hpsi(j)+eigenvalue(i,ik)*s)
         s=wave_function_c(j,i,ik)-s
-      end do
-    end do
+      ENDDO 
+    ENDDO 
         
     call gram_schmidt(ik,n_orbitals,n_g_vector(ik))        
-  end do
+  ENDDO 
 
-end subroutine steepest_descent
+end SUBROUTINE steepest_descent

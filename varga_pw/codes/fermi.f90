@@ -1,15 +1,15 @@
-subroutine fermi
+SUBROUTINE fermi
   USE PW  
   USE PSEUDOPOTENTIAL
   USE gvector
-  implicit none
+  IMPLICIT NONE 
   double precision,  allocatable ::  eigen_value(:)  
   double precision,  allocatable ::  eigen_value_0(:) 
   double precision,  allocatable ::  fik(:)   
-  integer         ,  allocatable ::  ind(:)
+  INTEGER          ,  allocatable ::  ind(:)
   double precision,  parameter   ::  au=2.0*13.6058,eps=1.d-07         
-  integer         ,  parameter   ::  N_fermi_iter=200
-  integer                        ::  ii,k,ik,ic,nfermi,N_states,i
+  INTEGER          ,  parameter   ::  N_fermi_iter=200
+  INTEGER                         ::  ii,k,ik,ic,nfermi,N_states,i
   double precision               ::  d0,d1,N_e,x,f,min_fermi,max_fermi
 
   N_states=N_orbitals*N_K_points
@@ -19,13 +19,13 @@ subroutine fermi
     do i=1,N_orbitals
       ii=(ik-1)*N_orbitals+i
       eigen_value(ii)=eigenvalue(i,ik)*au
-    enddo
-  enddo
+    ENDDO 
+  ENDDO 
   call indexx(N_states,eigen_value,ind)
   N_e=0.0
   do ii=1,N_states
     eigen_value_0(ii)=eigen_value(ind(ii))
-  end do
+  ENDDO 
 
   do ii=1,N_states
     d0=N_electrons-N_e
@@ -41,7 +41,7 @@ subroutine fermi
       endif
       goto 2000
     endif
-  end do
+  ENDDO 
  2000   continue
   write(16,*) 'Fermi level:', E_fermi
   ic=0
@@ -58,12 +58,12 @@ subroutine fermi
     else
       fik(ii)=0.0
     endif
-  end do
+  ENDDO 
   f = 0.0d0
   do  ii=1,N_states
     k=(ii-1)/N_orbitals+1
     f=f+fik(ii)*W_K_Point(k)*N_sym     
-  end do
+  ENDDO 
   if (abs(f-N_electrons).ge.eps) then
     ic=ic+1
     if (ic.gt.n_fermi_iter) then
@@ -80,7 +80,7 @@ subroutine fermi
     ik=(ii-1)/N_orbitals+1
     i=ii-(ik-1)*N_orbitals
     occupation(i,ik)=fik(ii)
-  end do
+  ENDDO 
   write(16,*) 'Fermi level:', E_fermi
 
 end

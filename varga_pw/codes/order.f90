@@ -1,11 +1,11 @@
-subroutine ordering(n, order, indexing)
-  implicit none
-  integer :: j, i, n, indexing(n), ir, l, indxt
+SUBROUTINE ordering(n, order, indexing)
+  IMPLICIT NONE 
+  INTEGER  :: j, i, n, indexing(n), ir, l, indxt
   real*8  :: order(n), q
 
       do  j=1,n
         indexing(j)=j
-      end do
+      ENDDO 
 
       l=n/2+1
       ir=n
@@ -43,4 +43,4 @@ subroutine ordering(n, order, indexing)
         indexing(i)=indxt
       go to 10
  30   continue
-end subroutine ordering     
+end SUBROUTINE ordering     

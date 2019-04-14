@@ -1,12 +1,12 @@
-subroutine scf_dft
+SUBROUTINE scf_dft
 !  self consistent dft calculation
   use fft_data
   use Gvector
   use PW
   use PW_SMALL
   use pseudopotential
-  implicit none
-  integer            :: iteration,ik,i,i1,i2,i3
+  IMPLICIT NONE 
+  INTEGER             :: iteration,ik,i,i1,i2,i3
   double precision   :: rho((N_L(1)+fftinc1),N_L(2),N_L(3))
 
 
@@ -30,12 +30,12 @@ subroutine scf_dft
       write(16,'(f7.3,9f8.3)') (eigenvalue(i,ik)*2.d0*rydberg,i=1,n_orbitals)
       write(16,*)'Occupation'
       write(16,'(f7.3,9f8.3)') (occupation(i,ik),i=1,n_orbitals)
-    end do
+    ENDDO 
 
 !c\vk    call fermi
 
     write(6,*)iteration,E_total
-  end do
+  ENDDO 
   open(1,file='density.dat')
     write(1,*)store_density
   close(1)

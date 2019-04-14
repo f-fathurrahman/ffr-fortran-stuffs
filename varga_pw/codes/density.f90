@@ -1,16 +1,16 @@
 
-      subroutine calculate_density(electron_density)
+      SUBROUTINE calculate_density(electron_density)
 
       use fft_data
       USE GVECTOR
       USE PW
       USE PSEUDOPOTENTIAL
-      implicit none
+      IMPLICIT NONE 
 
 
-      integer      nnr1b, nkpt_run,  ik, ig, igp,ii
-      integer      r1, r2, r3,  i_store
-      integer      i1, i2, i3, i, j, irot
+      INTEGER       nnr1b, nkpt_run,  ik, ig, igp,ii
+      INTEGER       r1, r2, r3,  i_store
+      INTEGER       i1, i2, i3, i, j, irot
       real*8       rsum1,dsum,rsum,xkin
       real*8       wkptik, wdotf, wdot2fb, ss, sk, scg
       real*8       electron_density(N_L(1)+fftinc1,N_L(2),N_L(3))
@@ -41,7 +41,7 @@
                scg=real(c_t)**2+aimag(c_t)**2
                ss=ss+scg
                sk=sk+gplusk(ig,ik)*scg               
-            enddo
+            ENDDO 
 
             rsum=rsum+ss*wdotf
             xkin=xkin+sk*wdot2fb
@@ -57,13 +57,13 @@
                      electron_density(i1,i2,i3) = electron_density(i1,i2,i3)+tt
                      ssu=ssu+tt
                      ii=ii+1
-                  enddo
-                enddo
-            enddo
-         enddo
+                  ENDDO 
+                ENDDO 
+            ENDDO 
+         ENDDO 
 
 
-      enddo
+      ENDDO 
 
      
       E_kinetic=xkin*tpiba2

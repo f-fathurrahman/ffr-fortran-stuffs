@@ -1,13 +1,13 @@
-      subroutine symrho(electron_density)
+      SUBROUTINE symrho(electron_density)
 
       use fft_data
       use gvector
-      implicit none
+      IMPLICIT NONE 
 
 
-      integer      r1, r2, r3, sr1, sr2, sr3
-      integer      i1, i2, i3, irot
-      integer      isr1(48), isr2(48), isr3(48)
+      INTEGER       r1, r2, r3, sr1, sr2, sr3
+      INTEGER       i1, i2, i3, irot
+      INTEGER       isr1(48), isr2(48), isr3(48)
       real*8       sum
       logical      check(N_L(1),N_L(2),n_L(3))
       real*8       electron_density(N_L(1)+fftinc1,N_L(2),N_L(3))
@@ -44,16 +44,16 @@
                         isr1(irot) = sr1
                         isr2(irot) = sr2
                         isr3(irot) = sr3
-                     enddo
+                     ENDDO 
           
                      do irot=1,N_sym
                         electron_density(isr1(irot),isr2(irot),isr3(irot))=sum
                         check(isr1(irot),isr2(irot),isr3(irot))=.true.
-                     enddo
+                     ENDDO 
                   endif
-               enddo
-            enddo
-         enddo
+               ENDDO 
+            ENDDO 
+         ENDDO 
 
            
 

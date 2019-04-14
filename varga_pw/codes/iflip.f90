@@ -1,6 +1,6 @@
 function iflip(i,n)
-  implicit none
-  integer :: i,n,iflip
+  IMPLICIT NONE 
+  INTEGER  :: i,n,iflip
 
   if(i.gt.n/2) then
     iflip=i-n-1
@@ -10,8 +10,8 @@ function iflip(i,n)
 end function iflip
 
 function iflip_inv(i,n)
-  implicit none
-  integer :: i,n,iflip_inv
+  IMPLICIT NONE 
+  INTEGER  :: i,n,iflip_inv
 
   iflip_inv=i+1
   if(i.lt.0) iflip_inv=iflip_inv+n

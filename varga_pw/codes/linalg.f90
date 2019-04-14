@@ -1,16 +1,16 @@
 !PROGRAM LAPACK_EIGENSOLVER_TEST
-!  implicit none
+!  IMPLICIT NONE 
 
-!  write(*,*);write(*,'(a)')"*** Testing real subroutines ***"
+!  write(*,*);write(*,'(a)')"*** Testing real SUBROUTINEs ***"
 !  call test_real
 
-!  write(*,'(a)')"*** Testing complex subroutines ***"
+!  write(*,'(a)')"*** Testing complex SUBROUTINEs ***"
 !  call test_complex
 !END PROGRAM LAPACK_EIGENSOLVER_TEST
 
 SUBROUTINE test_real
-  implicit none
-  integer :: N,i
+  IMPLICIT NONE 
+  INTEGER  :: N,i
   real*8,allocatable :: A(:,:),B(:,:),eigenvalues(:),eigenvectors(:,:)
 
   N=2 ! A and B are NxN matrices
@@ -29,7 +29,7 @@ SUBROUTINE test_real
   call diag_lapack_real(A,N,eigenvalues,eigenvectors)
   do i=1,N
     write(*,'(a,i8,a,F16.8)')"Eigenvalue ",i,": ",eigenvalues(i)
-  enddo
+  ENDDO 
   write(*,*)
 
   ! Calculate the eigenvalues of B
@@ -37,7 +37,7 @@ SUBROUTINE test_real
   call diag_lapack_real(B,N,eigenvalues,eigenvectors)
   do i=1,N
     write(*,'(a,i8,a,F16.8)')"Eigenvalue ",i,": ",eigenvalues(i)
-  enddo
+  ENDDO 
   write(*,*)
 
   ! The LAPACK calls overwrite A and B, so reset them before the next call
@@ -52,15 +52,15 @@ SUBROUTINE test_real
   call diag_lapack_real_generalized(A,B,N,eigenvalues,eigenvectors)
   do i=1,N
     write(*,'(a,i8,a,F16.8)')"Eigenvalue ",i,": ",eigenvalues(i)
-  enddo
+  ENDDO 
   write(*,*)
 
   deallocate(A,B,eigenvalues,eigenvectors)
 END SUBROUTINE test_real
 
 SUBROUTINE test_complex
-  implicit none
-  integer :: N,i
+  IMPLICIT NONE 
+  INTEGER  :: N,i
   complex*16,allocatable :: A(:,:),B(:,:),eigenvalues(:),eigenvectors(:,:)
   complex*16,parameter :: zi=(0.d0,1.d0)
 
@@ -80,7 +80,7 @@ SUBROUTINE test_complex
   call diag_lapack_complex(A,N,eigenvalues,eigenvectors)
   do i=1,N
     write(*,'(a,i8,a,2F16.8)')"Eigenvalue ",i,": ",eigenvalues(i)
-  enddo
+  ENDDO 
   write(*,*)
 
   ! Calculate the eigenvalues of B
@@ -88,7 +88,7 @@ SUBROUTINE test_complex
   call diag_lapack_complex(B,N,eigenvalues,eigenvectors)
   do i=1,N
     write(*,'(a,i8,a,2F16.8)')"Eigenvalue ",i,": ",eigenvalues(i)
-  enddo
+  ENDDO 
   write(*,*)
 
   ! The LAPACK calls overwrite A and B, so reset them before the next call
@@ -103,15 +103,15 @@ SUBROUTINE test_complex
   call diag_lapack_complex_generalized(A,B,N,eigenvalues,eigenvectors)
   do i=1,N
     write(*,'(a,i8,a,2F16.8)')"Eigenvalue ",i,": ",eigenvalues(i)
-  enddo
+  ENDDO 
   write(*,*)
 
   deallocate(A,B,eigenvalues,eigenvectors)
 END SUBROUTINE test_complex
 
 SUBROUTINE diag_lapack_real(hamiltonian,N,eigenvalues,eigenvectors)
-  implicit none
-  integer :: N,swapped,i,LWORK,retval
+  IMPLICIT NONE 
+  INTEGER  :: N,swapped,i,LWORK,retval
   real*8  :: hamiltonian(N,N),eigenvectors(N,N),eigenvalues(N),temp_eigenvalue
   real*8,allocatable :: ev_real(:),ev_imag(:),temp(:,:),temp_eigenvector(:),work(:)
 
@@ -140,14 +140,14 @@ SUBROUTINE diag_lapack_real(hamiltonian,N,eigenvalues,eigenvectors)
         eigenvectors(:,i+1)=temp_eigenvector
         swapped=1
       endif
-    enddo
-  enddo
+    ENDDO 
+  ENDDO 
   deallocate(temp_eigenvector)
 END SUBROUTINE diag_lapack_real
 
 SUBROUTINE diag_lapack_complex(hamiltonian,N,eigenvalues,eigenvectors)
-  implicit none
-  integer    :: N,swapped,i,LWORK,retval
+  IMPLICIT NONE 
+  INTEGER     :: N,swapped,i,LWORK,retval
   real*8     :: rwork(2*N)
   complex*16 :: hamiltonian(N,N),eigenvectors(N,N),eigenvalues(N),temp_eigenvalue
   complex*16,allocatable :: temp(:,:),temp_eigenvector(:),work(:)
@@ -176,14 +176,14 @@ SUBROUTINE diag_lapack_complex(hamiltonian,N,eigenvalues,eigenvectors)
         eigenvectors(:,i+1)=temp_eigenvector
         swapped=1
       endif
-    enddo
-  enddo
+    ENDDO 
+  ENDDO 
   deallocate(temp_eigenvector)
 END SUBROUTINE diag_lapack_complex
 
 SUBROUTINE diag_lapack_real_generalized(A,B,N,eigenvalues,eigenvectors)
-  implicit none
-  integer :: N,swapped,i,LWORK,retval
+  IMPLICIT NONE 
+  INTEGER  :: N,swapped,i,LWORK,retval
   real*8  :: A(N,N),B(N,N),eigenvectors(N,N),eigenvalues(N),temp_eigenvalue
   real*8,allocatable    :: ev_real(:),ev_imag(:),temp(:,:),temp_eigenvector(:),work(:),beta(:)
   complex*16, parameter :: zi=(0.d0,1.d0)
@@ -213,14 +213,14 @@ SUBROUTINE diag_lapack_real_generalized(A,B,N,eigenvalues,eigenvectors)
         eigenvectors(:,i+1)=temp_eigenvector
         swapped=1
       endif
-    enddo
-  enddo
+    ENDDO 
+  ENDDO 
   deallocate(temp_eigenvector)
 END SUBROUTINE diag_lapack_real_generalized
 
 SUBROUTINE diag_lapack_complex_generalized(A,B,N,eigenvalues,eigenvectors)
-  implicit none
-  integer    :: N,swapped,i,LWORK,retval
+  IMPLICIT NONE 
+  INTEGER     :: N,swapped,i,LWORK,retval
   real*8     :: rwork(8*N)
   complex*16 :: A(N,N),B(N,N),eigenvectors(N,N),eigenvalues(N),temp_eigenvalue
   complex*16,allocatable :: temp(:,:),temp_eigenvector(:),work(:),beta(:)
@@ -250,8 +250,8 @@ SUBROUTINE diag_lapack_complex_generalized(A,B,N,eigenvalues,eigenvectors)
         eigenvectors(:,i+1)=temp_eigenvector
         swapped=1
       endif
-    enddo
-  enddo
+    ENDDO 
+  ENDDO 
   deallocate(temp_eigenvector)
 END SUBROUTINE diag_lapack_complex_generalized
 
@@ -332,5 +332,5 @@ END SUBROUTINE diag_lapack_complex_generalized
         endif
       endif
       goto 1
-      END subroutine indexx
+      END SUBROUTINE indexx
       

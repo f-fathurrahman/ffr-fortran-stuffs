@@ -1,4 +1,4 @@
-subroutine hamiltonian_small(potential)
+SUBROUTINE hamiltonian_small(potential)
 !
 ! solution on a small PW basis by direct diagonalization of the PW Hamiltonian
 !  
@@ -7,9 +7,9 @@ subroutine hamiltonian_small(potential)
   USE PW_SMALL
   USE PW
   USE PSEUDOPOTENTIAL
-  implicit none
+  IMPLICIT NONE 
 
-  integer                      :: jj, jg, ijg,i, ik, is,ia,ig,ii,jn,lm
+  INTEGER                       :: jj, jg, ijg,i, ik, is,ia,ig,ii,jn,lm
   complex*16                   :: w,ww
   complex*16                   :: c_fft(N_L(1)+fftinc1,N_L(2),N_L(3))
   double precision             :: potential(N_L(1)+fftinc1,N_L(2),N_L(3))
@@ -25,7 +25,7 @@ subroutine hamiltonian_small(potential)
 
    do ig=1,n_G_pot
      vg(ig)=c_fft(G_vector(1,ig),G_vector(2,ig),G_vector(3,ig))
-   enddo
+   ENDDO 
    vg(N_G_pot+1)=(0.0,0.0)
 
 !  loop over K points
@@ -48,11 +48,11 @@ do  ik=1,n_k_points
                  do jg=1,ig
                     jj=wf_tab(jg,ik)
                     hm(jg,ig)=hm(jg,ig)+ww*pkg_a(lm,jj,is,ik)*eigr(jj,ia,is,ik)
-                 enddo
-              enddo
-            enddo
-          enddo
-       end do
+                 ENDDO 
+              ENDDO 
+            ENDDO 
+          ENDDO 
+       ENDDO 
 
    om=(0.d0,0.d0)
 
@@ -62,8 +62,8 @@ do  ik=1,n_k_points
       ijg=g_map(ig,jg)
       hm(jg,ig) = hm(jg,ig)+ conjg(vg(ijg))
       hm(ig,jg)=conjg(hm(jg,ig))
-    end do
-  end do
+    ENDDO 
+  ENDDO 
 
 
   if(N_orbitals.gt.N_G_wf(ik)) then
@@ -76,19 +76,19 @@ do  ik=1,n_k_points
   do ig=1,N_G_wf(ik)
     do jg=1,N_G_wf(ik)
       write(500,*)hm(ig,jg)
-    end do
-  end do
+    ENDDO 
+  ENDDO 
    
   call diag_lapack_complex_generalized(hm,om,N_G_wf(ik),eval,evec)
 
   do i=1,N_G_wf(ik)
     write(501,*)i,eval(i)
-  end do
+  ENDDO 
   
 
 !  do i=1,N_orbitals
 !    read(101,*)(evec(ig,i),ig=1,n_g_wf(ik))
-!  end do
+!  ENDDO 
   
 
   do i=1,N_orbitals
@@ -96,12 +96,12 @@ do  ik=1,n_k_points
     wave_function_c(:,i,ik)=(0.0,0.0)        
     do ig=1,n_g_wf(ik)
       wave_function_c(wf_tab(ig,ik),i,ik)=evec(ig,i)
-    end do
+    ENDDO 
     write(149,*) i,ik,real(eigenvalue(i,ik))
-  end do
+  ENDDO 
 
   deallocate(hm,om,evec,eval)
-end do
+ENDDO 
 
 deallocate(vg) 
 

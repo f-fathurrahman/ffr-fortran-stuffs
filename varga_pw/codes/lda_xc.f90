@@ -1,19 +1,19 @@
-subroutine lda_xc(rr,vxc,exc,ld)   
+SUBROUTINE lda_xc(rr,vxc,exc,ld)   
 !   
 !   LDA exchange correlation potential Phys.Rev. B 23,5048(1981)                            
 !   (atomic units used)
 !
 ! Perdew-Zunger LDA
-implicit none
+IMPLICIT NONE 
   real*8, parameter :: x0 = 0.0d0, x6 = 6.0d0, x1 = 1.0d0, x7 = 7.0d0, &
 & x2 = 2.0d0, x3 = 3.0d0, x4 = 4.0d0, x9 = 9.0d0, eps0= 1.0d-1, &
 & pi=3.14159265358979323d0,au=0.0311d0,bu=-0.048d0,cu=0.002d0,du=-0.0116d0,aph=-0.1423d0, &
 & bt1=1.0529d0,bt2=0.3334d0,aa=-x3/(x4*pi),bu1=bu-au/x3,cu1=x2*cu/x3, &
 & du1= (x2*du-cu)/x3,p13=x1/x3,pi4=x4*pi,c76=x7/x6,c43=x4/x3
-  integer :: ld
+  INTEGER  :: ld
   real*8  :: exc,rr(ld), vxc(ld)
   real*8  :: eps,bpr,ec,ex,r,rrs,rs,rsl,rss,uc,ux,ax
-  integer :: i,ip,j,l
+  INTEGER  :: i,ip,j,l
       eps = 1.d-13
       exc = 0.0
       ax = aa * (x9 * pi / x4)**p13 
@@ -46,6 +46,6 @@ implicit none
         endif
         vxc(i) = ux + uc
         exc = exc + r * (ex + ec)
-      end do
+      ENDDO 
   return
-end subroutine lda_xc
+end SUBROUTINE lda_xc
