@@ -173,113 +173,120 @@ SUBROUTINE Generate_G_vectors()
   
     ! upper half: count the g vectors with g(1).ge.0
     ng = 1
+
     DO i3 = 0,N_L(3)/2
       
       n2 = -N_L(2)/2
+      
       IF( i3 == 0) n2 = 0
       
-      do i2=n2,N_L(2)/2
-        n1=-N_L(1)/2
-        if (i3==0 .and. i2==0) n1=1
-        do i1=n1,N_L(1)/2
-          g(:)=i1*R_Lattice_vector(:,1)+i2*R_Lattice_vector(:,2)+i3*R_Lattice_vector(:,3)
-          gg=sum(g(:)**2)
-          if(gg.le.4.d0*G_cut) then
-            ng=ng+1          
-            if(ii==2) then
-              gv(ng)=gg
-              igv(1,ng)=i1
-              igv(2,ng)=i2
-              igv(3,ng)=i3
-            endif
-          endif
+      DO i2 = n2,N_L(2)/2
+        
+        n1 = -N_L(1)/2
+        IF( i3==0 .AND. i2==0 ) n1 = 1
+        
+        DO i1=n1,N_L(1)/2
+          
+          g(:) = i1*R_Lattice_vector(:,1) + i2*R_Lattice_vector(:,2) + i3*R_Lattice_vector(:,3)
+          
+          gg = sum(g(:)**2)
+          
+          IF( gg <= 4.d0*G_cut ) THEN
+            ng = ng + 1  
+            IF( ii==2 ) THEN 
+              gv(ng) = gg
+              igv(1,ng) = i1
+              igv(2,ng) = i2
+              igv(3,ng) = i3
+            ENDIF
+          ENDIF
         ENDDO 
       ENDDO 
     ENDDO 
-!   upperhalf +lowerhalf+ g=0    
-    N_G_vector_max=2*ng-1
-!   now allocate arrays to store this
-    if(ii==1) then
-      allocate(gv(ng),igv(3,ng),inc(ng))
-!   G=0 component
-      gv(1)=0.d0
-      igv(:,1)=0
-    endif    
+    ! upperhalf +lowerhalf+ g=0    
+    N_G_vector_max = 2*ng-1
+    ! now allocate arrays to store this
+    IF( ii==1 ) THEN 
+      ALLOCATE( gv(ng), igv(3,ng), inc(ng) )
+      ! G=0 component
+      gv(1) = 0.d0
+      igv(:,1) = 0
+    ENDIF
   ENDDO 
-!
-! reorder with increasing magnitude
-!
-  call ordering(ng,gv,inc)
-!  call indexx(ng,gv,inc)
-  allocate(G_vector(3,N_G_vector_max),G_vector_length(N_G_vector_max))
-! G=0
+  !
+  ! reorder with increasing magnitude
+  !
+  CALL ordering(ng, gv, inc)
+  ! call indexx(ng,gv,inc)
+  ALLOCATE( G_vector(3,N_G_vector_max), G_vector_length(N_G_vector_max) )
+  ! G=0
   G_vector(:,1)=1
-  G_vector_length(1)=0.d0
-  ii=2
-  do i=2,ng
-    do k=1,3
-      G_vector(k,ii+1)=iflip_inv(-igv(k,inc(i)),N_L(k))
-      G_vector(k,ii)=iflip_inv(igv(k,inc(i)),N_L(k))
+  G_vector_length(1) = 0.d0
+  ii = 2
+  DO i = 2,ng
+    DO k = 1,3
+      G_vector(k,ii+1) = iflip_inv(-igv(k,inc(i)),N_L(k))
+      G_vector(k,ii) = iflip_inv(igv(k,inc(i)),N_L(k))
     ENDDO 
-    G_vector_length(ii)=gv(inc(i))
-    G_vector_length(ii+1)=gv(inc(i))
-    ii=ii+2
+    G_vector_length(ii) = gv(inc(i))
+    G_vector_length(ii+1) = gv(inc(i))
+    ii = ii + 2
   ENDDO 
 !
 ! G vectors for a given K point
 !
-  allocate(ic(N_L(1),N_L(2)))
-  allocate(N_G_vector(N_K_points),G_index(N_G_vector_max,N_K_points))
-  allocate(GplusK(N_G_vector_max,N_K_points),fft_ind(N_G_vector_max,N_K_points))
-  allocate(ind3f1(N_L(1),N_K_points),ind3f2(N_L(1),N_K_points))
-  allocate(ind2f1(N_K_points),ind2f2(N_K_points))
+  ALLOCATE( ic(N_L(1),N_L(2)) )
+  ALLOCATE( N_G_vector(N_K_points),G_index(N_G_vector_max,N_K_points) )
+  ALLOCATE( GplusK(N_G_vector_max,N_K_points),fft_ind(N_G_vector_max,N_K_points) )
+  ALLOCATE( ind3f1(N_L(1),N_K_points),ind3f2(N_L(1),N_K_points) )
+  ALLOCATE( ind2f1(N_K_points),ind2f2(N_K_points) )
 
   N_G_K_vector_max=0
   
-  do k=1,N_K_Points
-    ic=.true.
-    ii=0
-    do i=1,N_G_vector_max
-      ig(1)=iflip(G_vector(1,i),N_L(1))
-      ig(2)=iflip(G_vector(2,i),N_L(2))
-      ig(3)=iflip(G_vector(3,i),N_L(3))
-      g(:) = ig(1)*R_Lattice_vector(:,1)+ig(2)*R_Lattice_vector(:,2)+ig(3)*R_Lattice_vector(:,3)+K_point(:,k)
-      gg=sum(g(:)**2)
-      if(gg.le.G_cut) then
-        ii=ii+1
-        G_index(ii,k)=i 
-        Gplusk(ii,k)=gg
-        fft_ind(ii,k)=G_vector(1,i)+(N_L(1)+1)*((G_vector(2,i)-1)+N_L(2)*(G_vector(3,i)-1))
-        ic(G_vector(1,i),G_vector(2,i))=.false.
-      endif
+  DO k=1,N_K_Points
+    ic = .true.
+    ii = 0
+    DO i = 1,N_G_vector_max
+      ig(1) = iflip(G_vector(1,i),N_L(1))
+      ig(2) = iflip(G_vector(2,i),N_L(2))
+      ig(3) = iflip(G_vector(3,i),N_L(3))
+      g(:) = ig(1)*R_Lattice_vector(:,1) + ig(2)*R_Lattice_vector(:,2) + ig(3)*R_Lattice_vector(:,3) + K_point(:,k)
+      gg = sum(g(:)**2)
+      IF(gg <= G_cut) THEN 
+        ii = ii + 1
+        G_index(ii,k) = i 
+        Gplusk(ii,k) = gg
+        fft_ind(ii,k) = G_vector(1,i) + (N_L(1)+1)*((G_vector(2,i)-1) + N_L(2)*(G_vector(3,i)-1))
+        ic(G_vector(1,i),G_vector(2,i)) = .FALSE.
+      ENDIF
     ENDDO 
-    N_G_vector(k)=ii
-    if(N_G_vector(k).gt.N_G_K_vector_max) N_G_K_vector_max=N_G_vector(k)
+    N_G_vector(k) = ii
+    IF( N_G_vector(k) > N_G_K_vector_max) N_G_K_vector_max=N_G_vector(k)
     
-!
-!   index limits for the FFT for the wf and potential
-!
-    ind2f1(k)=1
-    ind2f2(k)=N_L(1)+1
-    do i=1,N_L(1)
-      con=.true.
-      ind3f1(i,k)=0
-      ind3f2(i,k)=N_L(2)+1
-      do j=N_L(2)/2,1,-1
-        if ( .not.ic(i,j) .and. con) then
-           ind3f1(i,k)=j
-           con=.false.
-         endif
+    !
+    ! index limits for the FFT for the wf and potential
+    !
+    ind2f1(k) = 1
+    ind2f2(k) = N_L(1) + 1
+    DO i = 1,N_L(1)
+      con = .TRUE.
+      ind3f1(i,k) = 0
+      ind3f2(i,k) = N_L(2) + 1
+      DO j = N_L(2)/2,1,-1
+        IF( .NOT. ic(i,j) .AND. con) THEN 
+          ind3f1(i,k) = j
+          con = .FALSE.
+        ENDIF
       ENDDO 
-      con=.true.
-      do j=N_L(2)/2,N_L(2)
-        if (.not.ic(i,j).and.con) then
-          ind3f2(i,k)=j
-          con=.false.
-        endif
+      con = .TRUE.
+      DO j=N_L(2)/2,N_L(2)
+        IF( .NOT. ic(i,j) .AND. con) THEN 
+          ind3f2(i,k) = j
+          con = .FALSE.
+        ENDIF
       ENDDO 
-      if ((ind3f1(i,k).ne.0).and.(ind3f2(i,k).ne.N_L(2)+1).and.(ind2f2(k)==N_L(1)+1)) ind2f1(k)=i+1
-      if ((ind3f1(i,k)==0).and.(ind3f2(i,k)==N_L(2)+1)) ind2f2(k)=i+1
+      IF( (ind3f1(i,k) /= 0) .AND. (ind3f2(i,k) /= N_L(2)+1) .AND. ( ind2f2(k) == N_L(1) + 1) ) ind2f1(k)=i+1
+      IF( (ind3f1(i,k) == 0) .AND. (ind3f2(i,k) == N_L(2)+1) ) ind2f2(k) = i + 1
     ENDDO 
     
   ENDDO 
