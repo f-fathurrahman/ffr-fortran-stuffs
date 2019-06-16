@@ -8,5 +8,5 @@ basnam=`basename $1 .f90`
 
 #g95 $1 -o $basnam.x
 
-mpif90 -Wall -fcoarray=lib $1 -o $basnam.x libcaf_mpi.a
+mpif90 -Wall -fcoarray=lib $1 -o $basnam.x -lcaf_mpi
 
