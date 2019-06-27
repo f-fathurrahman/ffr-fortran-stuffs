@@ -1,18 +1,18 @@
 MODULE linalg
   implicit none
   
-	interface diag
-		module procedure diag_gen_complex,diag_gen_complex_partial,diag_gen_real, &
-		  diag_gen_real_partial,diag_real,diag_real_partial,diag_complex
-	end interface
-	  
-	interface inv
-		module procedure inv_real,inv_complex
-	end interface
+  interface diag
+    module procedure diag_gen_complex,diag_gen_complex_partial,diag_gen_real, &
+      diag_gen_real_partial,diag_real,diag_real_partial,diag_complex
+  end interface
+    
+  interface inv
+    module procedure inv_real,inv_complex
+  end interface
 
-	interface det
-		module procedure det_real,det_complex
-	end interface	
+  interface det
+    module procedure det_real,det_complex
+  end interface  
 
 CONTAINS
 
@@ -53,20 +53,20 @@ SUBROUTINE diag_complex(hamiltonian,N,eigenvalues,eigenvectors)
 END SUBROUTINE diag_complex
 
 subroutine diag_gen_real(hm,om,n,e,v)
-	real(8)   hm(n,n)         !Hamiltonian matrix
-	real(8)   om(n,n)         !Overlap matrix
-	integer   n               !Eigenvalue problem size
-	real(8)   e(n)   !Eigenvalues
-	real(8)   v(n,n) !Corresponding eigenvectors
+  real(8)   hm(n,n)         !Hamiltonian matrix
+  real(8)   om(n,n)         !Overlap matrix
+  integer   n               !Eigenvalue problem size
+  real(8)   e(n)   !Eigenvalues
+  real(8)   v(n,n) !Corresponding eigenvectors
   call diag_gen_real_partial(hm,om,n,n,e,v)
 end subroutine diag_gen_real
 
 subroutine diag_gen_complex(hm,om,n,e,v)
-	complex(8)   hm(n,n)     !Hamiltonian matrix
-	complex(8)   om(n,n)     !Overlap matrix
-	integer   n               !Eigenvalue problem size
-	real(8)   e(n)   !Eigenvalues
-	complex(8)   v(n,n) !Corresponding eigenvectors
+  complex(8)   hm(n,n)     !Hamiltonian matrix
+  complex(8)   om(n,n)     !Overlap matrix
+  integer   n               !Eigenvalue problem size
+  real(8)   e(n)   !Eigenvalues
+  complex(8)   v(n,n) !Corresponding eigenvectors
   call diag_gen_complex_partial(hm,om,n,n,e,v)
 end subroutine diag_gen_complex
 

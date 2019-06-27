@@ -1,22 +1,21 @@
 PROGRAM fd_td
   USE linalg
   IMPLICIT NONE
-  INTEGER, PARAMETER                :: n=200,nt=500
-  REAL(8), PARAMETER                :: xnu=1.d0,h2m=0.5d0,a=-25.d0,b=25.d0
-  REAL(8) :: h(n,n),o(n,n),s(n),e(n),v(n,n)
-  REAL(8) :: oih(n,n),oi(n,n),u(n,n)
-  REAL(8) :: dx,f1,f2,suo,sut,suv,x,dt,norm,p0,a0,t,c1,c2,dr,cp
-  REAL(8) :: xl,xr,yl,yr
-  COMPLEX(8) :: zo(n,n),zoi(n,n),am(n,n),bm(n,n),cm(n,n),c(n),cc(n)
-  COMPLEX(8) :: f,csu,dc,capl(n),capr(n),hc(n,n)
+  INTEGER, PARAMETER :: n=200, nt=500
+  REAL(8), PARAMETER :: h2m=0.5d0, a=-25.d0, b=25.d0
+  REAL(8) :: h(n,n)
+  REAL(8) :: u(n,n)
+  REAL(8) :: dx, x, dt, norm, p0, a0, t
+  COMPLEX(8) :: zo(n,n), am(n,n), bm(n,n), cm(n,n), c(n)
+  COMPLEX(8) :: f, csu, hc(n,n)
   COMPLEX(8), PARAMETER :: zi=(0.d0,1.d0)
-  INTEGER :: i,j,k
+  INTEGER :: i, k
   REAL(8), PARAMETER :: pi=3.1415926535897932384d0
   COMPLEX(8) :: Gauss_wave_packet_1d
 
   dx = (b-a)/(n+1)
   u(:,:) = 0.d0
-  DO i=1,n
+  DO i = 1,n
     u(i,i) = 1.d0
     x = a + i*dx
   ENDDO
@@ -43,14 +42,14 @@ PROGRAM fd_td
     ENDIF 
   ENDDO 
 
-   hc = h
+  hc = h
    
-   dt = 0.001d0
-   am = u-0.5d0*zi*hc*dt
-   zo = u+0.5d0*zi*hc*dt
+  dt = 0.001d0
+  am = u - 0.5d0*zi*hc*dt
+  zo = u + 0.5d0*zi*hc*dt
 
-   CALL inv(zo, n, bm)
-   cm = matmul(am,bm)
+  CALL inv(zo, n, bm)
+  cm = matmul(am,bm)
 
   ! initial wave function
   a0 = 1.d0
@@ -66,7 +65,7 @@ PROGRAM fd_td
   do k=1,n
     x = a+k*dx
     csu = c(k)
-    norm = norm + Conjg(csu)*csu*dx
+    norm = norm + real(conjg(csu)*csu*dx)
     WRITE(1,*) x, real(csu), imag(csu)
     WRITE(2,*) x, real(conjg(csu)*csu)
   ENDDO 
@@ -82,10 +81,10 @@ PROGRAM fd_td
   DO k=1,n
     x = a + k*dx
     csu = c(k)
-    norm = norm + Conjg(csu)*csu*dx
+    norm = norm + real(conjg(csu)*csu*dx)
         
     WRITE(11,*) x, real(csu), imag(csu)
-    WRITE(12,*) x, real(Conjg(csu)*csu)
+    WRITE(12,*) x, real(conjg(csu)*csu)
     
   ENDDO 
   WRITE(6,*) norm
@@ -96,8 +95,8 @@ PROGRAM fd_td
   DO k = 1,n
     x = a + k*dx
     f = Gauss_wave_packet_1d(x,t,a0,p0)
-    write(21,*) x, real(f), imag(f)
-    write(22,*) x, real(Conjg(f)*f)
+    WRITE(21,*) x, real(f), imag(f)
+    WRITE(22,*) x, real(Conjg(f)*f)
   ENDDO 
   WRITE(6,*) norm
 
