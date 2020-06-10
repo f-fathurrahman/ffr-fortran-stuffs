@@ -35,7 +35,9 @@ subroutine interaction_pot(rho, vh, vx, vc, ex, ec)
 
   vh = 0.0; vx = 0.0; vc = 0.0; ex = 0.0; ec = 0.0
 
-  mode = HARTREE
+  !mode = HARTREE
+  !mode = INDEPENDENT_PARTICLES
+  mode = HARTREE_XC
 
   select case(mode)
     case(INDEPENDENT_PARTICLES)
