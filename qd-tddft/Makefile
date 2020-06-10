@@ -1,8 +1,18 @@
 include make.inc
 
-LIBS_EXT = 
+LIBS_EXT = -lblas -llapack -lgsl -lgslcblas -lfftw3
 
-SRC = mesh.f90 output.f90
+SRC = mesh.f90 output.f90 \
+coeff.f90 \
+fftw3.f90 cf.f90 poisson.f90 \
+epot.f90 states.f90 energy.f90 \
+ipot.f90  perturbation.f90  qdf.f90  sf.f90 \
+cg.f90  excitations.f90  gs.f90  read_wfs.f90 \
+expokit.f90  hpsi.f90  propagate.f90  rho.f90  td.f90  vxc.f90 \
+exponential.f90  init_wfs.f90  propagator.f90    scf.f90  write_wfs.f90 \
+expokit.f90 hpsi.f90 init_wfs.f90 \
+test_hartree.f90 test_exp.f90 test_laplacian.f90
+
 
 C_SRC = gslwrappers.c
 
@@ -42,14 +52,11 @@ lib: $(OBJ)
 #
 # Main executable
 #
-#main: lib ffr_LFDFT.f90
-#	$(F90) $(F90_OPTS) ffr_LFDFT.f90 -o $(EXE_MAIN) libmain.a $(LIBS_EXT)
 
-test_laplacian: lib test_laplacian.f90
-	$(F90) $(F90_OPTS) test_laplacian.f90 -o test_laplacian.x libmain.a
+qdmain: lib
+	$(F90) $(F90_OPTS) qdmain.f90 -o qdmain.x libmain.a $(LIBS_EXT)
 
-# does not delete *.x files
 clean:
-	rm -rfv *.o *.mod *.x
+	rm -rfv *.o *.mod *.x libmain.a
 
 

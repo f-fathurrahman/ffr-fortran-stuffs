@@ -1,17 +1,3 @@
-!! This program is free software; you can redistribute it and/or modify
-!! it under the terms of the GNU General Public License as published by
-!! the Free Software Foundation; either version 2, or (at your option)
-!! any later version.
-!!
-!! This program is distributed in the hope that it will be useful,
-!! but WITHOUT ANY WARRANTY; without even the implied warranty of
-!! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-!! GNU General Public License for more details.
-!!
-!! You should have received a copy of the GNU General Public License
-!! along with this program; if not, write to the Free Software
-!! Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
-
 !/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! SUBROUTINE EXTERNAL_POT
 ! =======================
@@ -28,10 +14,17 @@ subroutine external_pot(v)
   implicit none
 
   real(8), intent(out) :: v(N, N)    ! the external potential
+  integer :: ix, iy
+  real(8) :: r2, omega, a, b
 
   v = 0.0
-!!!!!! MISSING CODE 2
-
-!!!!!! END OF MISSING CODE
+! This defines a harmonic potential:
+  omega = 0.22_8
+  do ix = 1, N
+  do iy = 1, N
+     r2 = x(ix, iy)**2 + y(ix, iy)**2
+     v(ix, iy) = 0.5_8*omega**2*r2
+  enddo
+  enddo
 
 end subroutine external_pot

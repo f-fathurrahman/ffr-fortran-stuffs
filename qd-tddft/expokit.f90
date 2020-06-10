@@ -422,7 +422,7 @@
       complex(8) cp, cq, scale, scale2, ZERO, ONE 
                                                                         
       parameter( ZERO=(0.0d0,0.0d0), ONE=(1.0d0,0.0d0) ) 
-      intrinsic ABS, CMPLX, DBLE, INT, LOG, MAX 
+      intrinsic ABS, DCMPLX, DBLE, INT, LOG, MAX 
                                                                         
 !---  check restrictions on input parameters ...                        
       mm = m*m 
@@ -457,7 +457,7 @@
       hnorm = ABS( t*hnorm ) 
       if ( hnorm.eq.0.0d0 ) stop 'Error - null H in input of ZGPADM.' 
       ns = MAX( 0,INT(LOG(hnorm)/LOG(2.0d0))+2 ) 
-      scale =  CMPLX( t/DBLE(2**ns),0.0d0 ) 
+      scale =  DCMPLX( t/DBLE(2**ns),0.0d0 ) 
       scale2 = scale*scale 
 !                                                                       
 !---  compute Pade coefficients ...                                     
@@ -594,7 +594,7 @@
       complex(8) cp, cq, scale, scale2, ZERO, ONE 
                                                                         
       parameter( ZERO=(0.0d0,0.0d0), ONE=(1.0d0,0.0d0) ) 
-      intrinsic ABS, CMPLX, DBLE, INT, LOG, MAX 
+      intrinsic ABS, DCMPLX, DBLE, INT, LOG, MAX 
                                                                         
 !---  check restrictions on input parameters ...                        
       mm = m*m 
@@ -629,7 +629,7 @@
       hnorm = ABS( t*hnorm ) 
       if ( hnorm.eq.0.0d0 ) stop 'Error - null H in input of ZHPADM.' 
       ns = MAX( 0,INT(LOG(hnorm)/LOG(2.0d0))+2 ) 
-      scale =  CMPLX( t/DBLE(2**ns),0.0d0 ) 
+      scale =  DCMPLX( t/DBLE(2**ns),0.0d0 ) 
       scale2 = scale*scale 
 !                                                                       
 !---  compute Pade coefficients ...                                     
@@ -852,7 +852,7 @@
       double precision alpha0 
       complex(8) alpha(ndeg), theta(ndeg), w 
                                                                         
-      intrinsic ABS,CMPLX,DBLE,MIN 
+      intrinsic ABS,DCMPLX,DBLE,MIN 
                                                                         
 !---  Pointers ...                                                      
                                                                         
@@ -1512,7 +1512,7 @@
          call DNCHBV(mx,sgn*t_step,wsp(ih),mh,wsp(iexph),wsp(ifree+mx)) 
       endif 
                                                                         
-  402 continue 
+!  402 continue 
 !                                                                       
 !---  error estimate ...                                                
 !                                                                       
@@ -1891,9 +1891,9 @@
             wsp(iexph+i-1) = 0.0d0 
          enddo 
          wsp(iexph) = 1.0d0 
-         call DNCHBV(mx,sgn*t_step,wsp(ih),mh,wsp(iexph),wsp(ifree+mx)) 
+         call DNCHBV(mx,sgn*t_step,wsp(ih),mh,wsp(iexph), wsp(ifree+mx) ) 
       endif 
-  402 continue 
+!  402 continue 
 !                                                                       
 !---  error estimate ...                                                
 !                                                                       
@@ -2141,7 +2141,7 @@
      &                 vnorm, avnorm, hj1j, hump, SQR1                  
       complex(8) hij 
                                                                         
-      intrinsic AINT,ABS,CMPLX,DBLE,INT,LOG10,MAX,MIN,NINT,SIGN,SQRT 
+      intrinsic AINT,ABS,DCMPLX,DBLE,INT,LOG10,MAX,MIN,NINT,SIGN,SQRT 
       complex(8) ZDOTC 
       double precision DZNRM2 
 !                                                                       
@@ -2242,7 +2242,7 @@
             t_step = t_out-t_now 
             goto 300 
          endif 
-         wsp(ih+(j-1)*mh+j) = CMPLX( hj1j ) 
+         wsp(ih+(j-1)*mh+j) = DCMPLX( hj1j ) 
          call ZDSCAL( n, 1.0d0/hj1j, wsp(j1v),1 ) 
          j1v = j1v + n 
   200 continue 
@@ -2279,7 +2279,7 @@
          wsp(iexph) = ONE 
          call ZNCHBV(mx,sgn*t_step,wsp(ih),mh,wsp(iexph),wsp(ifree+mx)) 
       endif 
-  402 continue 
+!  402 continue 
 !                                                                       
 !---  error estimate ...                                                
 !                                                                       
@@ -2329,7 +2329,7 @@
 !---  now update w = beta*V*exp(t_step*H)*e1 and the hump ...           
 !                                                                       
       mx = mbrkdwn + MAX( 0,k1-1 ) 
-      hij = CMPLX( beta ) 
+      hij = DCMPLX( beta ) 
       call ZGEMV( 'n', n,mx,hij,wsp(iv),n,wsp(iexph),1,ZERO,w,1 ) 
       beta = DZNRM2( n, w,1 ) 
       hump = MAX( hump, beta ) 
@@ -2374,16 +2374,16 @@
       iwsp(6) = ibrkflag 
       iwsp(7) = mbrkdwn 
                                                                         
-      wsp(1)  = CMPLX( step_min ) 
-      wsp(2)  = CMPLX( step_max ) 
-      wsp(3)  = CMPLX( 0.0d0 ) 
-      wsp(4)  = CMPLX( 0.0d0 ) 
-      wsp(5)  = CMPLX( x_error ) 
-      wsp(6)  = CMPLX( s_error ) 
-      wsp(7)  = CMPLX( tbrkdwn ) 
-      wsp(8)  = CMPLX( sgn*t_now ) 
-      wsp(9)  = CMPLX( hump/vnorm ) 
-      wsp(10) = CMPLX( beta/vnorm ) 
+      wsp(1)  = DCMPLX( step_min ) 
+      wsp(2)  = DCMPLX( step_max ) 
+      wsp(3)  = DCMPLX( 0.0d0 ) 
+      wsp(4)  = DCMPLX( 0.0d0 ) 
+      wsp(5)  = DCMPLX( x_error ) 
+      wsp(6)  = DCMPLX( s_error ) 
+      wsp(7)  = DCMPLX( tbrkdwn ) 
+      wsp(8)  = DCMPLX( sgn*t_now ) 
+      wsp(9)  = DCMPLX( hump/vnorm ) 
+      wsp(10) = DCMPLX( beta/vnorm ) 
       END                                           
 !----------------------------------------------------------------------|
 !----------------------------------------------------------------------|
@@ -2526,7 +2526,7 @@
      &                 vnorm, avnorm, hj1j, hump, SQR1                  
       complex(8) hjj 
                                                                         
-      intrinsic AINT,ABS,CMPLX,DBLE,INT,LOG10,MAX,MIN,NINT,SIGN,SQRT 
+      intrinsic AINT,ABS,DCMPLX,DBLE,INT,LOG10,MAX,MIN,NINT,SIGN,SQRT 
       complex(8) ZDOTC 
       double precision DZNRM2 
 !                                                                       
@@ -2628,8 +2628,8 @@
             t_step = t_out-t_now 
             goto 300 
          endif 
-         wsp(ih+(j-1)*mh+j) = CMPLX( hj1j ) 
-         wsp(ih+j*mh+j-1) = CMPLX( hj1j ) 
+         wsp(ih+(j-1)*mh+j) = DCMPLX( hj1j ) 
+         wsp(ih+j*mh+j-1) = DCMPLX( hj1j ) 
          call ZDSCAL( n, 1.0d0/hj1j, wsp(j1v),1 ) 
          j1v = j1v + n 
   200 continue 
@@ -2668,7 +2668,7 @@
          call ZNCHBV(mx,sgn*t_step,wsp(ih),mh,wsp(iexph),wsp(ifree+mx)) 
       endif 
                                                                         
-  402 continue 
+!  402 continue 
 !                                                                       
 !---  error estimate ...                                                
 !                                                                       
@@ -2718,7 +2718,7 @@
 !---  now update w = beta*V*exp(t_step*H)*e1 and the hump ...           
 !                                                                       
       mx = mbrkdwn + MAX( 0,k1-1 ) 
-      hjj = CMPLX( beta ) 
+      hjj = DCMPLX( beta ) 
       call ZGEMV( 'n', n,mx,hjj,wsp(iv),n,wsp(iexph),1,ZERO,w,1 ) 
       beta = DZNRM2( n, w,1 ) 
       hump = MAX( hump, beta ) 
@@ -2763,14 +2763,14 @@
       iwsp(6) = ibrkflag 
       iwsp(7) = mbrkdwn 
                                                                         
-      wsp(1)  = CMPLX( step_min ) 
-      wsp(2)  = CMPLX( step_max ) 
-      wsp(3)  = CMPLX( 0.0d0 ) 
-      wsp(4)  = CMPLX( 0.0d0 ) 
-      wsp(5)  = CMPLX( x_error ) 
-      wsp(6)  = CMPLX( s_error ) 
-      wsp(7)  = CMPLX( tbrkdwn ) 
-      wsp(8)  = CMPLX( sgn*t_now ) 
-      wsp(9)  = CMPLX( hump/vnorm ) 
-      wsp(10) = CMPLX( beta/vnorm ) 
+      wsp(1)  = DCMPLX( step_min ) 
+      wsp(2)  = DCMPLX( step_max ) 
+      wsp(3)  = DCMPLX( 0.0d0 ) 
+      wsp(4)  = DCMPLX( 0.0d0 ) 
+      wsp(5)  = DCMPLX( x_error ) 
+      wsp(6)  = DCMPLX( s_error ) 
+      wsp(7)  = DCMPLX( tbrkdwn ) 
+      wsp(8)  = DCMPLX( sgn*t_now ) 
+      wsp(9)  = DCMPLX( hump/vnorm ) 
+      wsp(10) = DCMPLX( beta/vnorm ) 
       END                                           

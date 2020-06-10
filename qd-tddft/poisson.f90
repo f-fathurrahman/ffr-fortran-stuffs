@@ -1,20 +1,3 @@
-!! Copyright (C) 2002 M. Marques, A. Castro, A. Rubio, G. Bertsch
-!!
-!! This program is free software; you can redistribute it and/or modify
-!! it under the terms of the GNU General Public License as published by
-!! the Free Software Foundation; either version 2, or (at your option)
-!! any later version.
-!!
-!! This program is distributed in the hope that it will be useful,
-!! but WITHOUT ANY WARRANTY; without even the implied warranty of
-!! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-!! GNU General Public License for more details.
-!!
-!! You should have received a copy of the GNU General Public License
-!! along with this program; if not, write to the Free Software
-!! Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
-!! 02111-1307, USA.
-
 !/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! MODULE POISSON
 ! ==============
@@ -25,9 +8,6 @@ module poisson
 use mesh
 use cube_function
 implicit none
-
-
-
 
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   ! There are four public procedures in this module; all the rest is private.
@@ -46,9 +26,9 @@ implicit none
   ! the FFT technique (mode = HARTREE_FFT).
   integer, parameter :: HARTREE_SUM = 1, &
                         HARTREE_FFT = 2
-  integer, parameter :: mode = HARTREE_FFT
-
-
+  
+  !integer, parameter :: mode = HARTREE_FFT
+  integer, parameter :: mode = HARTREE_SUM
 
 
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -105,9 +85,28 @@ subroutine poisson_sum(rho, v)
   real(8), intent(in)  :: rho(N, N)  ! the density
   real(8), intent(out) :: v(N, N)    ! the solution of the poisson equation
 
-!!!!!! MISSING CODE 7
+  integer  :: ix, iy, jx, jy
+  real(8)  :: r1(2), r2(2)
+  real(8), parameter :: pi = 3.141592653589793d0
 
-!!!!!! END OF MISSING CODE
+  v = 0.0d0
+  do ix = 1, N
+    do iy = 1, N
+      r1(1) = x(ix, iy); r1(2) = y(ix, iy)
+      do jx = 1, N
+        do jy = 1, N
+           r2(1) = x(jx, jy); r2(2) = y(jx, jy)
+
+          if(ix == jx .and. iy == jy) then
+            v(ix, iy) = v(ix, iy) + 2.0d0*sqrt(pi)*rho(ix, iy)/delta
+          else
+            v(ix, iy) = v(ix, iy) + rho(jx, jy)/sqrt(sum((r1-r2)**2))
+          end if
+        end do
+      end do
+      v(ix, iy) = v(ix, iy)*delta**2
+    end do
+  end do
 
 end subroutine poisson_sum
 
@@ -115,8 +114,9 @@ subroutine poisson_fft(rho, pot)
   implicit none
   real(8), intent(in) ::  rho(n, n)
   real(8), intent(out) :: pot(n, n)
+  integer :: idx_x, idx_y
 
-  integer :: k, ix, iy
+  integer :: ix, iy
 
   call dcf_alloc_RS(fft_cf)          ! allocate the cube in real space
   call dcf_alloc_FS(fft_cf)          ! allocate the cube in Fourier space
@@ -124,7 +124,9 @@ subroutine poisson_fft(rho, pot)
   fft_cf%rs = 0.0_8
   do ix = 1, n
      do iy = 1, n
-        fft_cf%rs(fft_cf%n(1)/2+1-n/2+ix,fft_cf%n(2)/2+1-n/2+iy) = rho(ix, iy)
+        idx_x = fft_cf%n(1)/2+1-n/2+ix
+        idx_y = fft_cf%n(2)/2+1-n/2+iy
+        fft_cf%rs( idx_x, idx_y ) = rho(ix, iy)
      enddo
   enddo
 
@@ -134,7 +136,6 @@ subroutine poisson_fft(rho, pot)
   fft_cf%FS(1:fft_cf%nx,1:fft_cf%n(2)) = fft_cf%FS(1:fft_cf%nx,1:fft_cf%n(2))*&
                                          fft_Coulb_FS(1:fft_cf%nx,1:fft_cf%n(2))
 
-
   call dcf_FS2RS(fft_cf)             ! Fourier transform back
 
   do ix = 1, n
@@ -143,17 +144,21 @@ subroutine poisson_fft(rho, pot)
      enddo
   enddo
 
+  write(*,*) 'Pass here 149 in poisson.f90'
+
   call dcf_free_RS(fft_cf)           ! memory is no longer needed
   call dcf_free_FS(fft_cf)
+
+  write(*,*) 'Pass here 152 in poisson.f90'
 
 end subroutine poisson_fft
 
 subroutine poisson_init()
   implicit none
-    integer :: ix, iy, iz, ixx(2), db(2)
+    integer :: ix, iy, ixx(2), db(2)
     real(8) :: temp(2), vec
-    real(8) :: gpar,gperp,gx,gz,r_c
-    real(8) :: DELTA_R = 1.0e-12_8
+    real(8) :: r_c
+    !real(8) :: DELTA_R = 1.0e-12_8
 
     ! double the box to perform the fourier transforms
     db(1) = nint((1.0_8+sqrt(2.0_8))*n)

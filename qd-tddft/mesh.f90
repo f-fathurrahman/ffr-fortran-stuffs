@@ -44,12 +44,13 @@ CONTAINS
 !*/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 REAL(8) FUNCTION x(ix, iy)
    INTEGER, INTENT(in) :: ix, iy
-   x = (ix-1)*delta - (N/2)*delta
+   !x = (ix-1)*delta - (N/2)*delta
+   x = (ix-1)*delta - 0.5d0*N*delta
 END FUNCTION 
 
 REAL(8) FUNCTION y(ix, iy)
    INTEGER, INTENT(in) :: ix, iy
-   y = (iy-1)*delta - (N/2)*delta
+   y = (iy-1)*delta - 0.5d0*N*delta
 END FUNCTION 
 
 

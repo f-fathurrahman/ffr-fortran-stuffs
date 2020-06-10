@@ -12,7 +12,7 @@
 ! changing the alpha parameter. You may also check how the error depends
 ! on the order of the discretization of the Laplacian. 
 !*/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-PROGRAM test_laplacian
+subroutine test_laplacian
   USE mesh
   IMPLICIT NONE 
   INTEGER :: ix, iy
@@ -53,5 +53,5 @@ PROGRAM test_laplacian
   WRITE(*,'(A,ES20.8)') 'Error: ', dotproduct(apl-exl,apl-exl)
 
   DEALLOCATE(rho, exl, apl)
-END PROGRAM 
+END subroutine
 

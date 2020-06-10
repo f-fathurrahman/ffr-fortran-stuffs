@@ -1,20 +1,3 @@
-!! This program is free software; you can redistribute it and/or modify
-!! it under the terms of the GNU General Public License as published by
-!! the Free Software Foundation; either version 2, or (at your option)
-!! any later version.
-!!
-!! This program is distributed in the hope that it will be useful,
-!! but WITHOUT ANY WARRANTY; without even the implied warranty of
-!! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-!! GNU General Public License for more details.
-!!
-!! You should have received a copy of the GNU General Public License
-!! along with this program; if not, write to the Free Software
-!! Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
-
-
-
-
 !/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! PROGRAM COEFF
 ! =============
@@ -49,7 +32,7 @@ subroutine coeff
   x(7) = -3*delta
   x(8) = -4*delta
 
-  ierr = coefficients(m, n, x, c)
+  call coefficients(m, n, x, c, ierr)
 
   ! Note that the indexes are changed... just notation.
   write(*,'(a,e16.7)')  'c(0)     = ', c(1)
@@ -89,11 +72,11 @@ end subroutine coeff
 ! ------
 ! It requires BLAS dgesv subroutine.
 !*/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-integer function coefficients(m, n, x, c) result(ierr)
+subroutine coefficients(m, n, x, c, ierr)
   integer, intent(in) :: m, n
   real(8), intent(in) :: x(2*n)
   real(8), intent(out) :: c(2*n+1)
-
+  integer :: ierr
   integer :: i, j, k, lwork, info
   real(8), allocatable :: a(:, :), e(:), work(:)
   
@@ -118,7 +101,7 @@ integer function coefficients(m, n, x, c) result(ierr)
   lwork = -1
   allocate(work(1))
   call dgels('n', 2*n, 2*n, 1, a, 2*n, e, 2*n, work, lwork, info)
-  lwork = work(1)
+  lwork = int(work(1))
   deallocate(work); allocate(work(lwork))
   call dgels('n', 2*n, 2*n, 1, a, 2*n, e, 2*n, work, lwork, info)
 
@@ -128,8 +111,8 @@ integer function coefficients(m, n, x, c) result(ierr)
   enddo
 
   deallocate(work, a, e)
-  ierr = info
-end function coefficients
+  ierr = int(info)
+end subroutine 
 
 
 

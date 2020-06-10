@@ -1,20 +1,3 @@
-!! This program is free software; you can redistribute it and/or modify
-!! it under the terms of the GNU General Public License as published by
-!! the Free Software Foundation; either version 2, or (at your option)
-!! any later version.
-!!
-!! This program is distributed in the hope that it will be useful,
-!! but WITHOUT ANY WARRANTY; without even the implied warranty of
-!! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-!! GNU General Public License for more details.
-!!
-!! You should have received a copy of the GNU General Public License
-!! along with this program; if not, write to the Free Software
-!! Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
-
-
-
-
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! SUBROUTINE HPSI
 ! ===============
@@ -41,9 +24,8 @@ subroutine hpsi(v, f, hf)
   real(8), intent(out) :: hf(N, N) ! the results
 
   hf = 0.0
-!!!!!! MISSING CODE 5
-
-!!!!!! END OF MISSING CODE
+  call laplacian(f, hf)
+  hf(:, :) = -0.5_8*hf(:, :) + v(:, :)*f(:, :)
 
 end subroutine hpsi
 
@@ -81,8 +63,7 @@ subroutine zhpsi(v, f, hf)
   complex(8), intent(inout) :: hf(N, N) ! the results
 
   hf = (0.0, 0.0)
-!!!!!! MISSING CODE 6
-
-!!!!!! END OF MISSING CODE
+  call zlaplacian(f, hf)
+  hf(:, :) = -0.5_8*hf(:, :) + v(:, :)*f(:, :)
 
 end subroutine zhpsi

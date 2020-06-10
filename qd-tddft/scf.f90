@@ -1,17 +1,3 @@
-!! This program is free software; you can redistribute it and/or modify
-!! it under the terms of the GNU General Public License as published by
-!! the Free Software Foundation; either version 2, or (at your option)
-!! any later version.
-!!
-!! This program is distributed in the hope that it will be useful,
-!! but WITHOUT ANY WARRANTY; without even the implied warranty of
-!! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-!! GNU General Public License for more details.
-!!
-!! You should have received a copy of the GNU General Public License
-!! along with this program; if not, write to the Free Software
-!! Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
-
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! SUBROUTINE SCF
 ! ==============
@@ -54,9 +40,31 @@ subroutine scf()
   vh = 0.0_8; vc = 0.0_8; vx = 0.0_8; ex = 0.0_8; ec = 0.0_8
   vtot = vext + vh + vx + vc
 
-!!!!!! MISSING CODE 3
+  do i = 1, max_iter
 
-!!!!!! END OF MISSING CODE
+     call conjugate_gradients(N_wf, wfs, vtot, eigenval, residues)
+
+     call external_pot(vext)
+     rhoprev = rho
+     call build_rho(wfs, rho)
+
+     diff = sqrt(dotproduct(rho-rhoprev,rho-rhoprev))
+     if(diff < tol) exit
+
+     rho = alpha*rho + (1.0 - alpha)*rhoprev
+     call interaction_pot(rho, vh, vx, vc, ex, ec)
+     vtot = vext + vh + vx + vc
+
+     etot =  energy(eigenval, rho, vh, vc, vx, ec, ex)
+
+     write(*, '(/,a,i6)') 'SCF CYCLE ITER # ',i
+     write(*, '(5x,a,es18.4)') 'diff = ',diff
+     do j = 1, N_wf
+        write(*, '(5x,i4, 2es20.8)') j, eigenval(j), residues(j)
+     enddo
+     write(*,'(a)')
+
+  enddo
 
   ! Gather all the final numbers...
   call external_pot(vext)

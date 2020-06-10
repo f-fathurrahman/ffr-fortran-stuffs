@@ -1,20 +1,3 @@
-!! This program is free software; you can redistribute it and/or modify
-!! it under the terms of the GNU General Public License as published by
-!! the Free Software Foundation; either version 2, or (at your option)
-!! any later version.
-!!
-!! This program is distributed in the hope that it will be useful,
-!! but WITHOUT ANY WARRANTY; without even the implied warranty of
-!! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-!! GNU General Public License for more details.
-!!
-!! You should have received a copy of the GNU General Public License
-!! along with this program; if not, write to the Free Software
-!! Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
-
-
-
-
 !/*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! SUBROUTINE INTERACTION_POT
 ! ==========================
@@ -44,12 +27,30 @@ subroutine interaction_pot(rho, vh, vx, vc, ex, ec)
   implicit none
   real(8), intent(in) :: rho(n, n)
   real(8), intent(out) :: vh(n, n), vx(n, n), vc(n, n), ex, ec
-
+  integer :: mode
+  integer, parameter :: INDEPENDENT_PARTICLES = 0, &
+                        HARTREE               = 1, &
+                        HARTREE_X             = 2, &
+                        HARTREE_XC            = 3
 
   vh = 0.0; vx = 0.0; vc = 0.0; ex = 0.0; ec = 0.0
-!!!!!! MISSING CODE 4
 
-!!!!!! END OF MISSING CODE
+  mode = HARTREE
+
+  select case(mode)
+    case(INDEPENDENT_PARTICLES)
+      vh = 0.0_8; vx = 0.0_8; vc = 0.0_8; ex = 0.0_8; ec = 0.0_8
+    case(HARTREE)
+      vx = 0.0_8; vc = 0.0_8; ex = 0.0_8; ec = 0.0_8
+      call poisson_solve(rho, vh)
+    case(HARTREE_X)
+      call vxc_lda(rho, vx, vc, Ex, Ec)
+      vc = 0.0_8; ec = 0.0_8
+      call poisson_solve(rho, vh)
+    case(HARTREE_XC)
+      call vxc_lda(rho, vx, vc, Ex, Ec)
+      call poisson_solve(rho, vh)
+  end select
 
 end subroutine interaction_pot
 
