@@ -102,6 +102,8 @@ PROGRAM abinit
 
   CALL step_12()
 
+  CALL test_dataset()
+
   IF( me == 0 ) CLOSE(unit=ab_out)
 
 100 CALL xmpi_end()
@@ -316,6 +318,32 @@ CONTAINS
     WRITE(*,*) 'End of step_12'
 
   END SUBROUTINE 
+
+
+  SUBROUTINE test_dataset()
+    
+    WRITE(*,*)
+    WRITE(*,*) 'size(dtsets) = ', size(dtsets)
+    WRITE(*,*)
+    ! dtsets is indexed by 0:ndtset_alloc
+
+
+    !
+    ! print out some fields that are defined in the input file
+    !
+    WRITE(*,*)
+    WRITE(*,*) 'Dataset'
+    WRITE(*,*)
+    WRITE(*,*) 'natom = ', dtsets(1)%natom
+    WRITE(*,*) 'ntypat = ', dtsets(1)%ntypat
+    WRITE(*,*) 'znucl = ', dtsets(1)%znucl(:)
+    WRITE(*,*) 'acell = ', results_out(1)%acell(:,1)
+    WRITE(*,*) 'toldfe = ', dtsets(1)%toldfe
+
+    WRITE(*,*)
+    WRITE(*,*) 'Pass here ...'
+  END SUBROUTINE 
+
 
 
 END PROGRAM 
