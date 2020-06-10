@@ -20,7 +20,7 @@ subroutine propagate()
   niter = nint(prop_time/dt)
 
   dipole_unit = 12
-  open(unit = dipole_unit, file="dipole", action ="write", status="replace", form ="formatted")
+  open(unit = dipole_unit, file="dipole.dat", action ="write", status="replace", form ="formatted")
   close(unit = dipole_unit)
   
   write(*,'(/,a,/)') 'Time dependent propagation follows.'

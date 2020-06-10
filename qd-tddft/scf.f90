@@ -36,7 +36,7 @@ subroutine scf()
 
   ! The first iteration will use the independent particle approximation to the problem
   call external_pot(vext)
-  call output(vext,'vext')
+  call output(vext, 'vext.dat')
   vh = 0.0_8; vc = 0.0_8; vx = 0.0_8; ex = 0.0_8; ec = 0.0_8
   vtot = vext + vh + vx + vc
 
@@ -88,10 +88,10 @@ subroutine scf()
   write(*,'(a)')
 
   ! Output the final functions
-  call output(rho, 'rho')
-  call output(vh, 'vh')
-  call output(vc, 'vc')
-  call output(vx, 'vx')
+  call output(rho, 'rho.dat')
+  call output(vh, 'vh.dat')
+  call output(vc, 'vc.dat')
+  call output(vx, 'vx.dat')
 
   deallocate(vext, vh, vx, vc, rho, vtot)
 

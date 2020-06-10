@@ -21,7 +21,7 @@ subroutine test_hartree
      enddo
   enddo
   rho(:, :) = rho(:, :)/(alpha**2*pi)
-  call output(rho,'rho')
+  call output(rho,'rho.dat')
 
   write(*, *) 'Integrated charge: ', sum(rho(:, :))*delta**2, sum(rho(:, :))
 
@@ -32,11 +32,11 @@ subroutine test_hartree
    write(*, *) 'Calling poisson_solve...'
   call poisson_sum(rho, vhsum)
    write(*, *) 'Done.'
-  call output(vhsum, 'vhsum')
+  call output(vhsum, 'vhsum.dat')
    write(*, *) 'Calling poisson_fft...'
   call poisson_fft(rho, vhfft)
    write(*, *) 'Done.'
-  call output(vhfft, 'vhfft')
+  call output(vhfft, 'vhfft.dat')
 
 
   do ix = 1, n

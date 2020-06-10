@@ -27,17 +27,17 @@ subroutine gs
 
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   ! This is to permit the use of FFTs through the FFTW package.
-  write(*, '(a)') 'Initializing FFTs...'
-  call fft_all_init()
-  write(*, '(a)') 'Done.'
+  !write(*, '(a)') 'Initializing FFTs...'
+  !call fft_all_init()
+  !write(*, '(a)') 'Done.'
 
 
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   ! This initializes the solver for the Hartree term (it needs to be done only
   ! if FFTs are to be used to solve it.
-  write(*, '(a)') 'Initializing the Hartree solver...'
-  call poisson_init()
-  write(*, '(a,/)') 'Done.'
+  !write(*, '(a)') 'Initializing the Hartree solver...'
+  !call poisson_init()
+  !write(*, '(a,/)') 'Done.'
 
 
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

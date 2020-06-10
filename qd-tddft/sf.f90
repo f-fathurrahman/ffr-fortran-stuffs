@@ -18,8 +18,8 @@ subroutine strength_function
   real(8) :: x, dt, e, t, relt, sf(2), filter
   real(8), allocatable :: signal(:, :)
 
-  character(len=8), parameter :: infilename  = "dipole", &
-                                 outfilename = "spectrum"
+  character(len=8), parameter :: infilename  = "dipole.dat", &
+                                 outfilename = "spectrum.dat"
   integer, parameter :: nesteps = 2001
   real(8), parameter :: dw = 0.001_8, &
                         emax = 0.001_8*(nesteps-1)
