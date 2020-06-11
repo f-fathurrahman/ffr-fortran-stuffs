@@ -1,20 +1,3 @@
-!! This program is free software; you can redistribute it and/or modify
-!! it under the terms of the GNU General Public License as published by
-!! the Free Software Foundation; either version 2, or (at your option)
-!! any later version.
-!!
-!! This program is distributed in the hope that it will be useful,
-!! but WITHOUT ANY WARRANTY; without even the implied warranty of
-!! MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-!! GNU General Public License for more details.
-!!
-!! You should have received a copy of the GNU General Public License
-!! along with this program; if not, write to the Free Software
-!! Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
-
-
-
-
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! MODULE EXPO
 ! ===========
@@ -33,6 +16,7 @@ module expo
                         EXPOKIT = 3
 
   integer, parameter :: mode = LANCZOS
+  !integer, parameter :: mode = EXPOKIT
 
   real(8), allocatable :: pot(:, :)
 
@@ -151,7 +135,7 @@ subroutine exponential_lanczos(v, wf, dt)
 
   order = min(korder, i+1)
   if(res> tol .and. beta > 1.0e-12_8) then
-     write(*, '(a)') 'Warning: Lanczos exponential expansion did not converge'
+     write(*, '(1x,a,2ES18.10)') 'Warning: Lanczos exponential expansion did not converge: ', res, beta
   endif
 
   call zgemv('n', n**2, korder, cmplx(nrm, 0.0d0, 8), x, n**2, expo, 1, cmplx(0.0d0, 0.0d0, 8), wf, 1)

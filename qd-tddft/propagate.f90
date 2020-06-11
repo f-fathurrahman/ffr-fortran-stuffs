@@ -15,8 +15,9 @@ subroutine propagate()
   allocate(rho(N, N), vext(N, N), vh(N, N), vx(N, N), vc(N, N), vtot(N, N), hwf(N, N))
   allocate(eigenval(N_wf))
 
-  prop_time = 1000.0_8
-  dt = 1.0_8
+  prop_time = 1000.d0
+  dt = 1.0d0
+  !dt = 0.5d0
   niter = nint(prop_time/dt)
 
   dipole_unit = 12
@@ -47,7 +48,7 @@ subroutine propagate()
 
      t = i*dt
 
-     open(unit = dipole_unit, file="dipole", position="append")
+     open(unit = dipole_unit, file="dipole.dat", position="append")
      write(dipole_unit, '(3e18.8)') t, dipole(1), dipole(2)
      close(unit = dipole_unit)
 

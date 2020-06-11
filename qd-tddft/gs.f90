@@ -20,7 +20,7 @@ subroutine gs
   ! calculated. The allocates the wfs variable, that holds the wavefunctions
   ! throught all the program.
   N_occ = 1
-  N_empty = 0
+  N_empty = 1
   N_wf = N_occ + N_empty
   allocate(wfs(N, N, N_wf))
 
@@ -55,7 +55,7 @@ subroutine gs
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   ! The obtained wavefunctions are to be used by other programs, such as td.
   ! We write them into a file called 'wfs'.
-  call write_wfs('wfs')
+  call write_wfs('wfs.dat')
 
   ! clean up
   deallocate(wfs)
