@@ -8,7 +8,8 @@
 ! !INTERFACE:
 subroutine gencfun
 ! !USES:
-use modmain
+use modmain, only: natoms, cfunig, cfunir, ffacg, atposc, nspecies, ngtot, &
+                   ngridg, igfft, vgc
 ! !DESCRIPTION:
 !   Generates the smooth characteristic function. This is the function which is
 !   0 within the muffin-tins and 1 in the intersitial region and is constructed

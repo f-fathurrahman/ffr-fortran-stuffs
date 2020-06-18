@@ -6,16 +6,11 @@
 subroutine readspecies
 
 !use modmain
-use modmain, only: sppath, spfname, spsymb, spzn, spmass, nspecies
-use modmain, only: spname, spcore
-use modmain, only: rminsp, nstsp, nsp, ksp, lsp, occsp
-use modmain, only: nrmt, rmt, rmaxsp, nrmtscf
-use modmain, only: maxstsp
-use modmain, only: nxoapwlo, nxlo, rmtall
-use modmain, only: apword, apwe0, apwdm, apwve
-use modmain, only: nlorb, lorbord, lorbve, lorbdm, lorbe0, lorbl, maxlorbord, maxlorb
-use modmain, only: lmaxo, maxapword, lmaxapw, e0min
-
+use modmain, only: sppath, spfname, spsymb, spzn, spmass, nspecies, &
+                   spname, spcore, rminsp, nstsp, nsp, ksp, lsp, occsp, &
+                   nrmt, rmt, rmaxsp, nrmtscf, maxstsp, nxoapwlo, nxlo, rmtall, &
+                   apword, apwe0, apwdm, apwve, nlorb, lorbord, lorbve, lorbdm, &
+                   lorbe0, lorbl, maxlorbord, maxlorb, lmaxo, maxapword, lmaxapw, e0min
 implicit none
 ! local variables
 integer is,ist,ios

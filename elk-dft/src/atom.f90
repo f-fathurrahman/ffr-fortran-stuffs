@@ -1,14 +1,6 @@
-
-! Copyright (C) 2002-2005 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: atom
-! !INTERFACE:
 subroutine atom(sol,ptnucl,zn,nst,n,l,k,occ,xctype,xcgrad,nr,r,eval,rho,vr,rwf)
-! !USES:
-use modxcifc
+
+use modxcifc, only: xcifc
 ! !INPUT/OUTPUT PARAMETERS:
 !   sol    : speed of light in atomic units (in,real)
 !   ptnucl : .true. if the nucleus is a point particle (in,logical)
@@ -32,14 +24,7 @@ use modxcifc
 !   exchange-correlation functional {\tt xctype} and returns the self-consistent
 !   radial wavefunctions, eigenvalues, charge densities and potentials. Requires
 !   the exchange-correlation interface routine {\tt xcifc}.
-!
-! !REVISION HISTORY:
-!   Created September 2002 (JKD)
-!   Fixed s.c. convergence problem, October 2003 (JKD)
-!   Added support for GGA functionals, June 2006 (JKD)
-!
-!EOP
-!BOC
+
 implicit none
 ! arguments
 real(8), intent(in) :: sol

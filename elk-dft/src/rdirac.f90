@@ -1,11 +1,3 @@
-
-! Copyright (C) 2002-2005 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU Lesser General Public
-! License. See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: rdirac
-! !INTERFACE:
 subroutine rdirac(sol,n,l,k,nr,r,vr,eval,g0,f0)
 ! !INPUT/OUTPUT PARAMETERS:
 !   sol  : speed of light in atomic units (in,real)
@@ -25,11 +17,6 @@ subroutine rdirac(sol,n,l,k,nr,r,vr,eval,g0,f0)
 !   number of nodes in the wavefunction equals $n-l-1$. The calling routine must
 !   provide an initial estimate for the eigenvalue. Note that the arrays
 !   {\tt g0} and {\tt f0} represent the radial functions multiplied by $r$.
-!
-! !REVISION HISTORY:
-!   Created September 2002 (JKD)
-!EOP
-!BOC
 implicit none
 ! arguments
 real(8), intent(in) :: sol
@@ -141,5 +128,3 @@ call dscal(nr,t1,g0,1)
 call dscal(nr,t1,f0,1)
 return
 end subroutine
-!EOC
-

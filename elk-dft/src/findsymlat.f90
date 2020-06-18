@@ -9,9 +9,9 @@
 subroutine findsymlat
 
 ! !USES:
-use modmain, only: isymlat, symlat, symlatd, vqlss, epslat
-use modmain, only: efieldl, afieldl, tefield, tafield
-use modmain, only: spinsprl, ainv, avec, nsymlat, symlatc
+use modmain, only: isymlat, symlat, symlatd, vqlss, epslat, efieldl, &
+                   afieldl, tefield, tafield, spinsprl, ainv, avec, &
+                   nsymlat, symlatc
 use modtddft, only: afieldt, afieldt, tafieldt, ntimes
 
 ! !DESCRIPTION:
@@ -150,7 +150,6 @@ end do
 write(*,*)
 write(*,*) 'findsymlat: nsymlat = ', nsymlat
 write(*,*)
-stop
 
 ! determine the lattice symmetries in Cartesian coordinates
 do i=1,nsymlat

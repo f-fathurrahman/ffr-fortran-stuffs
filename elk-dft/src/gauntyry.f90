@@ -1,11 +1,3 @@
-
-! Copyright (C) 2002-2005 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU Lesser General Public
-! License. See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: gauntyry
-! !INTERFACE:
 complex(8) function gauntyry(l1,l2,l3,m1,m2,m3)
 ! !INPUT/OUTPUT PARAMETERS:
 !   l1, l2, l3 : angular momentum quantum numbers (in,integer)
@@ -15,11 +7,6 @@ complex(8) function gauntyry(l1,l2,l3,m1,m2,m3)
 !   $\langle Y^{l_1}_{m_1}|R^{l_2}_{m_2}|Y^{l_3}_{m_3}\rangle$, where $Y_{lm}$
 !   and $R_{lm}$ are the complex and real spherical harmonics, respectively.
 !   Suitable for $l_i$ less than 50. See routine {\tt genrlm}.
-!
-! !REVISION HISTORY:
-!   Created November 2002 (JKD)
-!EOP
-!BOC
 implicit none
 ! arguments
 integer, intent(in) :: l1,l2,l3

@@ -8,7 +8,7 @@
 ! !INTERFACE:
 subroutine genylmg
 ! !USES:
-use modmain
+use modmain, only: ngvec, vgc, ylmg, lmaxo, lmmaxo
 ! !DESCRIPTION:
 !   Generates a set of spherical harmonics, $Y_{lm}(\hat{\bf G})$, with angular
 !   momenta up to {\tt lmaxo} for the set of ${\bf G}$-vectors.

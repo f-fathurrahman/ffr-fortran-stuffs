@@ -4,7 +4,9 @@
 ! See the file COPYING for license details.
 
 subroutine energynn
-use modmain
+use modmain, only: spzn, nrmt, nrmtmax, idxis, nrmti, vcln, npmt, ylmg, &
+                   sfacg, y00, rlmt, npmtmax, npmti, ngtot, ngridg, natmtot, &
+                   lmmaxo, lmmaxi, ngvec, jlgrmt, igfft, gclg, gc, engynn
 implicit none
 ! local variables
 integer is,ias,i

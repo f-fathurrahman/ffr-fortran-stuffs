@@ -1,10 +1,6 @@
-
-! Copyright (C) 2012 J. K. Dewhurst, S. Sharma and E. K. U. Gross.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
-
 subroutine nuclei
-use modmain
+use modmain, only: nrcmt, nrcnucl, rnucl, nrmt, nrnucl, rsp, rcmt, &
+                   volnucl, pi, spzn, nspecies
 implicit none
 ! local variables
 integer is,ir,irc

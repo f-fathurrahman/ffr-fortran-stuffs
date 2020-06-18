@@ -1,15 +1,7 @@
-
-! Copyright (C) 2002-2005 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: gensfacgp
-! !INTERFACE:
 subroutine gensfacgp(ngp,vgpc,ld,sfacgp)
 ! !USES:
-use modmain
-use modomp
+use modmain, only: atposc, idxia, idxis, natmtot
+use modomp, only: holdthd, freethd
 ! !INPUT/OUTPUT PARAMETERS:
 !   ngp    : number of G+p-vectors (in,integer)
 !   vgpc   : G+p-vectors in Cartesian coordinates (in,real(3,*))

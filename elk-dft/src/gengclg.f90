@@ -4,7 +4,7 @@
 ! See the file COPYING for license details.
 
 subroutine gengclg
-use modmain
+use modmain, only: gclg, ngvec, gc, fourpi
 implicit none
 ! local variables
 if (allocated(gclg)) deallocate(gclg)

@@ -1,11 +1,3 @@
-
-! Copyright (C) 2002-2005 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU Lesser General Public
-! License. See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: fderiv
-! !INTERFACE:
 subroutine fderiv(m,n,x,f,g)
 ! !INPUT/OUTPUT PARAMETERS:
 !   m : order of derivative (in,integer)
@@ -20,11 +12,6 @@ subroutine fderiv(m,n,x,f,g)
 !   $$ g(x_i)=\int_{x_1}^{x_i} f(x)\,dx $$
 !   is calculated. Both derivatives and integrals are computed by first fitting
 !   the function to a clamped cubic spline.
-!
-! !REVISION HISTORY:
-!   Created May 2002 (JKD)
-!EOP
-!BOC
 implicit none
 ! arguments
 integer, intent(in) :: m,n
@@ -66,5 +53,3 @@ case(4:)
 end select
 return
 end subroutine
-!EOC
-

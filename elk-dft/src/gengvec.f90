@@ -8,7 +8,8 @@
 ! !INTERFACE:
 subroutine gengvec
 ! !USES:
-use modmain
+use modmain, only: ngridg, igfft, ivg, ivgig, gc, intgv, ngvec, ngtot, gmaxvr, gkmax, &
+                   epslat, avec, vgc, bvec
 ! !DESCRIPTION:
 !   Generates a set of ${\bf G}$-vectors used for the Fourier transform of the
 !   charge density and potential and sorts them according to length. Integers

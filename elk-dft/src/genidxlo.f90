@@ -1,23 +1,11 @@
-
-! Copyright (C) 2002-2005 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: genidxlo
-! !INTERFACE:
 subroutine genidxlo
 ! !USES:
-use modmain
+use modmain, only: nlorb, idxlo, idxlm, lorbl, nlotot, nlomax, idxis, &
+                   natmtot, lolmmax
 ! !DESCRIPTION:
 !   Generates an index array which maps the local-orbitals in each atom to their
 !   locations in the overlap or Hamiltonian matrices. Also finds the total
 !   number of local-orbitals.
-!
-! !REVISION HISTORY:
-!   Created June 2003 (JKD)
-!EOP
-!BOC
 implicit none
 ! local variables
 integer is,ias,i,ilo,l,m,lm

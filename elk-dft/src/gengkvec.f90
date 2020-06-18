@@ -1,11 +1,3 @@
-
-! Copyright (C) 2002-2012 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: gengkvec
-! !INTERFACE:
 subroutine gengkvec(ngvec,ivg,vgc,vkl,vkc,gkmax,ngkmax,ngk,igkig,vgkl,vgkc,gkc)
 ! !INPUT/OUTPUT PARAMETERS:
 !   ngvec  : number of G-vectors (in,integer)
@@ -24,12 +16,6 @@ subroutine gengkvec(ngvec,ivg,vgc,vkl,vkc,gkmax,ngkmax,ngk,igkig,vgkl,vgkc,gkc)
 !   Generates a set of ${\bf G+k}$-vectors for the input $k$-point with length
 !   less than {\tt gkmax}.
 !
-! !REVISION HISTORY:
-!   Created April 2003 (JKD)
-!   Removed spherical coordinate generation, May 2010 (JKD)
-!   Removed modmain and added arguments, September 2012 (JKD)
-!EOP
-!BOC
 implicit none
 ! arguments
 integer, intent(in) :: ngvec,ivg(3,ngvec)

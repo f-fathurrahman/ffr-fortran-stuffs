@@ -472,27 +472,35 @@ else
 end if
 npsd=max(nint(t1),1)
 lnpsd=lmaxo+npsd+1
+
 ! generate the Coulomb Green's function in G-space = fourpi / G^2
 call gengclg
+
 ! compute the spherical Bessel functions j_l(|G|R_mt)
 if (allocated(jlgrmt)) deallocate(jlgrmt)
 allocate(jlgrmt(0:lnpsd,ngvec,nspecies))
 call genjlgprmt(lnpsd,ngvec,gc,ngvec,jlgrmt)
+
 ! generate the spherical harmonics of the G-vectors
 call genylmg
+
 ! allocate structure factor array for G-vectors
 if (allocated(sfacg)) deallocate(sfacg)
 allocate(sfacg(ngvec,natmtot))
+
 ! generate structure factors for G-vectors
 call gensfacgp(ngvec,vgc,ngvec,sfacg)
+
 ! generate the smooth step function form factors
 if (allocated(ffacg)) deallocate(ffacg)
 allocate(ffacg(ngtot,nspecies))
 do is=1,nspecies
   call genffacgp(is,gc,ffacg(:,is))
 end do
+
 ! generate the characteristic function
 call gencfun
+
 ! write to VARIABLES.OUT
 call writevars('gmaxvr',rv=gmaxvr)
 call writevars('ngridg',nv=3,iva=ngridg)
@@ -504,6 +512,7 @@ call writevars('igfft',nv=ngtot,iva=igfft)
 !-------------------------!
 !     atoms and cores     !
 !-------------------------!
+
 ! determine the nuclear Coulomb potential
 if (allocated(vcln)) deallocate(vcln)
 allocate(vcln(nrspmax,nspecies))
@@ -513,8 +522,10 @@ do is=1,nspecies
   call potnucl(ptnucl,nr,rsp(:,is),spzn(is),vcln(:,is))
   vcln(1:nr,is)=t1*vcln(1:nr,is)
 end do
+
 ! solve the Kohn-Sham-Dirac equations for all atoms
 call allatoms
+
 ! allocate core state occupancy and eigenvalue arrays and set to default
 if (allocated(occcr)) deallocate(occcr)
 allocate(occcr(nstspmax,natmtot))
@@ -527,15 +538,18 @@ do ias=1,natmtot
     evalcr(ist,ias)=evalsp(ist,is)
   end do
 end do
+
 ! allocate core state radial wavefunction array
 if (allocated(rwfcr)) deallocate(rwfcr)
 allocate(rwfcr(nrspmax,2,nstspmax,natmtot))
+
 ! number of core spin channels
 if (spincore) then
   nspncr=2
 else
   nspncr=1
 end if
+
 ! allocate core state charge density array
 if (allocated(rhocr)) deallocate(rhocr)
 allocate(rhocr(nrmtmax,natmtot,nspncr))

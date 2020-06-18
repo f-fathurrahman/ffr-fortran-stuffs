@@ -8,9 +8,9 @@
 ! !INTERFACE:
 subroutine findsym(apl1,apl2,nsym,lspl,lspn,iea)
 ! !USES:
-use modmain, only: natoms, idxas, bfcmt0, bfieldc0, symlatd, spinpol, spinorb
-use modmain, only: nsymlat, maxspecies, nspinor, nsymlat, nspecies
-use modmain, only: natmmax, maxatoms, epslat, symlat, symlatc
+use modmain, only: natoms, idxas, bfcmt0, bfieldc0, symlatd, spinpol, spinorb, &
+                   nsymlat, maxspecies, nspinor, nsymlat, nspecies, natmmax, &
+                   maxatoms, epslat, symlat, symlatc
 use moddftu, only: lmmaxdm, ftmtype, dmftm, lmaxdm
 ! !INPUT/OUTPUT PARAMETERS:
 !   apl1 : first set of atomic positions in lattice coordinates

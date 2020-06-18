@@ -4,7 +4,7 @@
 ! See the file COPYING for license details.
 
 subroutine genffacgp(is,gpc,ffacgp)
-use modmain
+use modmain, only: rmt, omega, fourpi, epslat, ngtot
 implicit none
 ! arguments
 integer, intent(in) :: is

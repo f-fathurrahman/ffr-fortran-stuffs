@@ -1,31 +1,10 @@
-
-! Copyright (C) 2002-2005 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: allatoms
-! !INTERFACE:
 subroutine allatoms
-! !USES:
-use modmain
-use modxcifc
-use modomp
-! !DESCRIPTION:
-!   Solves the Kohn-Sham-Dirac equations for each atom type in the solid and
-!   finds the self-consistent radial wavefunctions, eigenvalues, charge
-!   densities and potentials. The atomic densities can then be used to
-!   initialise the crystal densities, and the atomic self-consistent potentials
-!   can be appended to the muffin-tin potentials to solve for the core states.
-!   Note that, irrespective of the value of {\tt xctype}, exchange-correlation
-!   functional type 3 is used. See also {\tt atoms}, {\tt rhoinit},
-!   {\tt gencore} and {\tt modxcifc}.
-!
-! !REVISION HISTORY:
-!   Created September 2002 (JKD)
-!   Modified for GGA, June 2007 (JKD)
-!EOP
-!BOC
+
+use modmain, only: nspecies, xctsp, nstspmax, nstsp, nsp, nrspmax, lsp, vrsp, &
+                   ksp, rhosp, occsp, rsp, evalsp, solsc, ptnucl, spzn, nrsp
+use modxcifc, only: getxcdata
+use modomp, only: holdthd, freethd
+
 implicit none
 logical hybrid_
 integer xcspin_,xcgrad_

@@ -8,8 +8,11 @@
 ! !INTERFACE:
 subroutine genrmesh
 ! !USES:
-use modmain
-use modvars
+use modmain, only: nrcmt, rlmt, nrmt, rlcmt, nrmti, rsp, nrcmti, rcmt, rmt, &
+                   nrsp, nrspmax, rminsp, rmaxsp, nspecies, nrcmtmax, nrmtmax, &
+                   lradstp, lmmaxi, lmmaxo, lmaxo, fracinr, wprcmt, wrcmt, wrmt, &
+                   wprmt
+use modvars, only: writevars
 ! !DESCRIPTION:
 !   Generates the coarse and fine radial meshes for each atomic species in the
 !   crystal. Also determines which points are in the inner part of the

@@ -1,8 +1,3 @@
-
-! Copyright (C) 2019 J. K. Dewhurst, S. Sharma and E. K. U. Gross.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
-
 pure subroutine splintwp(n,wp,f,g)
 implicit none
 ! arguments

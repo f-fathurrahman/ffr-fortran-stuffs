@@ -1,14 +1,7 @@
-
-! Copyright (C) 2002-2005 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: genshtmat
-! !INTERFACE:
 subroutine genshtmat
 ! !USES:
-use modmain
+use modmain, only: lmmaxo, lmmaxi, zfshto, zfshti, trotsht, rotsht, rfshto, &
+                   rfshti, lmaxo, lmaxi, zbshto, zbshti, rbshto, rbshti
 ! !DESCRIPTION:
 !   Generates the forward and backward spherical harmonic transformation (SHT)
 !   matrices using the spherical covering set produced by the routine
@@ -109,5 +102,3 @@ zfshti(:,:)=zbshti(:,:)
 call zminv(lmmaxi,zfshti)
 return
 end subroutine
-!EOC
-

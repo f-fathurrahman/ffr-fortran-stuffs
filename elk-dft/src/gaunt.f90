@@ -1,11 +1,3 @@
-
-! Copyright (C) 2002-2005 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU Lesser General Public
-! License. See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: gaunt
-! !INTERFACE:
 real(8) function gaunt(l1,l2,l3,m1,m2,m3)
 ! !INPUT/OUTPUT PARAMETERS:
 !   l1, l2, l3 : angular momentum quantum numbers (in,integer)
@@ -18,11 +10,6 @@ real(8) function gaunt(l1,l2,l3,m1,m2,m3)
 !    \begin{pmatrix} l_1 & l_2 & l_3 \\  0   & 0   & 0   \end{pmatrix}
 !    \begin{pmatrix} l_1 & l_2 & l_3 \\ -m_1 & m_2 & m_3 \end{pmatrix}. $$
 !   Suitable for $l_i$ less than 50.
-!
-! !REVISION HISTORY:
-!   Created November 2002 (JKD)
-!EOP
-!BOC
 implicit none
 ! arguments
 integer, intent(in) :: l1,l2,l3

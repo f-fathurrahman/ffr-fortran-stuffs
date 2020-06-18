@@ -8,11 +8,11 @@
 ! !INTERFACE:
 subroutine findsymcrys
 ! !USES:
-use modmain, only: tv0symc, tsyminv, vtlsymc, lsplsymc, natoms, ieqatom
-use modmain, only: lspnsymc, isymlat, eqatoms, efieldc, tefield, symtype
-use modmain, only: nspecies, nsymcrys, tshift, natmtot, natmmax, maxsymcrys
-use modmain, only: avec, epslat, atposl, maxspecies, maxatoms, vtcsymc
-use modmain, only: symlat, atposc
+use modmain, only: tv0symc, tsyminv, vtlsymc, lsplsymc, natoms, ieqatom, &
+                   lspnsymc, isymlat, eqatoms, efieldc, tefield, symtype, &
+                   nspecies, nsymcrys, tshift, natmtot, natmmax, maxsymcrys, &
+                   avec, epslat, atposl, maxspecies, maxatoms, vtcsymc, &
+                   symlat, atposc
 
 use modmpi, only: mp_mpi
 use modtest, only: writetest

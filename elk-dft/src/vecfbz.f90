@@ -1,11 +1,3 @@
-
-! Copyright (C) 2008 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU Lesser General Public
-! License. See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: vecfbz
-! !INTERFACE:
 subroutine vecfbz(eps,bvec,vpl)
 ! !INPUT/OUTPUT PARAMETERS:
 !   eps  : zero component tolerance (in,real)
@@ -15,11 +7,6 @@ subroutine vecfbz(eps,bvec,vpl)
 !   Maps a vector in lattice coordinates to the first Brillouin zone. This is
 !   done by first removing its integer components and then adding primitive
 !   reciprocal lattice vectors until the shortest vector is found.
-!
-! !REVISION HISTORY:
-!   Created September 2008 (JKD)
-!EOP
-!BOC
 implicit none
 ! arguments
 real(8), intent(in) :: eps,bvec(3,3)

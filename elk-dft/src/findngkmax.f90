@@ -1,11 +1,3 @@
-
-! Copyright (C) 2002-2012 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: findngkmax
-! !INTERFACE:
 subroutine findngkmax(nkpt,vkc,nspnfv,vqcss,ngvec,vgc,gkmax,ngkmax)
 ! !INPUT/OUTPUT PARAMETERS:
 !   nkpt   : number of k-points (in,integer)
@@ -21,13 +13,6 @@ subroutine findngkmax(nkpt,vkc,nspnfv,vqcss,ngvec,vgc,gkmax,ngkmax)
 !   Determines the largest number of ${\bf G+k}$-vectors with length less than
 !   {\tt gkmax} over all the $k$-points. This variable is used for allocating
 !   arrays.
-!
-! !REVISION HISTORY:
-!   Created October 2004 (JKD)
-!   Modified, August 2012 (JKD)
-!   Removed modmain and added arguments, September 2012 (JKD)
-!EOP
-!BOC
 implicit none
 ! arguments
 integer, intent(in) :: nkpt

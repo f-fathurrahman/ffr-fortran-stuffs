@@ -1,15 +1,10 @@
-
-! Copyright (C) 2002-2005 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: rhoinit
-! !INTERFACE:
 subroutine rhoinit
 ! !USES:
-use modmain
-use modomp
+use modmain, only: rhoir, rhomt, rhosp, nrmti, nrmt, idxis, idxas, ylmg, zil, &
+                   rcmt, igfft, sfacg, gc, npcmtmax, npcmt, nspecies, nrcmt, nrcmti, &
+                   natoms, rsp, nrsp, y00, omega, nrsp, nrspmax, nrcmtmax, ngvec, ngtot, &
+                   ngridg, lmmaxi, lmmaxo, natmtot, lmaxi, fourpi, gmaxvr, epslat, chgexs
+use modomp, only: freethd, holdthd
 ! !DESCRIPTION:
 !   Initialises the crystal charge density. Inside the muffin-tins it is set to
 !   the spherical atomic density. In the interstitial region it is taken to be

@@ -1,11 +1,3 @@
-
-! Copyright (C) 2002-2007 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU Lesser General Public
-! License. See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: genppts
-! !INTERFACE:
 subroutine genppts(tfbz,nsym,sym,ngridp,npptnr,epslat,bvec,boxl,nppt,ipvip, &
  ipvipnr,ivp,vpl,vpc,wppt,wpptnr)
 ! !INPUT/OUTPUT PARAMETERS:
@@ -53,13 +45,6 @@ subroutine genppts(tfbz,nsym,sym,ngridp,npptnr,epslat,bvec,boxl,nppt,ipvip, &
 !   $p$-point weights are stored in {\tt wppt} and the array {\tt ipvip}
 !   contains the map from the integer coordinates to the reduced index.
 !
-! !REVISION HISTORY:
-!   Created August 2002 (JKD)
-!   Updated April 2007 (JKD)
-!   Added mapping to the first Brillouin zone, September 2008 (JKD)
-!   Made independent of modmain, February 2010 (JKD)
-!EOP
-!BOC
 implicit none
 ! arguments
 logical, intent(in) :: tfbz

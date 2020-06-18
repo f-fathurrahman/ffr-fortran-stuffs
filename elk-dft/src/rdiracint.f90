@@ -1,11 +1,3 @@
-
-! Copyright (C) 2002-2015 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU Lesser General Public
-! License. See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: rdiracint
-! !INTERFACE:
 subroutine rdiracint(sol,kpa,e,nr,r,vr,nn,g0,g1,f0,f1)
 ! !INPUT/OUTPUT PARAMETERS:
 !   sol  : speed of light in atomic units (in,real)
@@ -36,12 +28,6 @@ subroutine rdiracint(sol,kpa,e,nr,r,vr,nn,g0,g1,f0,f1)
 !   potential; $E_0$ is the electron rest energy; $E$ is the eigen energy
 !   (excluding $E_0$); and $\kappa=l$ for $j=l-\frac{1}{2}$ or $\kappa=-(l+1)$
 !   for $j=l+\frac{1}{2}$.
-!
-! !REVISION HISTORY:
-!   Created September 2002 (JKD)
-!   Polynomial order fixed to 3, September 2013 (JKD)
-!EOP
-!BOC
 implicit none
 ! arguments
 real(8), intent(in) :: sol

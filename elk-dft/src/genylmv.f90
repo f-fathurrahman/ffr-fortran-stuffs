@@ -1,11 +1,3 @@
-
-! Copyright (C) 2002-2005 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU Lesser General Public
-! License. See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: genylmv
-! !INTERFACE:
 subroutine genylmv(lmax,v,ylm)
 ! !INPUT/OUTPUT PARAMETERS:
 !   lmax : maximum angular momentum (in,integer)
@@ -17,13 +9,6 @@ subroutine genylmv(lmax,v,ylm)
 !   are returned in a packed array {\tt ylm} indexed with $j=l(l+1)+m+1$. This
 !   routine is numerically stable and accurate to near machine precision for
 !   $l\le 50$.
-!
-! !REVISION HISTORY:
-!   Created March 2004 (JKD)
-!   Improved stability, December 2005 (JKD)
-!   Changed algorithm, June 2019 (JKD)
-!EOP
-!BOC
 implicit none
 ! arguments
 integer, intent(in) :: lmax

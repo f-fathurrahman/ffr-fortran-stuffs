@@ -1,11 +1,3 @@
-
-! Copyright (C) 2008 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU Lesser General Public
-! License. See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: sphcover
-! !INTERFACE:
 subroutine sphcover(n,tp)
 ! !INPUT/OUTPUT PARAMETERS:
 !   n  : number of required points (in,integer)
@@ -19,12 +11,6 @@ subroutine sphcover(n,tp)
 !    \phi_k&=(k-1)\delta\phi,
 !   \end{align*}
 !   where $\delta z=2/n$ and $\delta\phi=\pi(1-\sqrt{5})$.
-!
-! !REVISION HISTORY:
-!   Created April 2008 (JKD)
-!   Improved covering, October 2009 (JKD)
-!EOP
-!BOC
 implicit none
 ! arguments
 integer, intent(in) :: n
