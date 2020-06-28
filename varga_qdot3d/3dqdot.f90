@@ -42,7 +42,7 @@ SUBROUTINE init_lattice()
 !------------------------
   USE m_qd3d
   IMPLICIT NONE  
-  integer :: k1,k2,k3,num,i,k
+  integer :: k1,k2,k3,num
 
   ! Setup the lattice bookkeeping
   num=0
@@ -82,7 +82,7 @@ SUBROUTINE init_confining_potential
   k2=int(dfloat(N_L(2))/2.d0)
   k3=int(dfloat(N_L(3))/2.d0)
   do k1=1,N_L(1)
-	  i=Lattice_inv(k1,k2,k3)
+    i=Lattice_inv(k1,k2,k3)
     write(666,*)grid_point(1,i),V_ext(i)
   enddo  
 END SUBROUTINE
@@ -133,7 +133,7 @@ SUBROUTINE laplace_operator()
   IMPLICIT NONE
 
   ! 1st order finite difference representation of the Laplacian
-  integer :: i1,i2,i3,kpoint,i
+  integer :: i1,i2,i3,i
   REAL(8)  :: k_x,K_y,K_z
   wf=0.d0    
   do i=1,N_L_points
@@ -155,49 +155,49 @@ SUBROUTINE CoGr(b,NL)
   USE m_qd3d
   IMPLICIT NONE
   ! Solution of the Poisson equation using the conjugate gradient method
-	integer                          :: NL,iteration,i,j
-	REAL(8)                           :: c0,c1,alfa,beta,rr,bn,con,b(NL)
-	integer,parameter                :: N_iter=1500
-	REAL(8),parameter                 :: eps=1.d-10
-	REAL(8),dimension(:),allocatable  :: g,d,h,x
+  integer :: NL,iteration
+  REAL(8) :: c0,c1,alfa,beta,bn,con,b(NL)
+  integer, parameter :: N_iter=1500
+  REAL(8), parameter :: eps=1.d-10
+  REAL(8), dimension(:), allocatable :: g,d,h,x
 
-	allocate(g(NL),d(NL),h(NL),x(NL))
+  allocate(g(NL),d(NL),h(NL),x(NL))
 
-	bn=sqrt(dot_product(b,b))
-	x=0.d0
-	phi=x
-	if(N_d==4) then
-	  call laplace_operator4()
-	else
-	  call laplace_operator()
-	endif
-	g = b + L_phi
-	d = g
-	c0 = dot_product(g,g)
+  bn=sqrt(dot_product(b,b))
+  x=0.d0
+  phi=x
+  if(N_d==4) then
+    call laplace_operator4()
+  else
+    call laplace_operator()
+  endif
+  g = b + L_phi
+  d = g
+  c0 = dot_product(g,g)
 
-	do iteration=1,N_iter
-		con=abs(sqrt(dot_product(g,g))/bn)
-		if(con>eps) then
-		  phi=d
-		  	if(N_d==4) then
-					call laplace_operator4
-				else
-					call laplace_operator
-				endif
-		  h=L_phi
-		  alfa=-c0/dot_product(d,h)
-		  x=x+alfa*d
-		  g=g+alfa*h
-		  c1=dot_product(g,g)
-		  beta=c1/c0; c0=c1
-		  d=g+beta*d
-		endif
-	enddo
-	b=x
-	if(con>eps) then
-		write(*,*)'Poisson is not converged!'
-	endif
-	deallocate(g,d,x,h)
+  do iteration=1,N_iter
+    con=abs(sqrt(dot_product(g,g))/bn)
+    if(con>eps) then
+      phi=d
+        if(N_d==4) then
+          call laplace_operator4
+        else
+          call laplace_operator
+        endif
+      h=L_phi
+      alfa=-c0/dot_product(d,h)
+      x=x+alfa*d
+      g=g+alfa*h
+      c1=dot_product(g,g)
+      beta=c1/c0; c0=c1
+      d=g+beta*d
+    endif
+  enddo
+  b=x
+  if(con>eps) then
+    write(*,*)'Poisson is not converged!'
+  endif
+  deallocate(g,d,x,h)
 END SUBROUTINE
 
 !------------------------
@@ -291,40 +291,42 @@ END FUNCTION
 FUNCTION Ylm(x,y,z,lm)
 !---------------------
   IMPLICIT NONE
-	REAL(8), intent(IN) :: x,y,z
-	integer, intent(IN) :: lm
-	REAL(8)  :: Ylm,r
-	! Spherical harmonics
-	! It should be multiplied by r**l*sqrt((2*l+1)/4*pi)
-	r=x**2+y**2+z**2
-	select case( lm )
-		case(1)  ; Ylm=1.d0                                     ! lm=1  (0  0)
-		case(2)  ; Ylm=y                                        ! lm=2  (1 -1)
-		case(3)  ; Ylm=z                                        ! lm=3  (1  0)
-		case(4)  ; Ylm=x                                        ! lm=4  (1  1)
-		case(5)  ; Ylm=sqrt(3.d0)*x*y                           ! lm=5  (2 -2)
-		case(6)  ; Ylm=sqrt(3.d0)*y*z                           ! lm=6  (2 -1)
-		case(7)  ; Ylm=(2*z*z-x*x-y*y)/2.d0                     ! lm=7  (2  0)
-		case(8)  ; Ylm=sqrt(3.d0)*x*z                           ! lm=8  (2  1)
-		case(9)  ; Ylm=sqrt(3.d0/4.d0)*(x*x-y*y)                ! lm=9  (2  2)
-		case(10) ; Ylm=sqrt(5.d0/8.d0)*y*(3*x*x-y*y)            ! lm=10 (3 -3)
-		case(11) ; Ylm=sqrt(15.d0)*x*y*z                        ! lm=11 (3 -2)
-		case(12) ; Ylm=sqrt(3.d0/8.d0)*y*(4*z*z-x*x-y*y)        ! lm=12 (3 -1)
-		case(13) ; Ylm=z*(2*z*z-3*x*x-3*y*y)/2.d0               ! lm=13 (3  0)
-		case(14) ; Ylm=sqrt(3.d0/8.d0)*x*(4*z*z-x*x-y*y)        ! lm=14 (3  1)
-		case(15) ; Ylm=sqrt(15.d0/4.d0)*z*(x*x-y*y)             ! lm=15 (3  2)
-		case(16) ; Ylm=sqrt(5.d0/8.d0)*x*(x*x-3*y*y)            ! lm=16 (3  3)
+  REAL(8), intent(IN) :: x,y,z
+  integer, intent(IN) :: lm
+  REAL(8) :: Ylm, r
 
-		case(17) ; Ylm=sqrt(35.d0)/2.d0*x*y*(x**2-y**2)         ! lm=17 (4 -4)
-		case(18) ; Ylm=sqrt(35.d0/8.d0)*y*z*(3*x**2-y**2)       ! lm=18 (4 -3)
-		case(19) ; Ylm=sqrt(5.d0)/2.d0*x*y*(7*z**2-r**2)        ! lm=19 (4 -2)
-		case(20) ; Ylm=sqrt(5.d0/8.d0)*y*(7*z**3-3*z*r**2)      ! lm=20 (4 -1)
-		case(21) ; Ylm=(35*z**4-30*z**2*r**2+3.d0*r**2)/8.d0    ! lm=21 (4  0)
-		case(22) ; Ylm=sqrt(5.d0/8.d0)*x*(7*z**3-3*z*r**2)      ! lm=22 (4  1)
-		case(23) ; Ylm=sqrt(5.d0)/4.d0*(7*z**2-r**2)*(x**2-y**2)! lm=23 (4  2)
-		case(24) ; Ylm=sqrt(35.d0/8.d0)*z*x*(x**2-3*y**2)       ! lm=24 (4  3)
-		case(25) ; Ylm=sqrt(35.d0)/8.d0*(x**4+y**4-6*x**2*y**2) ! lm=25 (4  4)
-	end select
+  Ylm = 0.d0
+  ! Spherical harmonics
+  ! It should be multiplied by r**l*sqrt((2*l+1)/4*pi)
+  r = x**2 + y**2 + z**2
+  select case( lm )
+    case(1)  ; Ylm=1.d0                                     ! lm=1  (0  0)
+    case(2)  ; Ylm=y                                        ! lm=2  (1 -1)
+    case(3)  ; Ylm=z                                        ! lm=3  (1  0)
+    case(4)  ; Ylm=x                                        ! lm=4  (1  1)
+    case(5)  ; Ylm=sqrt(3.d0)*x*y                           ! lm=5  (2 -2)
+    case(6)  ; Ylm=sqrt(3.d0)*y*z                           ! lm=6  (2 -1)
+    case(7)  ; Ylm=(2*z*z-x*x-y*y)/2.d0                     ! lm=7  (2  0)
+    case(8)  ; Ylm=sqrt(3.d0)*x*z                           ! lm=8  (2  1)
+    case(9)  ; Ylm=sqrt(3.d0/4.d0)*(x*x-y*y)                ! lm=9  (2  2)
+    case(10) ; Ylm=sqrt(5.d0/8.d0)*y*(3*x*x-y*y)            ! lm=10 (3 -3)
+    case(11) ; Ylm=sqrt(15.d0)*x*y*z                        ! lm=11 (3 -2)
+    case(12) ; Ylm=sqrt(3.d0/8.d0)*y*(4*z*z-x*x-y*y)        ! lm=12 (3 -1)
+    case(13) ; Ylm=z*(2*z*z-3*x*x-3*y*y)/2.d0               ! lm=13 (3  0)
+    case(14) ; Ylm=sqrt(3.d0/8.d0)*x*(4*z*z-x*x-y*y)        ! lm=14 (3  1)
+    case(15) ; Ylm=sqrt(15.d0/4.d0)*z*(x*x-y*y)             ! lm=15 (3  2)
+    case(16) ; Ylm=sqrt(5.d0/8.d0)*x*(x*x-3*y*y)            ! lm=16 (3  3)
+
+    case(17) ; Ylm=sqrt(35.d0)/2.d0*x*y*(x**2-y**2)         ! lm=17 (4 -4)
+    case(18) ; Ylm=sqrt(35.d0/8.d0)*y*z*(3*x**2-y**2)       ! lm=18 (4 -3)
+    case(19) ; Ylm=sqrt(5.d0)/2.d0*x*y*(7*z**2-r**2)        ! lm=19 (4 -2)
+    case(20) ; Ylm=sqrt(5.d0/8.d0)*y*(7*z**3-3*z*r**2)      ! lm=20 (4 -1)
+    case(21) ; Ylm=(35*z**4-30*z**2*r**2+3.d0*r**2)/8.d0    ! lm=21 (4  0)
+    case(22) ; Ylm=sqrt(5.d0/8.d0)*x*(7*z**3-3*z*r**2)      ! lm=22 (4  1)
+    case(23) ; Ylm=sqrt(5.d0)/4.d0*(7*z**2-r**2)*(x**2-y**2)! lm=23 (4  2)
+    case(24) ; Ylm=sqrt(35.d0/8.d0)*z*x*(x**2-3*y**2)       ! lm=24 (4  3)
+    case(25) ; Ylm=sqrt(35.d0)/8.d0*(x**4+y**4-6*x**2*y**2) ! lm=25 (4  4)
+  end select
 END FUNCTION Ylm
 
 !-----------------------------------
@@ -335,10 +337,10 @@ SUBROUTINE Hamiltonian_wavefn(ispin)
   ! Calculate H|Phi>
   integer :: ispin
   if(N_d==4) then
-	  call laplace_operator4()
-	else
-	  call laplace_operator()
-	endif
+    call laplace_operator4()
+  else
+    call laplace_operator()
+  endif
   if(ispin==1) H_Phi = (V_ext+VH+V_exchange_up)*Phi - h2m*L_Phi
   if(ispin==2) H_Phi = (V_ext+VH+V_exchange_dw)*Phi - h2m*L_Phi
 END SUBROUTINE 
@@ -356,43 +358,43 @@ SUBROUTINE conjugate_gradient(ispin)
 
   allocate(alpha(N_L_points),beta(N_L_points),Phi0(N_L_points),H_Phi0(N_L_points))
   do orbital=1,N_orbitals(ispin)
-		Phi=Psi(:,orbital,ispin)
-		Phi0=Phi
-		call Hamiltonian_wavefn(ispin)
-		H_Phi0=H_Phi
-		Phi0_H_Phi0=sum(Phi*H_Phi)*Grid_Volume
-		Phi0_Phi0=1
-		delta=Phi0_H_Phi0
+    Phi=Psi(:,orbital,ispin)
+    Phi0=Phi
+    call Hamiltonian_wavefn(ispin)
+    H_Phi0=H_Phi
+    Phi0_H_Phi0=sum(Phi*H_Phi)*Grid_Volume
+    Phi0_Phi0=1
+    delta=Phi0_H_Phi0
 
     do iteration=1,N_iteration
-			alpha=2*(H_Phi0-delta*Phi0)
-			do i=1,orbital-1
-				alpha=alpha-Psi(:,i,ispin)*sum(Psi(:,i,ispin)*alpha)*Grid_Volume
-			enddo
-			gamma=sum(alpha*alpha)*Grid_Volume
-			if(iteration==1) beta=-alpha
-			if(iteration>1) beta=-alpha+gamma/overlap*beta
-			overlap=gamma
-			beta_Phi=sum(Phi0*beta)*Grid_Volume
-			beta_beta=sum(beta*beta)*Grid_Volume
-			beta_H_Phi=sum(H_Phi0*beta)*Grid_Volume
+      alpha=2*(H_Phi0-delta*Phi0)
+      do i=1,orbital-1
+        alpha=alpha-Psi(:,i,ispin)*sum(Psi(:,i,ispin)*alpha)*Grid_Volume
+      enddo
+      gamma=sum(alpha*alpha)*Grid_Volume
+      if(iteration==1) beta=-alpha
+      if(iteration>1) beta=-alpha+gamma/overlap*beta
+      overlap=gamma
+      beta_Phi=sum(Phi0*beta)*Grid_Volume
+      beta_beta=sum(beta*beta)*Grid_Volume
+      beta_H_Phi=sum(H_Phi0*beta)*Grid_Volume
 
-			Phi=beta
-			call Hamiltonian_wavefn(orbital)
-			alpha=H_Phi
-			Phi_H_Phi=sum(Phi*H_Phi)*Grid_Volume
-			A = Phi_H_Phi*beta_Phi  - beta_H_Phi*beta_beta
-			B = Phi_H_Phi*Phi0_Phi0   - Phi0_H_Phi0*beta_beta
-			C = beta_H_Phi*Phi0_Phi0 - Phi0_H_Phi0*beta_Phi
-			omega=(-B+sqrt(B*B-4*A*C))/(2*A)
-			Phi0   = Phi0   +omega*Phi
-			H_Phi0 = H_Phi0 +omega*H_Phi
-			Phi0_Phi0   =sum(Phi0*Phi0)*Grid_Volume
-			Phi0_H_Phi0 =sum(Phi0*H_Phi0)*Grid_Volume
-			delta=Phi0_H_Phi0/Phi0_Phi0
-		enddo
-		Phi0_Phi0=sum(Phi0*Phi0)*Grid_Volume
-		Psi(:,orbital,ispin)=Phi0/sqrt(Phi0_Phi0)
+      Phi=beta
+      call Hamiltonian_wavefn(orbital)
+      alpha=H_Phi
+      Phi_H_Phi=sum(Phi*H_Phi)*Grid_Volume
+      A = Phi_H_Phi*beta_Phi  - beta_H_Phi*beta_beta
+      B = Phi_H_Phi*Phi0_Phi0   - Phi0_H_Phi0*beta_beta
+      C = beta_H_Phi*Phi0_Phi0 - Phi0_H_Phi0*beta_Phi
+      omega=(-B+sqrt(B*B-4*A*C))/(2*A)
+      Phi0   = Phi0   +omega*Phi
+      H_Phi0 = H_Phi0 +omega*H_Phi
+      Phi0_Phi0   =sum(Phi0*Phi0)*Grid_Volume
+      Phi0_H_Phi0 =sum(Phi0*H_Phi0)*Grid_Volume
+      delta=Phi0_H_Phi0/Phi0_Phi0
+    enddo
+    Phi0_Phi0=sum(Phi0*Phi0)*Grid_Volume
+    Psi(:,orbital,ispin)=Phi0/sqrt(Phi0_Phi0)
   enddo
   deallocate(alpha,beta,Phi0,H_Phi0)
 END SUBROUTINE
@@ -405,7 +407,7 @@ SUBROUTINE orthogonalization(ispin)
   ! Gram-Schmidt orthogonalization
   integer :: orbital,i,ispin
   REAL(8) :: s
-  complex(8) :: overlap ! FIXME: Need to be complex?
+  real(8) :: overlap
 
   do orbital=1,N_orbitals(ispin)
     do i=1,orbital-1
@@ -438,8 +440,8 @@ SUBROUTINE total_energy(iteration)
   USE m_qd3d
   IMPLICIT NONE
   ! Calculate the total energy
-  integer :: i,orbital,ispin,iteration
-  REAL(8)  :: E_sp,E_total                 
+  integer :: orbital,ispin,iteration
+  REAL(8) :: E_sp,E_total                 
   
   E_sp=0.d0
   call Hamiltonian_density
@@ -470,21 +472,21 @@ SUBROUTINE calculate_density(c1,c2)
   USE m_qd3d
   IMPLICIT NONE
   ! Calculate the density using linear mixing
-  integer :: orbital,i,k,grid,ispin
+  integer :: orbital,i,ispin
   REAL(8)  :: c1,c2
-		    
+        
   Density_old=Density; Density=0.d0
   Density_up_old=Density_up; Density_dw_old=Density_dw
   Density_up=0.d0; Density_dw=0.d0 
 
   do ispin=1,2
-  	do orbital=1,N_orbitals(ispin)
-  	Phi(:)=Psi(:,orbital,ispin)
-  	  do i=1,N_L_points
-  	    if(ispin==1) Density_dw(i)=Density_dw(i)+Phi(i)*Phi(i)
-  	    if(ispin==2) Density_up(i)=Density_up(i)+Phi(i)*Phi(i)
-  	  enddo
-  	enddo
+    do orbital=1,N_orbitals(ispin)
+    Phi(:)=Psi(:,orbital,ispin)
+      do i=1,N_L_points
+        if(ispin==1) Density_dw(i)=Density_dw(i)+Phi(i)*Phi(i)
+        if(ispin==2) Density_up(i)=Density_up(i)+Phi(i)*Phi(i)
+      enddo
+    enddo
   enddo
   Density_up=c1*Density_up_old+c2*Density_up
   Density_dw=c1*Density_dw_old+c2*Density_dw
@@ -527,10 +529,10 @@ PROGRAM qd3d
 !------------------------------------------------------------------------------
   USE m_qd3d
   implicit none
-  integer :: i,k,i1,i2,i3,num_args,ispin,kk,orbital,slice1,slice2,slice3
-  REAL(8) :: x,y,z,x0,y0,z0,r,energy,the_sum
+  integer :: i,k,ispin
+  REAL(8) :: x,y,z,x0,y0,z0
   REAL(8), allocatable :: dx_up(:),dy_up(:),dz_up(:),dx_dw(:),dy_dw(:),dz_dw(:)
-  character(255) :: temp,total_density_filename,energy_vs_iteration_filename
+  character(255) :: total_density_filename,energy_vs_iteration_filename
   character(255) :: confining_potential_filename
   
   total_density_filename = "total_3d_density.3D.dat"

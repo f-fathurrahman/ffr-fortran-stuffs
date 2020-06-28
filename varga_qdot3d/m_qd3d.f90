@@ -1,7 +1,6 @@
 MODULE m_qd3d
   implicit none
-
-! parameters: atomic units
+  ! parameters: atomic units
   REAL(8), parameter :: E2=1.0,H2M=0.5d0,a_B=1.d0,Ry=0.5d0,pi=3.141592653589793d0
 ! Number of lattice points 
   integer           :: N_L(3),N_L_points
