@@ -200,6 +200,9 @@ elk:	$(OBJ)
 	$(F90) $(F90_OPTS) -o $(EXE) $(OBJ) $(LIB_W90) $(LIB_LPK) $(LIB_FFT) \
     $(LIB_libxc) $(LIB_SYS)
 
+lib:	$(OBJ)
+	ar rcs libelk.a $(OBJ)
+
 blas:
 	cd BLAS; $(MAKE); cp blas.a ..
 
