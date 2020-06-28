@@ -2,7 +2,8 @@ MODULE m_qd3d
   implicit none
   ! parameters: atomic units
   REAL(8), parameter :: E2=1.0,H2M=0.5d0,a_B=1.d0,Ry=0.5d0,pi=3.141592653589793d0
-! Number of lattice points 
+  
+  ! Number of lattice points 
   integer           :: N_L(3),N_L_points
    
 ! Lattice index
@@ -10,7 +11,7 @@ MODULE m_qd3d
 ! grid points  
   REAL(8),allocatable :: grid_point(:,:)  
 ! grid spacing
-  REAL(8) :: grid_step(3),grid_volume
+  REAL(8) :: grid_step(3), dVol
  
 ! boundary conditions 
   REAL(8), allocatable :: V_X0(:,:),V_XN(:,:),V_Y0(:,:),V_YN(:,:),V_Z0(:,:),V_ZN(:,:)
@@ -37,6 +38,6 @@ MODULE m_qd3d
   integer                     :: N_iteration=4
 ! Energies 
   REAL(8)            :: E_hartree,E_exchange
-  integer,parameter           :: N_scf_iter=100
+  integer,parameter           :: N_scf_iter=5
 
 end module

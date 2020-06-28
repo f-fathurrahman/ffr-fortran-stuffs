@@ -222,7 +222,7 @@ SUBROUTINE bc_multipole()
          xx=x/r
          yy=y/r
          zz=z/r
-         rho_lm(lm) = rho_lm(lm) + r**L * Ylm(xx,yy,zz,lm) * rho(i) * grid_volume
+         rho_lm(lm) = rho_lm(lm) + r**L * Ylm(xx,yy,zz,lm) * rho(i) * dVol
        enddo
     enddo
   enddo
@@ -362,38 +362,38 @@ SUBROUTINE conjugate_gradient(ispin)
     Phi0=Phi
     call Hamiltonian_wavefn(ispin)
     H_Phi0=H_Phi
-    Phi0_H_Phi0=sum(Phi*H_Phi)*Grid_Volume
+    Phi0_H_Phi0=sum(Phi*H_Phi)*dVol
     Phi0_Phi0=1
     delta=Phi0_H_Phi0
 
     do iteration=1,N_iteration
       alpha=2*(H_Phi0-delta*Phi0)
       do i=1,orbital-1
-        alpha=alpha-Psi(:,i,ispin)*sum(Psi(:,i,ispin)*alpha)*Grid_Volume
+        alpha=alpha-Psi(:,i,ispin)*sum(Psi(:,i,ispin)*alpha)*dVol
       enddo
-      gamma=sum(alpha*alpha)*Grid_Volume
+      gamma=sum(alpha*alpha)*dVol
       if(iteration==1) beta=-alpha
       if(iteration>1) beta=-alpha+gamma/overlap*beta
       overlap=gamma
-      beta_Phi=sum(Phi0*beta)*Grid_Volume
-      beta_beta=sum(beta*beta)*Grid_Volume
-      beta_H_Phi=sum(H_Phi0*beta)*Grid_Volume
+      beta_Phi=sum(Phi0*beta)*dVol
+      beta_beta=sum(beta*beta)*dVol
+      beta_H_Phi=sum(H_Phi0*beta)*dVol
 
       Phi=beta
       call Hamiltonian_wavefn(orbital)
       alpha=H_Phi
-      Phi_H_Phi=sum(Phi*H_Phi)*Grid_Volume
+      Phi_H_Phi=sum(Phi*H_Phi)*dVol
       A = Phi_H_Phi*beta_Phi  - beta_H_Phi*beta_beta
       B = Phi_H_Phi*Phi0_Phi0   - Phi0_H_Phi0*beta_beta
       C = beta_H_Phi*Phi0_Phi0 - Phi0_H_Phi0*beta_Phi
       omega=(-B+sqrt(B*B-4*A*C))/(2*A)
       Phi0   = Phi0   +omega*Phi
       H_Phi0 = H_Phi0 +omega*H_Phi
-      Phi0_Phi0   =sum(Phi0*Phi0)*Grid_Volume
-      Phi0_H_Phi0 =sum(Phi0*H_Phi0)*Grid_Volume
+      Phi0_Phi0   =sum(Phi0*Phi0)*dVol
+      Phi0_H_Phi0 =sum(Phi0*H_Phi0)*dVol
       delta=Phi0_H_Phi0/Phi0_Phi0
     enddo
-    Phi0_Phi0=sum(Phi0*Phi0)*Grid_Volume
+    Phi0_Phi0=sum(Phi0*Phi0)*dVol
     Psi(:,orbital,ispin)=Phi0/sqrt(Phi0_Phi0)
   enddo
   deallocate(alpha,beta,Phi0,H_Phi0)
@@ -411,10 +411,10 @@ SUBROUTINE orthogonalization(ispin)
 
   do orbital=1,N_orbitals(ispin)
     do i=1,orbital-1
-      overlap=sum(Psi(:,i,ispin)*Psi(:,orbital,ispin))*Grid_Volume
+      overlap=sum(Psi(:,i,ispin)*Psi(:,orbital,ispin))*dVol
       Psi(:,orbital,ispin)=Psi(:,orbital,ispin)-overlap*Psi(:,i,ispin)
     enddo
-    s=sum(abs(Psi(:,orbital,ispin))**2)*Grid_Volume
+    s=sum(abs(Psi(:,orbital,ispin))**2)*dVol
     Psi(:,orbital,ispin)=Psi(:,orbital,ispin)/sqrt(s)
   enddo
 END SUBROUTINE 
@@ -444,26 +444,23 @@ SUBROUTINE total_energy(iteration)
   REAL(8) :: E_sp,E_total                 
   
   E_sp=0.d0
-  call Hamiltonian_density
+  call Hamiltonian_density()
   do ispin=1,2
     do orbital=1,N_orbitals(ispin)   
       Phi=Psi(:,orbital,ispin)
       call Hamiltonian_wavefn(ispin)
-      Sp_Energy(orbital)=sum(Phi*H_Phi)*Grid_Volume
+      Sp_Energy(orbital)=sum(Phi*H_Phi)*dVol
       E_sp=E_sp+Sp_energy(orbital)
     enddo
   enddo
-  call Exchange_Correlation
-  call Hartree_Energy
+  call Exchange_Correlation()
+  call Hartree_Energy()
   write(*,*) 'E_sp    ', E_sp
   write(*,*) 'E_ex    ', E_exchange
   write(*,*) 'E_H     ', E_hartree
   E_total = E_sp + E_Exchange + E_Hartree
   write(*,*) 'E_total ', E_total
-  
-  IF( iteration > 0 ) THEN
-    WRITE(2,'(i10,4ES16.8)') iteration, E_sp, E_exchange, E_hartree, E_total
-  ENDIF 
+
 END SUBROUTINE 
 
 !----------------------------------
@@ -509,11 +506,11 @@ SUBROUTINE Exchange_Correlation()
     rho_up=density_up(i)+1.d-20
     rho_down=density_dw(i)+1.d-20
     call xc_pot(rho_up,rho_down,v_x_up,v_x_down,v_c_up,v_c_down,eps_x,eps_c)
-    V_Exchange_up(i)=2*Ry*(v_x_up+v_c_up)
-    V_Exchange_dw(i)=2*Ry*(v_x_down+v_c_down)
-    su=su+Density(i)*(eps_x+eps_c)-Density_up(i)*V_exchange_up(i)-Density_dw(i)*V_exchange_dw(i)
+    V_Exchange_up(i) = 2*Ry*(v_x_up + v_c_up)
+    V_Exchange_dw(i) = 2*Ry*(v_x_down + v_c_down)
+    su = su + Density(i)*(eps_x + eps_c) - Density_up(i)*V_exchange_up(i) - Density_dw(i)*V_exchange_dw(i)
   enddo
-  E_exchange=su*grid_volume
+  E_exchange = su*dVol
 END SUBROUTINE
 
 !--------------------------
@@ -521,98 +518,19 @@ SUBROUTINE Hartree_Energy()
 !--------------------------
   USE m_qd3d
   ! Calculate the Hartree-Energy
-  E_Hartree=-0.5d0*dot_product(density,VH)*grid_volume
-END SUBROUTINE Hartree_Energy
+  E_Hartree = -0.5d0*dot_product(density,VH)*dVol
+END SUBROUTINE
 
-!------------------------------------------------------------------------------
-PROGRAM qd3d
-!------------------------------------------------------------------------------
-  USE m_qd3d
-  implicit none
-  integer :: i,k,ispin
-  REAL(8) :: x,y,z,x0,y0,z0
-  REAL(8), allocatable :: dx_up(:),dy_up(:),dz_up(:),dx_dw(:),dy_dw(:),dz_dw(:)
-  character(255) :: total_density_filename,energy_vs_iteration_filename
-  character(255) :: confining_potential_filename
-  
-  total_density_filename = "total_3d_density.3D.dat"
-  confining_potential_filename = "confining_potential.3D.dat"
-  energy_vs_iteration_filename = "energy_vs_iteration.dat"
-  
-  ! INPUT-----------------------------------
-  N_orbitals(1) = 1
-  N_orbitals(2) = 1
-  omega0 = 2.d0
-  N_L = (/ 20, 20, 20 /)
-  grid_step = (/ 0.3d0, 0.3d0, 0.3d0 /)
-  !-----------------------------------------
+SUBROUTINE init_random_seed()
+  IMPLICIT NONE
+  INTEGER :: i, n
+  INTEGER, DIMENSION(:), ALLOCATABLE :: seed
 
-  N_L_points = product(N_L)
-  grid_volume = product(grid_step)
-  allocate(sp_energy((N_orbitals(1)+N_orbitals(2))),Psi(N_L_points,(N_orbitals(1)+N_orbitals(2)),2))
-  allocate(Lattice(3,N_L_points),Lattice_inv(N_L(1),N_L(2),N_L(3)),grid_point(3,N_L_Points))
-  allocate(V_X0(N_L(2),N_L(3)),V_XN(N_L(2),N_L(3)),V_Y0(N_L(1),N_L(3)),V_YN(N_L(1),N_L(3)))
-  allocate(V_Z0(N_L(1),N_L(2)),V_ZN(N_L(1),N_L(2)),rho(N_L_points),V_POT(N_L_points))
-  allocate(density(N_L_points),density_old(N_L_points),density_up(N_L_points))
-  allocate(density_up_old(N_L_points),density_dw(N_L_points),density_dw_old(N_L_points))
-  allocate(phi(N_L_points),L_phi(N_L_points),VH(N_L_points),V_ext(N_L_points))
-  allocate(V_exchange_up(N_L_points),V_exchange_dw(N_L_points),H_Phi(N_L_Points))
-  allocate(wf(-N_d:N_L(1)+N_d,-N_d:N_L(2)+N_d,-N_d:N_L(3)+N_d))  
-  allocate(dx_up(N_L(1)),dy_up(N_L(2)),dz_up(N_L(3)),dx_dw(N_L(1)),dy_dw(N_L(2)),dz_dw(N_L(3)))
-    
-  ! Setup the lattice and initial guess for wavefunctions  
-  call init_lattice
-  do ispin=1,2
-    do k=1,N_orbitals(ispin)
-      call random_number(x0)
-      call random_number(y0)
-      call random_number(z0)
-      do i=1,N_L_points
-        x=grid_point(1,i)-x0
-        y=grid_point(2,i)-y0
-        z=grid_point(3,i)-z0
-        Psi(i,k,ispin)=exp(-0.5d0*omega0*(x**2+y**2+z**2))
-      enddo
-    enddo
-  enddo
-  
-  call init_confining_potential()
-  
-  ! Orthogonalize the initial wavefunctions, and use them to calculate the initial density and energy
-  call orthogonalization(1)
-  call orthogonalization(2)
-  call calculate_density(0.d0,1.d0)
-  call total_energy(0)
+  CALL RANDOM_SEED(size = n)
+  ALLOCATE(seed(n))
 
-  ! Use the conjugate gradient method to diagonalize the Hamiltonian
-  open(2,file=trim(adjustl(energy_vs_iteration_filename)))
-  write(2,*)"# iteration E_sp E_exchange E_hartree E_total"
-  do k=1,N_scf_iter
-    write(*,*) k
-    call orthogonalization(1)
-    call conjugate_gradient(1)
-    call orthogonalization(2)
-    call conjugate_gradient(2)
-    call calculate_density(0.5d0,0.5d0)
-    call total_energy(k)
-  enddo  
-  close(2)
-    
-  ! Output the final 3D total density to a Point3D format file, suitable for VisIt
-  open(1,file=trim(adjustl(total_density_filename)))
-  open(2,file=trim(adjustl(confining_potential_filename)))
-  write(1,*)"x y z density"
-  write(2,*)"x y z V_ext"
-  do i=1,N_L_points
-    write(1,'(4ES16.8)')grid_point(1,i),grid_point(2,i),grid_point(3,i),density(i)*grid_volume
-    write(2,'(4ES16.8)')grid_point(1,i),grid_point(2,i),grid_point(3,i),V_ext(i)   
-  enddo
-  close(1)
-  close(2)
-      
-  deallocate(V_X0,V_XN,V_Y0,V_YN,V_Z0,V_ZN,rho,V_POT,density,density_old,density_up)
-  deallocate(V_exchange_up,V_exchange_dw,H_Phi,dx_up,dy_up,dz_up,dx_dw,dy_dw,dz_dw)
-  deallocate(density_up_old,density_dw,density_dw_old,phi,L_phi,VH,V_ext,wf)
-  deallocate(sp_energy,Psi,lattice,lattice_inv,grid_point)
-END PROGRAM 
+  seed = 1234 + 37 * (/ (i - 1, i = 1, n) /)
+  CALL RANDOM_SEED(PUT = seed)
 
+  DEALLOCATE(seed)
+END SUBROUTINE
