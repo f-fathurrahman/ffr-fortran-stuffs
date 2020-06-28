@@ -184,7 +184,7 @@ SRC = $(SRC_modules) $(SRC_FFT) $(SRC_elk) $(SRC_main) $(SRC_phonon) \
  $(SRC_ULR) $(SRC_W90) $(SRC_EPH)
 
 OBJ = $(SRC:.f90=.o)
-EXE = elk
+EXE = elk.x
 
 #-------------------------------------------------------------------------------
 # Suffix rules
