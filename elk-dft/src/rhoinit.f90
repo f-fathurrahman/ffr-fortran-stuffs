@@ -26,6 +26,11 @@ complex(8) z1,z2,z3
 ! allocatable arrays
 real(8), allocatable :: jl(:,:),ffg(:),wr(:),fr(:)
 complex(8), allocatable :: zfmt(:),zfft(:)
+
+write(*,*)
+write(*,*) '*** ffr: Entering rhoinit ***'
+write(*,*)
+
 lmax=min(lmaxi,1)
 ! zero the charge density arrays
 rhomt(:,:)=0.d0
@@ -151,6 +156,11 @@ do ir=1,ngtot
   if (rhoir(ir).lt.1.d-10) rhoir(ir)=1.d-10
 end do
 deallocate(zfft)
+
+write(*,*)
+write(*,*) '*** ffr: Leaving rhoinit ***'
+write(*,*)
+
 return
 end subroutine
 !EOC

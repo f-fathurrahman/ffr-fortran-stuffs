@@ -33,9 +33,9 @@ integer nr,l,m,lm,i
 real(8) rsum,t1
 real(8) ts0,ts1
 
-write(*,*) '--------------'
-write(*,*) 'Entering init0'
-write(*,*) '--------------'
+write(*,*)
+write(*,*) '*** ffr: Entering init0 ***'
+write(*,*)
 
 
 !-------------------------------!
@@ -301,7 +301,7 @@ do is=1,nspecies
 end do
 
 ! check for overlapping muffin-tins and adjust radii if required
-call checkmt
+call checkmt()
 
 ! compute the total muffin-tin volume (M. Meinert)
 omegamt=0.d0
@@ -351,7 +351,7 @@ end if
 !---------------------------------!
 !     crystal symmetry set up     !
 !---------------------------------!
-call symmetry
+call symmetry()
 
 !-----------------------!
 !     radial meshes     !
@@ -366,8 +366,10 @@ do is=1,nspecies
   nrcmt(is)=(nrmt(is)-1)/lradstp+1
   nrcmtmax=max(nrcmtmax,nrcmt(is))
 end do
+
 ! set up atomic and muffin-tin radial meshes
-call genrmesh
+call genrmesh()
+
 ! number of points in packed muffin-tins
 npmtmax=1
 npcmtmax=1
@@ -474,7 +476,7 @@ npsd=max(nint(t1),1)
 lnpsd=lmaxo+npsd+1
 
 ! generate the Coulomb Green's function in G-space = fourpi / G^2
-call gengclg
+call gengclg()
 
 ! compute the spherical Bessel functions j_l(|G|R_mt)
 if (allocated(jlgrmt)) deallocate(jlgrmt)
@@ -482,7 +484,7 @@ allocate(jlgrmt(0:lnpsd,ngvec,nspecies))
 call genjlgprmt(lnpsd,ngvec,gc,ngvec,jlgrmt)
 
 ! generate the spherical harmonics of the G-vectors
-call genylmg
+call genylmg()
 
 ! allocate structure factor array for G-vectors
 if (allocated(sfacg)) deallocate(sfacg)
@@ -499,7 +501,7 @@ do is=1,nspecies
 end do
 
 ! generate the characteristic function
-call gencfun
+call gencfun()
 
 ! write to VARIABLES.OUT
 call writevars('gmaxvr',rv=gmaxvr)
@@ -524,7 +526,7 @@ do is=1,nspecies
 end do
 
 ! solve the Kohn-Sham-Dirac equations for all atoms
-call allatoms
+call allatoms()
 
 ! allocate core state occupancy and eigenvalue arrays and set to default
 if (allocated(occcr)) deallocate(occcr)
@@ -755,9 +757,9 @@ tempk=swidth/kboltz
 call timesec(ts1)
 timeinit=timeinit+ts1-ts0
 
-write(*,*) '--------------'
-write(*,*) 'Leaving init0'
-write(*,*) '--------------'
+write(*,*)
+write(*,*) '*** ffr: Leaving init0 ***'
+write(*,*)
 
 return
 end subroutine

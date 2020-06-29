@@ -43,6 +43,8 @@ subroutine elk_stop()
   call mpi_finalize(ierror)
 end subroutine
 
+include 'my_gndstate.f90'
+
 program test01
   use modmpi
   use modomp
@@ -74,7 +76,7 @@ program test01
   ! write task to VARIABLES.OUT
   call writevars('task',iv=task)
   
-  call gndstate()
+  call my_gndstate()
 
   call elk_stop()
 end program

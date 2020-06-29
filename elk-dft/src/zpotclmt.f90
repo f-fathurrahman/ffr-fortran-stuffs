@@ -1,12 +1,5 @@
-
-! Copyright (C) 2002-2005 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: zpotclmt
-! !INTERFACE:
 subroutine zpotclmt(nr,nri,ld,rl,wpr,zrhomt,zvclmt)
+
 ! !USES:
 use modmain
 ! !INPUT/OUTPUT PARAMETERS:
@@ -43,6 +36,7 @@ integer m,lm,npi,i
 real(8) r1,r2,t0,t1,t2,t3,t4
 ! automatic arrays
 real(8) f1(nr),f2(nr),f3(nr),f4(nr),f5(nr)
+
 nro=nr-nri
 iro=nri+1
 npi=lmmaxi*nri

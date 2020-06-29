@@ -11,7 +11,20 @@ integer idm,is,ia,ias,np
 ! magnetisation as fraction of density
 real(8), parameter :: fmr=0.15d0
 real(8) v(3),t1
-if (.not.spinpol) return
+
+write(*,*)
+write(*,*) '*** ffr: Entering maginit ***'
+write(*,*)
+
+if (.not.spinpol) then
+  write(*,*)
+  write(*,*) 'No spin polarization, early leave'
+  write(*,*)
+  write(*,*) '*** ffr: Leaving maginit ***'
+  write(*,*)
+  return
+endif
+
 ! initialise muffin-tin magnetisation
 do ias=1,natmtot
   is=idxis(ias)
@@ -45,6 +58,11 @@ if (t1.gt.1.d-8) then
 else
   magir(:,:)=0.d0
 end if
+
+write(*,*)
+write(*,*) '*** ffr: Leaving maginit ***'
+write(*,*)
+
 return
 end subroutine
 

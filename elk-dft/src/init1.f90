@@ -159,19 +159,23 @@ if (any(task.eq.[700,701,731,732,733,741,742,743,771,772,773])) then
 ! generate the kappa, k+kappa and Q-points if required
   call genkpakq
 end if
+
 ! write the k-points to test file
 call writetest(910,'k-points (Cartesian)',nv=3*nkpt,tol=1.d-8,rva=vkc)
 
 !---------------------!
 !     G+k-vectors     !
 !---------------------!
+
 if ((xctype(1).lt.0).or.(any(task.eq.[5,10,205,300,600,620,630])).or.tddos) then
   nppt=nkptnr
 else
   nppt=nkpt
 end if
+
 ! find the maximum number of G+k-vectors
 call findngkmax(nkpt,vkc,nspnfv,vqcss,ngvec,vgc,gkmax,ngkmax)
+
 ! allocate the G+k-vector arrays
 if (allocated(ngk)) deallocate(ngk)
 allocate(ngk(nspnfv,nppt))
@@ -239,9 +243,11 @@ do is=1,nspecies
   end do
 end do
 lolmmax=(lolmax+1)**2
+
 ! polynomial order used for APW and local-orbital radial derivatives
 npapw=max(apwordmax+1,4)
 nplorb=max(lorbordmax+1,4)
+
 ! set the APW and local-orbital linearisation energies to the default
 if (allocated(apwe)) deallocate(apwe)
 allocate(apwe(apwordmax,0:lmaxapw,natmtot))
@@ -265,8 +271,10 @@ do is=1,nspecies
     end do
   end do
 end do
+
 ! generate the local-orbital index
-call genidxlo
+call genidxlo()
+
 ! allocate radial function arrays
 if (allocated(apwfr)) deallocate(apwfr)
 allocate(apwfr(nrmtmax,2,apwordmax,0:lmaxapw,natmtot))
@@ -290,11 +298,14 @@ end if
 !---------------------------------------!
 !     eigenvalue equation variables     !
 !---------------------------------------!
+
 ! total number of empty states (M. Meinert)
 nempty=nint(nempty0*max(natmtot,1))
 if (nempty.lt.1) nempty=1
+
 ! number of first-variational states
 nstfv=int(chgval/2.d0)+nempty+1
+
 ! overlap and Hamiltonian matrix sizes
 if (allocated(nmat)) deallocate(nmat)
 allocate(nmat(nspnfv,nkpt))
@@ -313,14 +324,17 @@ do ik=1,nkpt
     nmatmax=max(nmatmax,nmat(jspn,ik))
   end do
 end do
+
 ! number of second-variational states
 nstsv=nstfv*nspinor
+
 ! allocate second-variational arrays
 if (allocated(evalsv)) deallocate(evalsv)
 allocate(evalsv(nstsv,nkpt))
 if (allocated(occsv)) deallocate(occsv)
 allocate(occsv(nstsv,nkpt))
 occsv(:,:)=0.d0
+
 ! allocate overlap and Hamiltonian integral arrays
 if (allocated(oalo)) deallocate(oalo)
 allocate(oalo(apwordmax,nlomax,natmtot))
@@ -332,6 +346,7 @@ if (allocated(hloa)) deallocate(hloa)
 allocate(hloa(lmmaxo,apwordmax,0:lmaxapw,nlomax,natmtot))
 if (allocated(hlolo)) deallocate(hlolo)
 allocate(hlolo(lmmaxo,nlomax,nlomax,natmtot))
+
 ! allocate and generate complex Gaunt coefficient array
 if (allocated(gntyry)) deallocate(gntyry)
 allocate(gntyry(lmmaxo,lmmaxapw,lmmaxapw))
