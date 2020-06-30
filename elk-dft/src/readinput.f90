@@ -2004,7 +2004,7 @@ end if
 ! set fxctype to fxctype if required
 if (fxctype(1).eq.-1) fxctype(:)=xctype(:)
 
-! find primitreadspeciesive cell if required
+! find primitive cell if required
 if (primcell) call findprimcell
 
 ! scale the ultracell vectors if required

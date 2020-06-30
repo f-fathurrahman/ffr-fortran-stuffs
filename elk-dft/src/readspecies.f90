@@ -113,6 +113,7 @@ do is=1,nspecies
       stop
     end if
   end do
+
   read(50,*) apword(0,is)
   if (apword(0,is).le.0) then
     write(*,*)
@@ -147,6 +148,7 @@ do is=1,nspecies
     apwve(io,1:lmaxapw,is)=apwve(io,0,is)
     e0min=min(e0min,apwe0(io,0,is))
   end do
+
   read(50,*) nlx
   if (nlx.lt.0) then
     write(*,*)
@@ -155,6 +157,8 @@ do is=1,nspecies
     write(*,*)
     stop
   end if
+
+  ! Read exceptions if any
   do ilx=1,nlx
     read(50,*) lx,io
     if (lx.lt.0) then
@@ -205,6 +209,7 @@ do is=1,nspecies
       e0min=min(e0min,apwe0(io,lx,is))
     end do
   end do
+
 ! add excess order to APW functions if required
   if (nxoapwlo.gt.0) then
     do l=0,lmaxapw
@@ -221,6 +226,7 @@ do is=1,nspecies
       apword(l,is)=ko
     end do
   end if
+
   read(50,*) nlorb(is)
   if (nlorb(is).lt.0) then
     write(*,*)
