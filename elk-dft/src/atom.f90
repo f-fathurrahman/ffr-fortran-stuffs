@@ -56,18 +56,22 @@ if (nst.le.0) then
   write(*,*)
   stop
 end if
+
 ! allocate local arrays
 allocate(vn(nr),vh(nr),ex(nr),ec(nr),vx(nr),vc(nr),vrp(nr))
 allocate(ri(nr),wpr(4,nr),fr1(nr),fr2(nr),gr1(nr),gr2(nr))
 if (xcgrad.eq.1) then
   allocate(grho(nr),g2rho(nr),g3rho(nr))
 end if
+
 ! find total electronic charge
 ze=0.d0
 do ist=1,nst
   ze=ze+occ(ist)
 end do
+
 ! set up nuclear potential
+write(*,*) 'ptnucl = ', ptnucl
 call potnucl(ptnucl,nr,r,zn,vn)
 do ir=1,nr
   ri(ir)=1.d0/r(ir)
