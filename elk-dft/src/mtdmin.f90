@@ -9,7 +9,7 @@
 subroutine mtdmin(is,js,dmin)
 ! !USES:
 
-use modmain, only: avec, atposc, epslat, nspecies, rmt, atposc, natoms
+use modmain, only: avec, atposc, epslat, nspecies, rmt, natoms
 
 ! !INPUT/OUTPUT PARAMETERS:
 !   is, js : species numbers (out,integer)
