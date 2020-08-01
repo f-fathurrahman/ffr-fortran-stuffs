@@ -39,6 +39,9 @@ end do
 deallocate(rwf)
 !$OMP END PARALLEL
 call freethd(nthd)
+
+stop 'From efefer'
+
 return
 
 end subroutine

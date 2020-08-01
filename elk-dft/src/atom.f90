@@ -57,6 +57,19 @@ if (nst.le.0) then
   stop
 end if
 
+write(*,*) '--- from atom ---'
+write(*,*) 'sol = ', sol
+write(*,*) 'ptnucl = ', ptnucl
+write(*,*) 'zn = ', zn
+write(*,*) 'nst = ', nst
+do ist = 1,nst
+  write(*,'(1x,A,I5)', advance="no") ' n = ', n(ist)
+  write(*,'(1x,A,I5)', advance="no") ' l = ', l(ist)
+  write(*,'(1x,A,I5)', advance="no") ' k = ', k(ist)
+  write(*,*)
+enddo
+!k,occ,
+
 ! allocate local arrays
 allocate(vn(nr),vh(nr),ex(nr),ec(nr),vx(nr),vc(nr),vrp(nr))
 allocate(ri(nr),wpr(4,nr),fr1(nr),fr2(nr),gr1(nr),gr2(nr))
