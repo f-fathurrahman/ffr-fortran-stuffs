@@ -14,17 +14,23 @@ program test
 
   !call write_apwlo_vars()
   
-  write(*,*) "lmmaxi   ", lmmaxi
-  write(*,*) "npcmtmax ", npcmtmax
-  write(*,*) 'npmtmax  ', npmtmax
+  ! Packed MT arrays
+  !write(*,*) "lmmaxi   ", lmmaxi
+  !write(*,*) "npcmtmax ", npcmtmax
+  !write(*,*) 'npmtmax  ', npmtmax
   
+  write(*,*) 'nrspmax = ', nrspmax
+
   do is = 1,nspecies
     write(*,*) 'Species = ', trim(spfname(is))
     
-    write(*,*) 'npmt     ', npmt(is)
-    write(*,*) 'npcmt    ', npcmt(is)
+    write(*,*) 'spzn = ', spzn(is)
+    write(*,'(1x,A,5ES18.10)') 'vcln = ', vcln(1:5,is)
 
-    !write(*,*) 'nrsp = ', nrsp(is)
+    !write(*,*) 'npmt     ', npmt(is)
+    !write(*,*) 'npcmt    ', npcmt(is)
+
+    write(*,*) 'nrsp = ', nrsp(is)
     !write(*,*) 'nrmt = ', nrmt(is)
     !write(*,*) 'rminsp = ', rminsp(is)
     !write(*,*) 'rmaxsp = ', rmaxsp(is)
