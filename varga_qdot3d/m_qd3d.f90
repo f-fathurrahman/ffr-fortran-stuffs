@@ -1,7 +1,11 @@
 MODULE m_qd3d
   implicit none
   ! parameters: atomic units
-  REAL(8), parameter :: E2=1.0,H2M=0.5d0,a_B=1.d0,Ry=0.5d0,pi=3.141592653589793d0
+  REAL(8), PARAMETER :: E2 = 1.d0
+  REAL(8), PARAMETER :: h2m = 0.5d0
+  REAL(8), PARAMETER :: a_B = 1.d0
+  REAL(8), PARAMETER :: Ry = 0.5d0
+  REAL(8), PARAMETER :: pi=3.141592653589793d0
   
   ! Number of lattice points 
   integer           :: N_L(3),N_L_points
@@ -35,9 +39,9 @@ MODULE m_qd3d
   ! single_particle energy
   REAL(8),allocatable :: sp_energy(:),Psi(:,:,:)
 
-  integer                     :: N_iteration=4
+  integer :: N_iteration=4
 ! Energies 
   REAL(8)            :: E_hartree,E_exchange
-  integer,parameter           :: N_scf_iter=5
+  integer, parameter :: N_scf_iter = 50
 
 end module

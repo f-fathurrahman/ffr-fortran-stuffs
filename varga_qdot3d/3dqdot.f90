@@ -62,9 +62,9 @@ SUBROUTINE init_lattice()
   enddo
 END SUBROUTINE
   
-!----------------------------------
-SUBROUTINE init_confining_potential
-!----------------------------------
+!------------------------------------
+SUBROUTINE init_confining_potential()
+!------------------------------------
   USE m_qd3d
   IMPLICIT NONE
 
@@ -72,18 +72,24 @@ SUBROUTINE init_confining_potential
   integer :: i,k1,k2,k3
   REAL(8)  :: r0(3),x2
   
-  r0=(/0.d0,0.d0,0.d0/)
+  write(*,*)
+  write(*,*) 'Initializing confining potential'
+  write(*,*) 'Type of confining potential: harmonic potential'
+  write(*,*)
+
+  r0 = (/0.d0,0.d0,0.d0/)
  
   do i=1,N_L_points
-    x2=(grid_point(1,i)-r0(1))**2+(grid_point(2,i)-r0(2))**2+(grid_point(3,i)-r0(3))**2
-    V_ext(i)=0.5d0*omega0**2*x2!+10.d0*exp(-x2*10.d0)
+    x2=(grid_point(1,i)-r0(1))**2+(grid_point(2,i)-r0(2))**2 + (grid_point(3,i)-r0(3))**2
+    V_ext(i) = 0.5d0*omega0**2*x2 ! + 10.d0*exp(-x2*10.d0)
   enddo
    
+  ! Write confining potential to file
   k2=int(dfloat(N_L(2))/2.d0)
   k3=int(dfloat(N_L(3))/2.d0)
-  do k1=1,N_L(1)
-    i=Lattice_inv(k1,k2,k3)
-    write(666,*)grid_point(1,i),V_ext(i)
+  do k1 = 1,N_L(1)
+    i = Lattice_inv(k1,k2,k3)
+    write(666,*) grid_point(1,i),V_ext(i)
   enddo  
 END SUBROUTINE
 
@@ -147,7 +153,7 @@ SUBROUTINE laplace_operator()
     K_z=(-2.d0*wf(i1,i2,i3)+wf(i1,i2,i3+1)+wf(i1,i2,i3-1))/grid_step(3)**2
     L_phi(i)=K_x+K_y+K_z
   enddo
-END SUBROUTINE laplace_operator
+END SUBROUTINE
 
 !--------------------
 SUBROUTINE CoGr(b,NL)
@@ -203,7 +209,11 @@ END SUBROUTINE
 !------------------------
 SUBROUTINE bc_multipole()
 !------------------------
-  USE m_qd3d
+
+  USE m_qd3d, ONLY: L_max, grid_point, N_L, grid_step, lattice_inv, &
+                    V_ZN, V_Z0, V_X0, V_XN, V_Y0, V_YN, &
+                    small, dVol, N_L_points, rho
+
   IMPLICIT NONE
   ! Boundary conditions determined by multipole expansion 
   integer :: k1,k2,k3,i,l,lm
@@ -434,16 +444,16 @@ SUBROUTINE Hamiltonian_density()
 END SUBROUTINE 
 
 
-!---------------------------------
-SUBROUTINE total_energy(iteration)
-!---------------------------------
+!------------------------
+SUBROUTINE total_energy(E_total)
+!------------------------
   USE m_qd3d
   IMPLICIT NONE
   ! Calculate the total energy
-  integer :: orbital,ispin,iteration
-  REAL(8) :: E_sp,E_total                 
-  
-  E_sp=0.d0
+  integer :: orbital,ispin
+  REAL(8) :: E_sp, E_total
+
+  E_sp = 0.d0
   call Hamiltonian_density()
   do ispin=1,2
     do orbital=1,N_orbitals(ispin)   
@@ -455,16 +465,16 @@ SUBROUTINE total_energy(iteration)
   enddo
   call Exchange_Correlation()
   call Hartree_Energy()
-  write(*,*) 'E_sp    ', E_sp
-  write(*,*) 'E_ex    ', E_exchange
-  write(*,*) 'E_H     ', E_hartree
+  !write(*,'(1x,A,F18.10)') 'E_sp    ', E_sp
+  !write(*,'(1x,A,F18.10)') 'E_ex    ', E_exchange
+  !write(*,'(1x,A,F18.10)') 'E_H     ', E_hartree
   E_total = E_sp + E_Exchange + E_Hartree
-  write(*,*) 'E_total ', E_total
-
+  !write(*,'(1x,A,F18.10)') 'E_total ', E_total
 END SUBROUTINE 
 
+! Mix density
 !----------------------------------
-SUBROUTINE calculate_density(c1,c2)
+SUBROUTINE calculate_density(c1, c2)
 !----------------------------------
   USE m_qd3d
   IMPLICIT NONE
