@@ -1,3 +1,5 @@
+
+! Apply boundary condition and call Conjugate-Gradient
 !----------------------------
 SUBROUTINE poisson_solve_3d()
 !----------------------------
@@ -9,31 +11,31 @@ SUBROUTINE poisson_solve_3d()
   rho = -4.d0*pi*rho
   
   ! Boundary condition in the x direction
-  do k2=1,N_L(2)
-    do k3=1,N_L(3)
-      rho(Lattice_inv(1,k2,k3))=rho(Lattice_inv(1,k2,k3))-V_X0(k2,k3)/grid_step(1)**2/E2
-      rho(Lattice_inv(N_L(1),k2,k3))=rho(Lattice_inv(N_L(1),k2,k3))-V_XN(k2,k3)/grid_step(1)**2/E2
-    enddo
-  enddo
+  DO k2=1,N_L(2)
+    DO k3=1,N_L(3)
+      rho(Lattice_inv(1,k2,k3)) = rho(Lattice_inv(1,k2,k3)) - V_X0(k2,k3)/grid_step(1)**2/E2
+      rho(Lattice_inv(N_L(1),k2,k3)) = rho(Lattice_inv(N_L(1),k2,k3)) - V_XN(k2,k3)/grid_step(1)**2/E2
+    ENDDO
+  ENDDO
   
   ! Boundary condition in the y direction
   do k1=1,N_L(1)
     do k3=1,N_L(3)
-      rho(Lattice_inv(k1,1,k3))=rho(Lattice_inv(k1,1,k3))-V_Y0(k1,k3)/grid_step(2)**2/E2
-      rho(Lattice_inv(k1,N_L(2),k3))=rho(Lattice_inv(k1,N_L(2),k3))-V_YN(k1,k3)/grid_step(2)**2/E2
+      rho(Lattice_inv(k1,1,k3)) = rho(Lattice_inv(k1,1,k3)) - V_Y0(k1,k3)/grid_step(2)**2/E2
+      rho(Lattice_inv(k1,N_L(2),k3)) = rho(Lattice_inv(k1,N_L(2),k3)) - V_YN(k1,k3)/grid_step(2)**2/E2
     enddo
   enddo
   
   ! Boundary condition in the z direction
   do k1=1,N_L(1)
     do k2=1,N_L(2)
-      rho(Lattice_inv(k1,k2,1))=rho(Lattice_inv(k1,k2,1))-V_Z0(k1,k2)/grid_step(3)**2/E2
-      rho(Lattice_inv(k1,k2,N_L(3)))=rho(Lattice_inv(k1,k2,N_L(3)))-V_ZN(k1,k2)/grid_step(3)**2/E2
+      rho(Lattice_inv(k1,k2,1)) = rho(Lattice_inv(k1,k2,1)) - V_Z0(k1,k2)/grid_step(3)**2/E2
+      rho(Lattice_inv(k1,k2,N_L(3))) = rho(Lattice_inv(k1,k2,N_L(3))) - V_ZN(k1,k2)/grid_step(3)**2/E2
     enddo
   enddo
 
   call CoGr(rho,N_L_points)
-  v_pot=E2*rho
+  v_pot = E2*rho
 END SUBROUTINE
 
 
@@ -221,17 +223,18 @@ SUBROUTINE bc_multipole()
   ! Function
   REAL(8) :: Ylm, mp_pot
 
+  ! Calculate rho_lm
   rho_lm=0.d0
   do L=0,L_max
     do lm=L**2+1,(L+1)**2
       do i=1,N_L_points
-         x = grid_point(1,i)
-         y = grid_point(2,i)
-         z = grid_point(3,i)
-         r = sqrt(x*x+y*y+z*z) + small
-         xx=x/r
-         yy=y/r
-         zz=z/r
+         x  = grid_point(1,i)
+         y  = grid_point(2,i)
+         z  = grid_point(3,i)
+         r  = sqrt(x*x + y*y + z*z) + small
+         xx = x/r
+         yy = y/r
+         zz = z/r
          rho_lm(lm) = rho_lm(lm) + r**L * Ylm(xx,yy,zz,lm) * rho(i) * dVol
        enddo
     enddo
@@ -290,7 +293,7 @@ FUNCTION mp_pot(x,y,z,rho_lm)
   zz = z/r
   sump = 0.d0
   do L = 0,L_max
-    do lm=L**2+1,(L+1)**2
+    do lm = L**2+1,(L+1)**2
       sump = sump + Ylm(xx,yy,zz,lm)/r**(L+1)*rho_lm(lm)
     enddo
   enddo
@@ -444,9 +447,9 @@ SUBROUTINE Hamiltonian_density()
 END SUBROUTINE 
 
 
-!------------------------
+!-------------------------------
 SUBROUTINE total_energy(E_total)
-!------------------------
+!-------------------------------
   USE m_qd3d
   IMPLICIT NONE
   ! Calculate the total energy
