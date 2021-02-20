@@ -101,151 +101,152 @@ do itask=1,ntasks
   select case(task)
   case(0,1)
     call gndstate
-  case(2,3)
-    call geomopt
-  case(5)
-    call hartfock
-  case(10)
-    call writedos
-  case(14)
-    call writesf
-  case(15,16)
-    call writelsj
-  case(20,21,22,23)
-    call bandstr
-  case(25)
-    call effmass
-  case(28,29)
-    call mae
-  case(31,32,33)
-    call rhoplot
-  case(41,42,43)
-    call potplot
-  case(51,52,53)
-    call elfplot
-  case(61,62,63,162)
-    call wfplot
-  case(65)
-    call wfcrplot
-  case(71,72,73,81,82,83,141,142,143,151,152,153)
-    call vecplot
-  case(91,92,93)
-    call dbxcplot
-  case(100,101)
-    call fermisurf
-  case(102)
-    call fermisurfbxsf
-  case(105)
-    call nesting
-  case(110)
-    call mossbauer
-  case(115)
-    call writeefg
-  case(120)
-    call writepmat
-  case(121)
-    call dielectric
-  case(122)
-    call moke
-  case(125)
-    call nonlinopt
-  case(130)
-    call writeexpmat
-  case(135)
-    call writewfpw
-  case(140)
-    call elnes
-  case(150)
-    call writeevsp
-  case(160)
-    call torque
-  case(170)
-    call writeemd
-  case(171,172,173)
-    call emdplot
-  case(180)
-    call writeepsinv
-  case(185)
-    call writehmlbse
-  case(186)
-    call writeevbse
-  case(187)
-    call dielectric_bse
-  case(190)
-    call geomplot
-  case(195)
-    call sfacrho
-  case(196)
-    call sfacmag
-  case(200,201,202)
-    call phononsc
-  case(205)
-    call phonon
-  case(210)
-    call phdos
-  case(220)
-    call phdisp
-  case(230)
-    call writephn
-  case(240,241)
-    call ephcouple
-  case(245)
-    call phlwidth
-  case(250)
-    call alpha2f
-  case(260)
-    call eliashberg
-  case(270)
+  
+!  case(2,3)
+!    call geomopt
+!  case(5)
+!    call hartfock
+!  case(10)
+!    call writedos
+!  case(14)
+!    call writesf
+!  case(15,16)
+!    call writelsj
+!  case(20,21,22,23)
+!    call bandstr
+!  case(25)
+!    call effmass
+!  case(28,29)
+!    call mae
+!  case(31,32,33)
+!    call rhoplot
+!  case(41,42,43)
+!    call potplot
+!  case(51,52,53)
+!    call elfplot
+!  case(61,62,63,162)
+!    call wfplot
+!  case(65)
+!    call wfcrplot
+!  case(71,72,73,81,82,83,141,142,143,151,152,153)
+!    call vecplot
+!  case(91,92,93)
+!    call dbxcplot
+!  case(100,101)
+!    call fermisurf
+!  case(102)
+!    call fermisurfbxsf
+!  case(105)
+!    call nesting
+!  case(110)
+!    call mossbauer
+!  case(115)
+!    call writeefg
+!  case(120)
+!    call writepmat
+!  case(121)
+!    call dielectric
+!  case(122)
+!    call moke
+!  case(125)
+!    call nonlinopt
+!  case(130)
+!    call writeexpmat
+!  case(135)
+!    call writewfpw
+!  case(140)
+!    call elnes
+!  case(150)
+!    call writeevsp
+!  case(160)
+!    call torque
+!  case(170)
+!    call writeemd
+!  case(171,172,173)
+!    call emdplot
+!  case(180)
+!    call writeepsinv
+!  case(185)
+!    call writehmlbse
+!  case(186)
+!    call writeevbse
+!  case(187)
+!    call dielectric_bse
+!  case(190)
+!    call geomplot
+!  case(195)
+!    call sfacrho
+!  case(196)
+!    call sfacmag
+!  case(200,201,202)
+!    call phononsc
+!  case(205)
+!    call phonon
+!  case(210)
+!    call phdos
+!  case(220)
+!    call phdisp
+!  case(230)
+!    call writephn
+!  case(240,241)
+!    call ephcouple
+!  case(245)
+!    call phlwidth
+!  case(250)
+!    call alpha2f
+!  case(260)
+!    call eliashberg
+!  case(270)
 !**************
-
-  case(300)
-    call rdmft
-  case(320)
-    call tddftlr
-  case(330,331)
-    call tddftsplr
-  case(341,342,343)
-    call wxcplot
-  case(350,351,352)
-    call spiralsc
-  case(360)
-    call ssfsmjx
-  case(371,372,373)
-    call curdenplot
-  case(400)
-    call writetmdu
-  case(430)
-    call writestrain
-  case(440)
-    call writestress
-  case(450)
-    call genafieldt
-  case(460,461)
-    call tddft
-  case(480,481)
-    call dielectric_tdrt
-  case(500)
-    call testcheck
-  case(550)
-    call writew90
-  case(600)
-    call gwsefm
-  case(610)
-    call gwspecf
-  case(620)
-    call gwbandstr
-  case(630)
-    call gwscrho
-  case(640)
-    call gwdmat
-  case(700,701)
-    call gndstulr
-  case(731,732,733)
-    call rhouplot
-  case(741,742,743)
-    call potuplot
-  case(771,772,773)
-    call maguplot
+!
+!  case(300)
+!    call rdmft
+!  case(320)
+!    call tddftlr
+!  case(330,331)
+!    call tddftsplr
+!  case(341,342,343)
+!    call wxcplot
+!  case(350,351,352)
+!    call spiralsc
+!  case(360)
+!    call ssfsmjx
+!  case(371,372,373)
+!    call curdenplot
+!  case(400)
+!    call writetmdu
+!  case(430)
+!    call writestrain
+!  case(440)
+!    call writestress
+!  case(450)
+!    call genafieldt
+!  case(460,461)
+!    call tddft
+!  case(480,481)
+!    call dielectric_tdrt
+!  case(500)
+!    call testcheck
+!  case(550)
+!    call writew90
+!  case(600)
+!    call gwsefm
+!  case(610)
+!    call gwspecf
+!  case(620)
+!    call gwbandstr
+!  case(630)
+!    call gwscrho
+!  case(640)
+!    call gwdmat
+!  case(700,701)
+!    call gndstulr
+!  case(731,732,733)
+!    call rhouplot
+!  case(741,742,743)
+!    call potuplot
+!  case(771,772,773)
+!    call maguplot
   case default
     write(*,*)
     write(*,'("Error(elk): task not defined : ",I8)') task

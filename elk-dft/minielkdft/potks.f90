@@ -50,10 +50,19 @@ if (txc) call potxc(.true.,xctype,rhomt,rhoir,magmt,magir,taumt,tauir,exmt, &
  exir,ecmt,ecir,vxcmt,vxcir,bxcmt,bxcir,wxcmt,wxcir)
 
 ! optimised effective potential exchange potential
-if (xctype(1).lt.0) call oepmain()
+if (xctype(1).lt.0) then
+  !call oepmain()
+  stop 'Should call oepmain'
+else
+  write(*,*) '*** Not calling oepmain'
+endif
 
 ! remove the source term of the exchange-correlation magnetic field if required
-if (spinpol.and.nosource) call projsbf()
+if (spinpol.and.nosource) then
+  call projsbf()
+else
+  write(*,*) '*** Not calling projsbf'
+endif
 
 ! effective potential from sum of Coulomb and exchange-correlation potentials
 do ias=1,natmtot
@@ -67,7 +76,7 @@ vsir(:)=vclir(:)+vxcir(:)
 call rfirsm(msmooth,vsir)
 
 ! generate the effective magnetic fields
-call genbs()
+!call genbs()
 
 ! generate the tau-DFT effective potential
 call genws()

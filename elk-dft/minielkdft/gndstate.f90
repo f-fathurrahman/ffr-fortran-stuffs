@@ -40,13 +40,24 @@ call init1()
 
 
 ! initialise q-vector-dependent variables if required
-!if (xctype(1).lt.0) call init2
+if (xctype(1).lt.0) then
+  write(*,*) '*** Should call init2'
+  call init2()
+else
+  write(*,*)
+  write(*,*) '*** Not calling init2'
+endif
 
 ! apply strain to the G, k, G+k and q-vectors if required
+if ((istrain.lt.1).or.(istrain.gt.nstrain)) then
+  write(*,*)
+  write(*,*) '*** Not calling straingkq'
+endif
 !call straingkq()
 
-!if (task.eq.0) trdstate=.false.
-!if (task.eq.1) trdstate=.true.
+!
+if (task.eq.0) trdstate=.false.
+if (task.eq.1) trdstate=.true.
 
 ! only the MPI master process should write files
 !if (mp_mpi) then
@@ -104,25 +115,26 @@ call init1()
 !
 !end if
 
-!iscl = 0
+iscl = 0
 
-!if (trdstate) then
-!  ! read the Kohn-Sham potential and fields from file
-!  call readstate
-!  if (mp_mpi) then
-!    write(6,'("Potential read in from STATE.OUT")')
-!  end if
-!  if (autolinengy) call readfermi
-!else
-!  ! initialise the density and magnetisation from atomic data
-!  call rhoinit()
-!  call maginit()
-!  ! generate the Kohn-Sham potential and magnetic field
-!  call potks(.true.)
-!  if (mp_mpi) then
-!    write(6,'("Kohn-Sham potential initialised from atomic data")')
-!  end if
-!end if
+if (trdstate) then
+  stop 'Reading from file is deactivated'
+  ! read the Kohn-Sham potential and fields from file
+  !call readstate
+  !if (mp_mpi) then
+  !  write(6,'("Potential read in from STATE.OUT")')
+  !end if
+  !if (autolinengy) call readfermi
+else
+  ! initialise the density and magnetisation from atomic data
+  call rhoinit()
+  call maginit()
+  ! generate the Kohn-Sham potential and magnetic field
+  call potks(.true.)
+  if (mp_mpi) then
+    write(6,'("Kohn-Sham potential initialised from atomic data")')
+  end if
+end if
 
 !if (mp_mpi) flush(6)
 

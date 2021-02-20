@@ -146,9 +146,6 @@ potxcmt.f90 \
 ggair_1.f90   ggair_2b.f90    ggair_sp_2a.f90  ggamt_1.f90   ggamt_2b.f90    ggamt_sp_2a.f90 \
 ggair_2a.f90  ggair_sp_1.f90  ggair_sp_2b.f90  ggamt_2a.f90  ggamt_sp_1.f90  ggamt_sp_2b.f90 \
 grad2rfmt.f90 \
-genbs.f90 \
-bdipole.f90 \
-curden.f90 curdenk.f90 \
 curlrvf.f90 \
 genws.f90 \
 rfirsm.f90 \
@@ -199,6 +196,7 @@ gengkvec.f90 \
 gauntyry.f90 gaunt.f90 \
 genkpakq.f90 \
 genidxlo.f90 \
+potks.f90 \
 minielkdft.f90
 
 OBJ = $(SRC:.f90=.o)

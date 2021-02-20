@@ -66,9 +66,11 @@ if (ikp.gt.0) return
 lspn=lspnsymc(isym)
 ! if symmetry element is the identity return
 if (lspn.eq.1) return
+
 ! find the SU(2) representation of the spin rotation matrix
 call rotaxang(epslat,symlatc(:,:,lspn),det,v,th)
 call axangsu2(v,th,su2)
+
 ! apply SU(2) matrix to second-variational states (active transformation)
 do i=1,nstsv
   do ist=1,nstfv
@@ -79,5 +81,6 @@ do i=1,nstsv
   end do
 end do
 return
+
 end subroutine
 

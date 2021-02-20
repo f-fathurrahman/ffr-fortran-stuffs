@@ -53,7 +53,7 @@ do is=1,nspecies
   call wsplint(nro,rsp(nr,is),wr(nr))
   do ig=1,ngvec
     t1=gc(ig)
-! spherical bessel function j_0(x) times the atomic density tail
+    ! spherical bessel function j_0(x) times the atomic density tail
     if (t1.gt.epslat) then
       t2=1.d0/t1
       do ir=nr,nrs

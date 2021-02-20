@@ -67,13 +67,15 @@ do ik=1,nkpt
 !$OMP CRITICAL(writeemd_)
   write(*,'("Info(writeemd): ",I6," of ",I6," k-points")') ik,nkpt
 !$OMP END CRITICAL(writeemd_)
-! Fourier transform the wavefunctions
+  
+  ! Fourier transform the wavefunctions
   call genwfpw(vkl(:,ik),ngk(1,ik),igkig(:,1,ik),vgkl(:,:,1,ik), &
    vgkc(:,:,1,ik),gkc(:,1,ik),sfacgk(:,:,1,ik),nhk(1,ik),vhkc(:,:,1,ik), &
    hkc(:,1,ik),sfachk(:,:,1,ik),wfpw)
-! loop over all H+k-vectors
+  
+  ! loop over all H+k-vectors
   do ihk=1,nhk(1,ik)
-! sum over occupied states and spins
+    ! sum over occupied states and spins
     sum=0.d0
     do ist=1,nstsv
       do ispn=1,nspinor
