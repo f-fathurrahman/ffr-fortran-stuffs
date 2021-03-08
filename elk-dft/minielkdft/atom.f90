@@ -58,10 +58,10 @@ if (nst.le.0) then
 end if
 
 write(*,*) '--- from atom ---'
-write(*,*) 'sol = ', sol
+write(*,*) 'sol    = ', sol
 write(*,*) 'ptnucl = ', ptnucl
-write(*,*) 'zn = ', zn
-write(*,*) 'nst = ', nst
+write(*,*) 'zn     = ', zn
+write(*,*) 'nst    = ', nst
 do ist = 1,nst
   write(*,'(1x,A,I5)', advance="no") ' n = ', n(ist)
   write(*,'(1x,A,I5)', advance="no") ' l = ', l(ist)
