@@ -71,7 +71,7 @@ subroutine my_rdiracint(sol, kpa, e, nr, r, vr, nn, g0, g1, f0, f1)
     t4 = ci*(vr(ir) - e)
     ir0 = ir - 3
     if (ir0 < 1) ir0 = 1
-    !
+    ! ir0 starting point
     g1(ir) = poly3( r(ir0), g1(ir0), r(ir) )
     f1(ir) = poly3( r(ir0), f1(ir0), r(ir) )
     ! integrate to find wavefunction
