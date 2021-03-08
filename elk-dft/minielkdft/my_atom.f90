@@ -53,7 +53,7 @@ subroutine my_atom(sol, ptnucl, &
   
   ! potential convergence tolerance
   real(8), parameter :: eps=1.d-6
-  real(8) sum,dv,dvp,ze,beta,t1
+  real(8) ss, dv, dvp, ze, beta, t1
   
   ! allocatable arrays
   real(8), allocatable :: vn(:), vh(:), ex(:), ec(:), vx(:), vc(:), vrp(:)
@@ -177,11 +177,11 @@ subroutine my_atom(sol, ptnucl, &
     vr(:) = vh(:) + vx(:) + vc(:)
     
     ! determine change in potential
-    sum = 0.d0
+    ss = 0.d0
     do ir = 1,nr
-      sum = sum + ( vr(ir) - vrp(ir) )**2
+      ss = ss + ( vr(ir) - vrp(ir) )**2
     enddo
-    dv = sqrt(sum)/dble(nr)
+    dv = sqrt(ss)/dble(nr)
     
     if (iscl > 2) then
       ! reduce beta if change in potential is diverging
