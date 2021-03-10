@@ -13,8 +13,10 @@ public mesh_exp, mesh_exp_deriv, get_mesh_exp_params, mesh_exp_deriv2, &
 
 contains
 
+!-------------------------------------------------
 function mesh_exp(r_min, r_max, a, N) result(mesh)
-! Generates exponential mesh of N elements on [r_min, r_max]
+!-------------------------------------------------
+! Generates exponential mesh of N elements on [r_mn, r_max]
 !
 ! Arguments
 ! ---------
