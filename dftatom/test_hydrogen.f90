@@ -31,7 +31,7 @@ do n = 1, 7
         E_exact = - Z**2 / (2.0_dp * n**2)
         Ein = -1000
         relat = 0
-        call solve_radial_eigenproblem(n, l, Ein, eps, 100, R, Rp, u, Z, c, &
+        call solve_radial_eigenproblem(n, l, Ein, eps, 1000, R, Rp, u, Z, c, &
             relat, perturb, -5000._dp, 0._dp, converged, E, P, Q)
         error = abs(E -E_exact)
         if (converged /= 0) call stop_error("Not converged")

@@ -407,7 +407,9 @@ end do
 imax = n
 end subroutine
 
+!---------------------------------------------------------------------------
 subroutine rk4_integrate(R, y0, C1, C2, C1mid, C2mid, max_val, y1, y2, imax)
+!---------------------------------------------------------------------------
 ! Integrates the following set of equations outwards:
 ! dy1/dx =                y2
 ! dy2/dx = C1 * y1 + C2 * y2
