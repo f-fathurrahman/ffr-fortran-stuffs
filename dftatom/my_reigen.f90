@@ -15,21 +15,23 @@ public solve_radial_eigenproblem, integrate_rproblem_outward
 contains
 
 
+!--------------------------------------------------------------------
 subroutine integrate_rproblem_outward( l, E, R, Rp, V, Z, c, relat, &
     P, Q, imax )
+!--------------------------------------------------------------------
 
-integer, intent(in) :: l, relat, Z
-real(dp), intent(in) :: E, c, R(:), Rp(:), V(:)
-real(dp), intent(out) :: P(:), Q(:)
-integer, intent(out) :: imax
+  integer, intent(in) :: l, relat, Z
+  real(dp), intent(in) :: E, c, R(:), Rp(:), V(:)
+  real(dp), intent(out) :: P(:), Q(:)
+  integer, intent(out) :: imax
 
-integer :: kappa
+  integer :: kappa
 
-if (relat == 0) then
+  if (relat == 0) then
     call schroed_outward_adams(l, Z, E, R, Rp, V, P, Q, imax)
-else if (relat == 1) then
+  else if (relat == 1) then
     call stop_error("Scalar relativistic case not implemented")
-else if (relat == 2 .or. relat == 3) then
+  else if (relat == 2 .or. relat == 3) then
     if (relat == 3) then
         if (l == 0) then
               call stop_error("for l=0 only spin up (relat=2) is allowed")
@@ -39,9 +41,9 @@ else if (relat == 2 .or. relat == 3) then
         kappa = -l-1
     end if
     call dirac_outward_adams(c, kappa, Z, E, R, Rp, V, P, Q, imax)
-else
+  else
     call stop_error("wrong value of relat.")
-end if
+  end if
 end subroutine
 
 

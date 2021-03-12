@@ -1,95 +1,107 @@
-module ode1d
+MODULE ode1d
 
 ! General utilities for solving 1D ODEs. the Adams and rk4 subroutines
 ! are used by Schroedinger, Dirac and Poisson solvers. The integrate
 ! function is used at other places in dftatom to calculate integrals of the
 ! radial density/orbitals.
 
-use types, only: dp
-use utils, only: stop_error
+USE types, ONLY: dp
+USE utils, ONLY: stop_error
 
-implicit none
-private
-public integrate, normalize, parsefunction, get_n_nodes, get_min_idx, &
-        adams_interp_outward, adams_extrapolation_outward, &
-        adams_interp_outward_implicit, &
-        adams_interp_inward_implicit, &
-        get_midpoints, rk4_integrate3, rk4_integrate4, rk4_integrate, &
-        integrate_trapz_1, integrate_trapz_3, integrate_trapz_5, &
-        integrate_trapz_7, integrate_simpson, integrate_adams
+IMPLICIT NONE
+PRIVATEE
+PUBLIC integrate, normalize, parsefunction, get_n_nodes, get_min_idx, &
+       adams_interp_outward, adams_extrapolation_outward, &
+       adams_interp_outward_implicit, &
+       adams_interp_inward_implicit, &
+       get_midpoints, rk4_integrate3, rk4_integrate4, rk4_integrate, &
+       integrate_trapz_1, integrate_trapz_3, integrate_trapz_5, &
+       integrate_trapz_7, integrate_simpson, integrate_adams
 
-contains
+CONTAINS 
 
-real(dp) function integrate(Rp, f) result(s)
-real(dp), intent(in) :: Rp(:), f(:)
+!-------------------------------------------
+REAL(dp) FUNCTION integrate(Rp, f) RESULT(s)
+!-------------------------------------------
+  REAL(dp), INTENT(in) :: Rp(:), f(:)
 
-! Choose one from the integration rules below:
-!s = integrate_trapz_1(Rp, f)
-!s = integrate_trapz_3(Rp, f)
-!s = integrate_trapz_5(Rp, f)
-s = integrate_trapz_7(Rp, f)
-!s = integrate_simpson(Rp, f)
-!s = integrate_adams(Rp, f)
-end function
+  ! Choose one from the integration rules below:
+  !s = integrate_trapz_1(Rp, f)
+  !s = integrate_trapz_3(Rp, f)
+  !s = integrate_trapz_5(Rp, f)
+  s = integrate_trapz_7(Rp, f)
+  !s = integrate_simpson(Rp, f)
+  !s = integrate_adams(Rp, f)
+END FUNCTION 
 
-real(dp) function integrate_trapz_1(Rp, f) result(s)
-real(dp), intent(in) :: Rp(:), f(:)
+!---------------------------------------------------
+REAL(dp) FUNCTION integrate_trapz_1(Rp, f) RESULT(s)
+!---------------------------------------------------
+  REAL(dp), INTENT(in) :: Rp(:), f(:)
+  
+  REAL(dp) :: g(size(Rp))
+  INTEGER :: N
+  N = size(Rp)
+  g = f * Rp
+  s = (g(1) + g(N)) / 2
+  s = s + sum(g(2:N-1))
+END FUNCTION 
 
-real(dp) :: g(size(Rp))
-integer :: N
-N = size(Rp)
-g = f * Rp
-s = (g(1) + g(N)) / 2
-s = s + sum(g(2:N-1))
-end function
+!---------------------------------------------------
+REAL(dp) FUNCTION integrate_trapz_3(Rp, f) RESULT(s)
+!---------------------------------------------------
+  REAL(dp), INTENT(in) :: Rp(:), f(:)
+  
+  REAL(dp) :: g(size(Rp))
+  INTEGER :: N
+  N = size(Rp)
+  g = f * Rp
+  s = (9 * (g(1) + g(N)) + 28 * (g(2) + g(N-1)) + 23 * (g(3) + g(N-2))) / 24
+  s = s + sum(g(4:N-3))
+END FUNCTION 
 
-real(dp) function integrate_trapz_3(Rp, f) result(s)
-real(dp), intent(in) :: Rp(:), f(:)
+!---------------------------------------------------
+REAL(dp) FUNCTION integrate_trapz_5(Rp, f) RESULT(s)
+!---------------------------------------------------
+  REAL(dp), INTENT(in) :: Rp(:), f(:)
+  
+  REAL(dp) :: g(size(Rp))
+  INTEGER :: N
+  N = size(Rp)
+  g = f * Rp
+  s = (  475 * (g(1) + g(N  )) &
+      + 1902 * (g(2) + g(N-1)) &
+      + 1104 * (g(3) + g(N-2)) &
+      + 1586 * (g(4) + g(N-3)) &
+      + 1413 * (g(5) + g(N-4)) &
+      ) / 1440
+  s = s + sum(g(6:N-5))
+END FUNCTION 
 
-real(dp) :: g(size(Rp))
-integer :: N
-N = size(Rp)
-g = f * Rp
-s = (9 * (g(1) + g(N)) + 28 * (g(2) + g(N-1)) + 23 * (g(3) + g(N-2))) / 24
-s = s + sum(g(4:N-3))
-end function
+!---------------------------------------------------
+REAL(dp) FUNCTION integrate_trapz_7(Rp, f) RESULT(s)
+!---------------------------------------------------
+  REAL(dp), INTENT(in) :: Rp(:), f(:)
+  
+  REAL(dp) :: g(size(Rp))
+  INTEGER :: N
+  N = size(Rp)
+  g = f * Rp
+  s = (  36799 * (g(1) + g(N  )) &
+      + 176648 * (g(2) + g(N-1)) &
+      +  54851 * (g(3) + g(N-2)) &
+      + 177984 * (g(4) + g(N-3)) &
+      +  89437 * (g(5) + g(N-4)) &
+      + 130936 * (g(6) + g(N-5)) &
+      + 119585 * (g(7) + g(N-6)) &
+      ) / 120960
+  s = s + sum(g(8:N-7))
+END FUNCTION 
 
-real(dp) function integrate_trapz_5(Rp, f) result(s)
-real(dp), intent(in) :: Rp(:), f(:)
-
-real(dp) :: g(size(Rp))
-integer :: N
-N = size(Rp)
-g = f * Rp
-s = (  475 * (g(1) + g(N  )) &
-    + 1902 * (g(2) + g(N-1)) &
-    + 1104 * (g(3) + g(N-2)) &
-    + 1586 * (g(4) + g(N-3)) &
-    + 1413 * (g(5) + g(N-4)) &
-    ) / 1440
-s = s + sum(g(6:N-5))
-end function
-
-real(dp) function integrate_trapz_7(Rp, f) result(s)
-real(dp), intent(in) :: Rp(:), f(:)
-
-real(dp) :: g(size(Rp))
-integer :: N
-N = size(Rp)
-g = f * Rp
-s = (  36799 * (g(1) + g(N  )) &
-    + 176648 * (g(2) + g(N-1)) &
-    +  54851 * (g(3) + g(N-2)) &
-    + 177984 * (g(4) + g(N-3)) &
-    +  89437 * (g(5) + g(N-4)) &
-    + 130936 * (g(6) + g(N-5)) &
-    + 119585 * (g(7) + g(N-6)) &
-    ) / 120960
-s = s + sum(g(8:N-7))
-end function
-
-real(dp) function integrate_simpson(Rp, f) result(s)
-real(dp), intent(in) :: Rp(:), f(:)
+!---------------------------------------------------
+REAL(dp) FUNCTION integrate_simpson(Rp, f) RESULT(s)
+!---------------------------------------------------
+REAL(dp), intent(in) :: Rp(:), f(:)
 
 real(dp) :: g(size(Rp))
 integer :: i, N
@@ -106,17 +118,19 @@ if (modulo(N, 2) == 0) then
 end if
 end function
 
-real(dp) function integrate_adams(Rp, f) result(s)
-real(dp), intent(in) :: Rp(:), f(:)
-
-real(dp) :: g(size(Rp))
-integer :: i
-s = integrate_trapz_1(Rp(:4), f(:4))
-g = f * Rp
-do i = 4, size(Rp)-1
+!-------------------------------------------------
+REAL(dp) FUNCTION integrate_adams(Rp, f) result(s)
+!-------------------------------------------------
+  REAL(dp), INTENT(in) :: Rp(:), f(:)
+  
+  REAL(dp) :: g(size(Rp))
+  INTEGER :: i
+  s = integrate_trapz_1(Rp(:4), f(:4))
+  g = f * Rp
+  DO i = 4, size(Rp)-1
     s = s + adams_interp_outward(g, i)
-end do
-end function
+  ENDDO 
+END FUNCTION 
 
 subroutine normalize(Rp, Y)
 !     normalizes Y inplace on the grid R
