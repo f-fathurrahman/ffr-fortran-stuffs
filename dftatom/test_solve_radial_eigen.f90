@@ -1,11 +1,11 @@
 program test_solve
 
-  use dftatom, only: mesh_exp, mesh_exp_deriv, dp, &
-        solve_radial_eigenproblem, stop_error
+  use dftatom, only: mesh_exp, mesh_exp_deriv, dp, stop_error
+  use my_reigen, only: solve_radial_eigenproblem
   implicit none
 
   ! Atomic number:
-  integer, parameter :: Z = 1
+  integer, parameter :: Z = 5
   
   ! Mesh parameters:
   real(dp), parameter :: r_min = 1e-8_dp, r_max = 50.0_dp, a = 1e6_dp
@@ -24,12 +24,14 @@ program test_solve
 
   write(*,*) "Hydrogen like energies for Z = ", Z
   write(*,*) "Mesh parameters (r_min, r_max, a, N):"
-  write(*,"(ES10.2, F10.2, ES10.2, I10)") r_min, r_max, a, NN
+  write(*,"(1x,ES10.2, F10.2, ES10.2, I10)") r_min, r_max, a, NN
   write(*,*)
-  write(*,"(A3, A3, A15, A15, A10)") "n", "l", "E", "E_exact", "Error"
+  write(*,"(1x,A3, A3, A15, A15, A10)") "n", "l", "E", "E_exact", "Error"
   write(*,*)
-  n = 2 ! hardcoded
-  do l = 0, n-1
+  
+  n = 3 ! hardcoded
+  l = 1
+  !do l = 0, n-1
     E_exact = - Z**2 / (2.0_dp * n**2)
     Ein = -1000.d0
     relat = 0
@@ -38,5 +40,5 @@ program test_solve
     error = abs(E -E_exact)
     if (converged /= 0) call stop_error("Not converged")
     write(*,"(I3, I3, F15.6, F15.6, ES10.2)") n, l, E, E_exact, error
-  end do
+  !end do
 end program
