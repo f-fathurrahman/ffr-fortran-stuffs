@@ -65,6 +65,9 @@ subroutine schroed_outward_adams(l, Z, E, R, Rp, V, P, Q, imax)
   Vmid(:3) = get_midpoints(R(:4), V(:4))
   call integrate_rschroed_rk4(l, Z, E, R(:4), V(:4), Vmid(:3), u1(:4), u2(:4), imax)
 
+  write(*,*) 'imax after rk4 = ', imax
+  !stop 'ffr in line 69'
+
   !u1(1:4) = R(1:4) ** (l+1)
   !u2(1:4) = (l+1) * R(1:4) ** l
   u1p(1:4) = Rp(1:4) * u2(1:4)
@@ -229,8 +232,16 @@ subroutine integrate_rschroed_rk4(l, Z, E, R, V, Vmid, P, Q, imax)
   Rmid = (R(:size(R)-1) + R(2:)) / 2
   C1mid = 2*(Vmid-E) + l*(l+1)/Rmid**2
   C2mid = -2/Rmid
+
+  write(*,*) 'C1mid = ', C1mid
+  write(*,*) 'C2mid = ', C2mid
   
   call rk4_integrate(R, y0, C1, C2, C1mid, C2mid, max_val, y1, y2, imax)
+
+  WRITE(*,*) 'after rk4_integrate: imax = ', imax
+  WRITE(*,*) 'size(R) = ', size(R)
+  WRITE(*,*) 'y1 = ', y1(1:4)
+  WRITE(*,*) 'y2 = ', y2(1:4)
   
   P(:imax) = y1(:imax)*R(:imax) ! P(r) = r * R(r)
   Q(:imax) = y2(:imax)*R(:imax) + y1(:imax) ! Q(r) = P'(r) = r * R'(r) + R(r)

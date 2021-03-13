@@ -9,7 +9,7 @@ USE types, ONLY: dp
 USE utils, ONLY: stop_error
 
 IMPLICIT NONE
-PRIVATEE
+PRIVATE 
 PUBLIC integrate, normalize, parsefunction, get_n_nodes, get_min_idx, &
        adams_interp_outward, adams_extrapolation_outward, &
        adams_interp_outward_implicit, &

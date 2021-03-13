@@ -188,7 +188,8 @@ subroutine solve_radial_eigenproblem(n, l, Ein, eps, max_iter, &
     endif
   
     ctp = find_ctp(V + l*(l+1)/(2*R**2), E)
-    
+    write(*,*) 'after find ctp = ', ctp
+
     ! If the classical turning point is too large (or cannot be found at all),
     ! we can't use inward integration to correct the energy, so we use
     ! bisection. Also use bisection if the user requests it.
@@ -209,6 +210,10 @@ subroutine solve_radial_eigenproblem(n, l, Ein, eps, max_iter, &
     call integrate_rproblem_outward(l, E, R(:ctp), Rp(:ctp), V(:ctp), &
       Z, c, relat, P(:ctp), Q(:ctp), imax)
     
+    WRITE(*,*) 'Some P and Q after integrate outward'
+    WRITE(*,*) 'P = ', P(1:4)
+    WRITE(*,*) 'Q = ', Q(1:4)
+
     nnodes = get_n_nodes(P(:imax))
     write(*,*) 'nnodes = ', nnodes
 
@@ -217,6 +222,10 @@ subroutine solve_radial_eigenproblem(n, l, Ein, eps, max_iter, &
       ! integrate all the way to "ctp", or if "ctp" was too large, we just
       ! use bisection:
       isbig = is_E_above(n, l, nnodes)
+      WRITE(*,*) 'ctp = ', ctp
+      WRITE(*,*) 'imax = ', imax
+      WRITE(*,*) 'n-l-1 = ', n-l-1
+      WRITE(*,*) 'isbig = ', isbig
       if (isbig) then
           Emax = E
       else
@@ -225,6 +234,7 @@ subroutine solve_radial_eigenproblem(n, l, Ein, eps, max_iter, &
       E = (Emin + Emax) / 2
       last_bisect = .true.
       write(*,*) 'Need to cycle the loop'
+      !stop 'ffr'
       cycle
     end if
   
