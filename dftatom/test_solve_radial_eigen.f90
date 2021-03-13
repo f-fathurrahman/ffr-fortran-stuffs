@@ -3,7 +3,7 @@ PROGRAM test_solve
   IMPLICIT NONE 
 
   ! Atomic number:
-  INTEGER, PARAMETER :: Z = 92
+  INTEGER, PARAMETER :: Z = 5
   
   ! Mesh parameters:
   REAL(8), PARAMETER :: r_min = 1.0d-8, r_max = 50.d0, a = 1.0d6

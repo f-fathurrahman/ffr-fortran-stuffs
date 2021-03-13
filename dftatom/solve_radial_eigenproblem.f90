@@ -45,10 +45,6 @@ SUBROUTINE solve_radial_eigenproblem(n, l, Ein, eps, max_iter, &
   iter = 0
   last_bisect = .true.
 
-  WRITE(*,*) 'Ein = ', Ein
-  WRITE(*,*) 'Emax = ', Emax
-  WRITE(*,*) 'E = ', E
-
   DO WHILE( iter < max_iter )
       
     iter = iter + 1
@@ -113,7 +109,6 @@ SUBROUTINE solve_radial_eigenproblem(n, l, Ein, eps, max_iter, &
     ENDIF 
   
     CALL find_ctp( Nr, V + l*(l+1)/(2*R**2), E, ctp )
-    WRITE(*,*) 'after find ctp = ', ctp
 
     ! If the classical turning point is too large (or cannot be found at all),
     ! we can't use inward integration to correct the energy, so we use
@@ -138,13 +133,8 @@ SUBROUTINE solve_radial_eigenproblem(n, l, Ein, eps, max_iter, &
     
     CALL integrate_rproblem_outward( ctp, l, E, R(:ctp), Rp(:ctp), V(:ctp), &
       Z, c, relat, P(:ctp), Q(:ctp), imax )
-
-    WRITE(*,*) 'Some P and Q after integrate outward'
-    WRITE(*,*) 'P = ', P(1:4)
-    WRITE(*,*) 'Q = ', Q(1:4)
     
     CALL get_n_nodes( imax, P(:imax), nnodes )
-    WRITE(*,*) 'nnodes = ', nnodes
 
 
     ! If the number of nodes is not correct, or we didn't manage to
@@ -152,10 +142,6 @@ SUBROUTINE solve_radial_eigenproblem(n, l, Ein, eps, max_iter, &
     ! use bisection:
     IF( nnodes /= n-l-1 .or. ctp == Nr .or. imax < ctp ) THEN 
       CALL is_E_above(n, l, nnodes, isbig)
-      WRITE(*,*) 'ctp = ', ctp
-      WRITE(*,*) 'imax = ', imax
-      WRITE(*,*) 'n-l-1 = ', n-l-1
-      WRITE(*,*) 'isbig = ', isbig
       IF( isbig ) THEN 
         Emax = E
       ELSE 
@@ -169,7 +155,6 @@ SUBROUTINE solve_radial_eigenproblem(n, l, Ein, eps, max_iter, &
     ENDIF 
   
     ! Perturbation theory correction
-    WRITE(*,*) 'Before integrate_rproblem_inward: ctp = ', ctp
     CALL integrate_rproblem_inward( &
       Nr-ctp+1, l, E, R(ctp:), Rp(ctp:), V(ctp:), c, &
       relat, Pr(ctp:), Qr(ctp:), imin )

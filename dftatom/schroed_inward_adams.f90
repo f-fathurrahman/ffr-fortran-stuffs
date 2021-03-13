@@ -27,9 +27,6 @@ SUBROUTINE schroed_inward_adams(Nr, l, E, R, Rp, V, P, Q, imin)
   REAL(8) :: R_max
   REAL(8) :: xx1, xx2
 
-  WRITE(*,*) 'in schroed_inward_adams: Nr = ', Nr
-  WRITE(*,*) 'size(R) = ', size(R)
-
   allocate( C(Nr) )
   allocate( u1(Nr) )
   allocate( u2(Nr) )
@@ -54,17 +51,10 @@ SUBROUTINE schroed_inward_adams(Nr, l, E, R, Rp, V, P, Q, imin)
     i_max = i_max - 1
   ENDDO 
 
-  write(*,*) 'Pass here 57 in schroed_inward_adams'
-
   u1(i_max:i_max+4) = exp(-lambda * (R(i_max:i_max+4)-R(1)))
-  write(*,*) 'Check 1'
   u2(i_max:i_max+4) = - lambda * u1(i_max:i_max+4)
-  write(*,*) 'Check 2'
   u1p(i_max:i_max+4) = Rp(i_max:i_max+4)                * u2(i_max:i_max+4)
-  write(*,*) 'Check 3'
   u2p(i_max:i_max+4) = Rp(i_max:i_max+4) * C(i_max:i_max+4) * u1(i_max:i_max+4)
-
-  write(*,*) 'Pass here 64 in schroed_inward_adams'
 
   DO i = i_max,2,-1
     u1p(i) = Rp(i)        * u2(i)

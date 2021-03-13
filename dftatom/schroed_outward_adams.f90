@@ -52,9 +52,6 @@ SUBROUTINE schroed_outward_adams( N, l, Z, E, R, Rp, V, P, Q, imax )
       size(R) == size(P) .and. size(R) == size(P) .and. size(R) == size(Q))) then
     CALL stop_error("Array sizes mismatch")
   ENDIF
-
-  WRITE(*,*) 'N = ', N
-  WRITE(*,*) 'size(R) = ', size(R)
   
   C = ( l*(l+1)/R**2 + 2 * (V-E) )
   

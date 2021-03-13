@@ -33,9 +33,6 @@ SUBROUTINE integrate_rschroed_rk4(N, l, Z, E, R, V, Vmid, P, Q, imax)
   ! y(1) = R, y(2) = R'
   ! dydx(:) are the derivatives of the components (2) of the equation
 
-  write(*,*) 'calling integrate_rschroed_rk4: with E = ', E
-  write(*,*) 'imax = ', imax
-
   IF( l == 0 ) THEN 
     y0(1) = 1-Z*R(1)
     y0(2) = -Z
@@ -54,16 +51,8 @@ SUBROUTINE integrate_rschroed_rk4(N, l, Z, E, R, V, Vmid, P, Q, imax)
   Rmid = (R(:size(R)-1) + R(2:)) / 2
   C1mid = 2*(Vmid-E) + l*(l+1)/Rmid**2
   C2mid = -2/Rmid
-  
-  write(*,*) 'C1mid = ', C1mid
-  write(*,*) 'C2mid = ', C2mid
 
   CALL rk4_integrate(N, R, y0, C1, C2, C1mid, C2mid, max_val, y1, y2, imax)
-  
-  WRITE(*,*) 'after rk4_integrate: imax = ', imax
-  WRITE(*,*) 'size(R) = ', size(R)
-  WRITE(*,*) 'y1 = ', y1(1:4)
-  WRITE(*,*) 'y2 = ', y2(1:4)
 
   P(:imax) = y1(:imax)*R(:imax) ! P(r) = r * R(r)
   Q(:imax) = y2(:imax)*R(:imax) + y1(:imax) ! Q(r) = P'(r) = r * R'(r) + R(r)

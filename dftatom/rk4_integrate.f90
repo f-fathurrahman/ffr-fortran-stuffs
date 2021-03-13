@@ -23,9 +23,6 @@ SUBROUTINE rk4_integrate( N, R, y0, C1, C2, C1mid, C2mid, max_val, y1, y2, imax 
   REAL(8) :: dym(2), dyt(2), yt(2), dydx(2), y(2)
   REAL(8) :: h
 
-  write(*,*) 'size(y0) = ', size(y0)
-  write(*,*) 'size(y) = ', size(y)
-
   y = y0
   y1(1) = y(1)
   y2(1) = y(2)
