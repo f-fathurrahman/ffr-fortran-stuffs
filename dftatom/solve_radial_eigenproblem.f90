@@ -169,8 +169,9 @@ SUBROUTINE solve_radial_eigenproblem(n, l, Ein, eps, max_iter, &
     ENDIF 
   
     ! Perturbation theory correction
+    WRITE(*,*) 'Before integrate_rproblem_inward: ctp = ', ctp
     CALL integrate_rproblem_inward( &
-      ctp, l, E, R(ctp:), Rp(ctp:), V(ctp:), c, &
+      Nr-ctp+1, l, E, R(ctp:), Rp(ctp:), V(ctp:), c, &
       relat, Pr(ctp:), Qr(ctp:), imin )
 
     !write(*,*) 'imin = ', imin

@@ -128,6 +128,8 @@ subroutine schroed_inward_adams(l, E, R, Rp, V, P, Q, imin)
   real(dp) :: lambda, Delta, M(2, 2), u1_tmp, u2_tmp
   real(dp) :: R_max
 
+  write(*,*) 'in schroed_inward_adams: size(R) = ', size(R)
+
   C = (l*(l+1)/R**2 + 2 * (V-E))
 
   i_max = size(R)-4

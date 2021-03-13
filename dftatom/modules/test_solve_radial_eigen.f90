@@ -5,7 +5,7 @@ program test_solve
   implicit none
 
   ! Atomic number:
-  integer, parameter :: Z = 5
+  integer, parameter :: Z = 92
   
   ! Mesh parameters:
   real(dp), parameter :: r_min = 1e-8_dp, r_max = 50.0_dp, a = 1e6_dp
@@ -35,7 +35,7 @@ program test_solve
     E_exact = - Z**2 / (2.0_dp * n**2)
     Ein = -1000.d0
     relat = 0
-    call solve_radial_eigenproblem(n, l, Ein, eps, 10, R, Rp, u, Z, c, &
+    call solve_radial_eigenproblem(n, l, Ein, eps, 1000, R, Rp, u, Z, c, &
         relat, perturb, -5000._dp, 0._dp, converged, E, P, Q)
     error = abs(E -E_exact)
     if (converged /= 0) call stop_error("Not converged")

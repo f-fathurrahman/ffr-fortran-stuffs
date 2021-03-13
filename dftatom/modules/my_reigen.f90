@@ -60,6 +60,7 @@ subroutine integrate_radial_problem_inward(l, E, R, Rp, V, c, &
   integer :: kappa
 
   if (relat == 0) then
+    write(*,*) 'before calling schroed_inward_adams: size(R) = ', size(R)
     call schroed_inward_adams(l, E, R, Rp, V, P, Q, imin)
   else if (relat == 1) then
     call stop_error("Scalar relativistic case not implemented")
@@ -238,6 +239,8 @@ subroutine solve_radial_eigenproblem(n, l, Ein, eps, max_iter, &
       cycle
     end if
   
+
+    WRITE(*,*) 'Before integrate_rproblem_inward: ctp = ', ctp
     ! Perturbation theory correction
     call integrate_radial_problem_inward( &
       l, E, R(ctp:), Rp(ctp:), V(ctp:), c, &

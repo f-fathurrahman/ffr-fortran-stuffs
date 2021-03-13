@@ -57,8 +57,11 @@ SUBROUTINE schroed_inward_adams(Nr, l, E, R, Rp, V, P, Q, imin)
   write(*,*) 'Pass here 57 in schroed_inward_adams'
 
   u1(i_max:i_max+4) = exp(-lambda * (R(i_max:i_max+4)-R(1)))
+  write(*,*) 'Check 1'
   u2(i_max:i_max+4) = - lambda * u1(i_max:i_max+4)
+  write(*,*) 'Check 2'
   u1p(i_max:i_max+4) = Rp(i_max:i_max+4)                * u2(i_max:i_max+4)
+  write(*,*) 'Check 3'
   u2p(i_max:i_max+4) = Rp(i_max:i_max+4) * C(i_max:i_max+4) * u1(i_max:i_max+4)
 
   write(*,*) 'Pass here 64 in schroed_inward_adams'

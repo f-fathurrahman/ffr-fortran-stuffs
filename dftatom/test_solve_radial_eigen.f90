@@ -3,7 +3,7 @@ PROGRAM test_solve
   IMPLICIT NONE 
 
   ! Atomic number:
-  INTEGER, PARAMETER :: Z = 5
+  INTEGER, PARAMETER :: Z = 92
   
   ! Mesh parameters:
   REAL(8), PARAMETER :: r_min = 1.0d-8, r_max = 50.d0, a = 1.0d6
@@ -44,7 +44,7 @@ PROGRAM test_solve
     E_exact = - Z**2 / (2.d0 * n**2)
     Ein = -1000.d0
     relat = 0
-    CALL solve_radial_eigenproblem(n, l, Ein, eps, 10, &
+    CALL solve_radial_eigenproblem(n, l, Ein, eps, 1000, &
         NN+1, R, Rp, u, Z, c, &
         relat, perturb, -5000.0d0, 0.0d0, converged, E, P, Q)
     error = abs(E -E_exact)
