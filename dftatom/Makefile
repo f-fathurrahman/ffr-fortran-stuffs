@@ -21,7 +21,12 @@ find_ctp.o \
 is_E_above.o \
 integrate_rproblem_inward.o \
 adams_interp_inward_implicit.o \
-schroed_inward_adams.o 
+schroed_inward_adams.o \
+adams_interp_outward.o \
+adams_extrapolation_outward.o \
+rpoisson_outward_pc.o \
+rpoisson_outward_rk4.o \
+rk4_integrate3.o 
 
 all: $(PROG)
 
