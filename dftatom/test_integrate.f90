@@ -15,26 +15,26 @@ END SUBROUTINE
 PROGRAM test_integrate
   IMPLICIT NONE 
   REAL(8) :: r_min, r_max, a
-  INTEGER :: N
+  INTEGER :: Nr
   REAL(8), ALLOCATABLE :: rmesh(:), drmesh(:), f(:)
   REAL(8) :: s
   
-  N = 500
+  Nr = 500
   r_min = 0.d0
   r_max = 200.d0
   a = 1d9
   !a = 1.d0
-  ALLOCATE(rmesh(N+1))
-  ALLOCATE(drmesh(N+1))
-  ALLOCATE(f(N+1))
+  ALLOCATE(rmesh(Nr))
+  ALLOCATE(drmesh(Nr))
+  ALLOCATE(f(Nr))
 
-  CALL gen_rmesh_exp(r_min, r_max, a, N, rmesh)
-  CALL gen_drmesh_exp(r_min, r_max, a, N, drmesh)
+  CALL gen_rmesh_exp(r_min, r_max, a, Nr, rmesh)
+  CALL gen_drmesh_exp(r_min, r_max, a, Nr, drmesh)
 
-  CALL init_func(N+1, rmesh, f)
+  CALL init_func(Nr, rmesh, f)
 
   WRITE(*,*) 'calculating integral ...'
-  CALL integrate_trapz_7(N+1, drmesh, f, s)
+  CALL integrate_trapz_7(Nr, drmesh, f, s)
   WRITE(*,*) 's = ', s
 
   DEALLOCATE(f)

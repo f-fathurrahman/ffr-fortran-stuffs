@@ -1,14 +1,16 @@
 !--------------------------------------------------
-SUBROUTINE gen_rmesh_exp(r_min, r_max, a, N, rmesh)
+SUBROUTINE gen_rmesh_exp(r_min, r_max, a, Nr, rmesh)
 !--------------------------------------------------
   IMPLICIT NONE 
   REAL(8), INTENT(in) :: r_min, r_max
   REAL(8), INTENT(in) :: a
-  INTEGER, INTENT(in) :: N
-  REAL(8) :: rmesh(N+1)
-  
-  INTEGER :: i
+  INTEGER, INTENT(in) :: Nr
+  REAL(8) :: rmesh(Nr)
+
+  INTEGER :: i, N
   REAL(8) :: alpha, beta
+
+  N = Nr - 1
 
   IF ( a < 0.d0 ) THEN 
     CALL stop_error("mesh_exp: a > 0 required")
@@ -17,7 +19,7 @@ SUBROUTINE gen_rmesh_exp(r_min, r_max, a, N, rmesh)
   !
   ELSEIF( abs(a - 1.d0) < tiny(1.d0) ) THEN 
     alpha = (r_max - r_min) / N
-    DO i = 1,N+1
+    DO i = 1,Nr
       rmesh(i) = alpha*(i - 1.0d0) + r_min
     ENDDO 
   !
