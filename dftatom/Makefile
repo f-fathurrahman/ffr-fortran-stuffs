@@ -3,7 +3,10 @@ F90FLAGS = -Wall -fcheck=bounds #-O3
 
 PROG = libmain.a
 
-OBJS = stop_error.o \
+OBJS = \
+m_dft_data.o \
+m_states.o \
+stop_error.o \
 gen_rmesh_exp.o gen_drmesh_exp.o \
 integrate_trapz.o \
 rk4_integrate.o \
@@ -26,7 +29,8 @@ adams_interp_outward.o \
 adams_extrapolation_outward.o \
 rpoisson_outward_pc.o \
 rpoisson_outward_rk4.o \
-rk4_integrate3.o 
+rk4_integrate3.o \
+get_n_orb.o
 
 all: $(PROG)
 
@@ -34,7 +38,7 @@ $(PROG): $(OBJS)
 	ar rcs $@ $(OBJS)
 
 clean:
-	rm -f $(PROG) $(OBJS) *.mod
+	rm -f $(PROG) *.o *.mod
 
 .SUFFIXES: $(SUFFIXES) .f90
 
