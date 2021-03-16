@@ -36,6 +36,14 @@ PROGRAM test_atom_lda
     R, Rp, V_tot, density, orbitals, reigen_eps, 100, mixing_eps, &
     0.5d0, 200, .true. )
 
+  WRITE(*,*) "Z=", Z, "Nr = ", Nr
+  WRITE(*,'(1x,A,F18.10)') "E_tot=", E_tot
+  WRITE(*,*) "state    E            occupancy"
+  DO i = 1, size(ks_energies)
+    WRITE(*,"(1x,I1, A, ' ', F18.6, '   ', F6.3)") no(i), l_names(lo(i)), &
+          ks_energies(i), fo(i)
+  ENDDO
+
   DEALLOCATE( ks_energies )
   DEALLOCATE( no )
   DEALLOCATE( lo )

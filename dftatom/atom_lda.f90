@@ -41,11 +41,6 @@ SUBROUTINE atom_lda( &
   CALL gen_rmesh_exp(r_min, r_max, a, Nr, R)
   CALL gen_drmesh_exp(r_min, r_max, a, Nr, Rp)
 
-  WRITE(*,*) 'Pass here ffr'
-  WRITE(*,*) 'no = ', no
-  WRITE(*,*) 'lo = ', lo
-  WRITE(*,*) 'fo = ', fo
-
   !V_tot = -Z / R
   CALL get_hydrogen_energies( Z, n_orb, no, ks_energies )
   CALL calc_TF_potential( Nr, R, Z, .true., V_tot )
@@ -92,15 +87,15 @@ SUBROUTINE atom_lda( &
   !d%rho = d%rho * d%Z / integrate(d%Rp, 4*pi*d%rho*d%R**2)
   !call rho2V(d)
   
-  !CALL mixing_anderson( KS_step, d%V_tot - d%V_coulomb, mixing_max_iter, &
-  !  .true., d, mixing_alpha, mixing_eps, tmp )
-  !E_tot = d%Etot
+  CALL scf_potmix_anderson( Nr, n_orb, d%V_tot - d%V_coulomb, mixing_max_iter, &
+    .true., d, mixing_alpha, mixing_eps, tmp )
   
+  E_tot = d%Etot
   ! Prints the energies:
-  !print *, "Ekin: ", d%Ekin
-  !print *, "Ecoul:", d%Ecoul
-  !print *, "Eenuc:", d%Eenuc
-  !print *, "Exc:  ", d%Exc
-  !print *, "E_tot:", d%Ekin + d%Ecoul + d%Eenuc + d%Exc
+  print *, "Ekin: ", d%Ekin
+  print *, "Ecoul:", d%Ecoul
+  print *, "Eenuc:", d%Eenuc
+  print *, "Exc:  ", d%Exc
+  print *, "E_tot:", d%Ekin + d%Ecoul + d%Eenuc + d%Exc
 END SUBROUTINE 
 

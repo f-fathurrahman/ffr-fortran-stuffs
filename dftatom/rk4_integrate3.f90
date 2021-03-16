@@ -12,7 +12,7 @@ SUBROUTINE rk4_integrate3( Nr, R, y0, C1, C2, C1mid, C2mid, max_val, y1, y2, ima
   IMPLICIT NONE 
   INTEGER :: Nr
   REAL(8), INTENT(in) :: R(Nr) ! Grid
-  REAL(8), INTENT(in) :: y0(Nr) ! Initial condition
+  REAL(8), INTENT(in) :: y0(2) ! Initial condition
   ! Coefficients C1 and C2 at grid points and midpoints:
   REAL(8), INTENT(in) :: C1(Nr), C2(Nr), C1mid(Nr-1), C2mid(Nr-1)
   ! Maximum value (if y1 > max_val, the integration stops)

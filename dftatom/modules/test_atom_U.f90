@@ -20,7 +20,7 @@ real(dp), allocatable, dimension(:) :: fo, ks_energies
 real(dp), allocatable :: orbitals(:, :)
 real(dp), allocatable :: R(:), Rp(:), V_tot(:), density(:)
 
-Z = 1
+Z = 5
 NN = 5500
 n_orb = get_atom_orb(Z)
 allocate(ks_energies(n_orb), no(n_orb), &
@@ -30,15 +30,16 @@ call atom_lda(Z, r_min, r_max, a, NN, no, lo, fo, ks_energies, E_tot, &
     R, Rp, V_tot, density, orbitals, reigen_eps, 100, mixing_eps, &
     0.5_dp, 200, .true.)
 
-print *, "Z=", Z, "N=", NN
-print '("E_tot=", F18.6)', E_tot
+print *, "Z=", Z, "Nr=", NN+1
+print '("E_tot=", F18.10)', E_tot
 print *, "state    E            occupancy"
 do i = 1, size(ks_energies)
     print "(I1, A, ' ', F18.6, '   ', F6.3)", no(i), l_names(lo(i)), &
         ks_energies(i), fo(i)
 end do
-print *, "Print the first 10 values of the 1st and 2nd orbitals:"
-print *, orbitals(:10, 1)
-print *, orbitals(:10, 2)
+
+!print *, "Print the first 10 values of the 1st and 2nd orbitals:"
+!print *, orbitals(:10, 1)
+!print *, orbitals(:10, 2)
 
 end program

@@ -34,7 +34,14 @@ get_n_orb.o \
 get_hydrogen_energies.o \
 calc_E_nl.o \
 calc_TF_potential.o \
-atom_lda.o
+atom_lda.o \
+scf_potmix_anderson.o \
+V_to_rho.o \
+calc_Vxc.o \
+calc_Vh.o \
+calc_Etot.o \
+rho_to_V.o \
+ks_potential_map.o
 
 all: $(PROG)
 
