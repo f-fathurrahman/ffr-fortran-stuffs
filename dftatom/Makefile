@@ -30,7 +30,11 @@ adams_extrapolation_outward.o \
 rpoisson_outward_pc.o \
 rpoisson_outward_rk4.o \
 rk4_integrate3.o \
-get_n_orb.o
+get_n_orb.o \
+get_hydrogen_energies.o \
+calc_E_nl.o \
+calc_TF_potential.o \
+atom_lda.o
 
 all: $(PROG)
 
