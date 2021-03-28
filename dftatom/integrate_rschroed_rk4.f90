@@ -46,7 +46,7 @@ SUBROUTINE integrate_rschroed_rk4(N, l, Z, E, R, V, Vmid, P, Q, imax)
   ENDIF 
 
   ! Evaluate array values needed for RK4
-  C1 = 2*(V-E) + l*(l+1)/R**2
+  C1 = 2*(V - E) + l*(l+1)/R**2
   C2 = -2/R
   Rmid = (R(:size(R)-1) + R(2:)) / 2
   C1mid = 2*(Vmid-E) + l*(l+1)/Rmid**2
@@ -54,7 +54,7 @@ SUBROUTINE integrate_rschroed_rk4(N, l, Z, E, R, V, Vmid, P, Q, imax)
 
   CALL rk4_integrate(N, R, y0, C1, C2, C1mid, C2mid, max_val, y1, y2, imax)
 
-  P(:imax) = y1(:imax)*R(:imax) ! P(r) = r * R(r)
-  Q(:imax) = y2(:imax)*R(:imax) + y1(:imax) ! Q(r) = P'(r) = r * R'(r) + R(r)
+  P(1:imax) = y1(1:imax)*R(1:imax) ! P(r) = r * R(r)
+  Q(1:imax) = y2(1:imax)*R(1:imax) + y1(1:imax) ! Q(r) = P'(r) = r * R'(r) + R(r)
 
 END SUBROUTINE 

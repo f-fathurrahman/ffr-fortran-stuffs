@@ -14,6 +14,8 @@ SUBROUTINE integrate_rproblem_inward(Nr, l, E, R, Rp, V, c, &
   REAL(8) :: ctmp
   ctmp = c
 
+  WRITE(*,*) 'DEBUG: integrate_rproblem_inward, Nr = ', Nr
+
   IF( relat == 0 ) THEN 
     CALL schroed_inward_adams(Nr, l, E, R, Rp, V, P, Q, imin)
 !  else if (relat == 1) then
@@ -28,7 +30,7 @@ SUBROUTINE integrate_rproblem_inward(Nr, l, E, R, Rp, V, c, &
 !      kappa = -l-1
 !    end if
 !    call dirac_inward_adams(c, kappa, E, R, Rp, V, P, Q, imin)
-  else
-    call stop_error("Wrong value of relat.")
-  end if
-end subroutine
+  ELSE
+    CALL stop_error("Wrong value of relat.")
+  ENDIF 
+END SUBROUTINE 

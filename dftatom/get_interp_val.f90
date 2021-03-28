@@ -26,13 +26,13 @@ SUBROUTINE get_interp_val(f, x, R, n, V, i)
   n2 = j2 + 1
 
   IF( n1 < 1 ) THEN 
-      n2 = n2 - n1 + 1
-      n1 = 1
+    n2 = n2 - n1 + 1
+    n1 = 1
   ENDIF 
 
   IF( n2 > n ) THEN 
-      n1 = n1 - ( n2 - n)
-      n2 = n
+    n1 = n1 - ( n2 - n)
+    n2 = n
   ENDIF 
   
   CALL calc_interp( x, r(n1:n2), n2-n1+1, f(n1:n2), V )

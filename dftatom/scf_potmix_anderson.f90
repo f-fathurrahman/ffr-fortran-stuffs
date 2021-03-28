@@ -7,24 +7,11 @@ SUBROUTINE scf_potmix_anderson( Nr, n_orb, x0, max_iter, energy_crit, d, alpha, 
   REAL(8), INTENT(in) :: x0(Nr)
   INTEGER, INTENT(in) :: max_iter
   LOGICAL, INTENT(in) :: energy_crit
-  TYPE(dft_data_t), intent(inout) :: d ! Data passed to "F"
+  TYPE(dft_data_t), INTENT(inout) :: d ! Data passed to "F"
   REAL(8), INTENT(in) :: alpha
   REAL(8), INTENT(in) :: eps
   REAL(8) :: xout(Nr)
   REAL(8), PARAMETER :: pi=4.d0*atan(1.d0)
-
-!interface
-!    function R(x, i, d)
-!    use types
-!    use dft_data
-!    implicit none
-!    real(8), intent(in) :: x(:) ! "x"
-!    integer, intent(in) :: i ! iteration #
-!    type(dft_data_t), intent(inout) :: d ! F's data
-!    real(8) :: R(size(x))
-!    end function
-!end interface
-
   REAL(8) :: x_i(Nr), x1_i(Nr), R_i(Nr), R1_i(Nr), delta_R(Nr), delta_x(Nr)
   REAL(8) :: beta
   REAL(8) :: sn, sd

@@ -49,6 +49,7 @@ SUBROUTINE solve_radial_eigenproblem(n, l, Ein, eps, max_iter, &
       
     iter = iter + 1
 
+    WRITE(*,*)
     WRITE(*,'(1x,A,I8,F18.10)') 'solve_reigen iter: ', iter, E
   
     ! See if bisection is converged
@@ -81,9 +82,12 @@ SUBROUTINE solve_radial_eigenproblem(n, l, Ein, eps, max_iter, &
         RETURN 
       ENDIF 
 
+      WRITE(*,*) 'DEBUG: integrate_rproblem_outward until Nr'
       CALL integrate_rproblem_outward( Nr, l, E, R, Rp, V, Z, c, relat, P, Q, imax )
-          
+      
       CALL get_min_idx( imax, P(:imax), minidx )
+      WRITE(*,*) 'minidx = ', minidx
+
       IF( minidx <= 0 ) THEN 
         WRITE(*,*) "ERROR: The wavefunction doesn't have a peak"
         converged = 4
@@ -97,23 +101,27 @@ SUBROUTINE solve_radial_eigenproblem(n, l, Ein, eps, max_iter, &
       ! To make sure the zeros from above are not counted as nodes, we
       ! substract 1 from minidx here:
       CALL get_n_nodes( minidx-1, P(:minidx-1), nnodes )
+      WRITE(*,*) 'DEBUG: nnodes = ', nnodes
   
       IF( nnodes /= n - l - 1) THEN 
         WRITE(*,*) 'ERROR: Wrong number of nodes for the converged energy'
         converged = 5
         RETURN 
       ENDIF 
-  
+
+      WRITE(*,*) 'DEBUG: will exit the while loop'
       EXIT ! exit the while loop
     
     ENDIF 
   
     CALL find_ctp( Nr, V + l*(l+1)/(2*R**2), E, ctp )
+    WRITE(*,*) 'DEBUG: find_ctp, ctp = ', ctp
 
     ! If the classical turning point is too large (or cannot be found at all),
     ! we can't use inward integration to correct the energy, so we use
     ! bisection. Also use bisection if the user requests it.
     IF( .not. perturb ) THEN 
+      WRITE(*,*) 'DEBUG: not using perturbation correction, ctp set to Nr'
       ctp = Nr
     !
     ELSEIF( ctp == 0 ) THEN 
@@ -131,22 +139,34 @@ SUBROUTINE solve_radial_eigenproblem(n, l, Ein, eps, max_iter, &
       ctp = Nr
     ENDIF 
     
+    WRITE(*,*) 'DEBUG: integrate the problem outward until ctp = ', ctp
     CALL integrate_rproblem_outward( ctp, l, E, R(:ctp), Rp(:ctp), V(:ctp), &
       Z, c, relat, P(:ctp), Q(:ctp), imax )
     
     CALL get_n_nodes( imax, P(:imax), nnodes )
+    WRITE(*,*) 'DEBUG: nnodes = ', nnodes
 
 
     ! If the number of nodes is not correct, or we didn't manage to
     ! integrate all the way to "ctp", or if "ctp" was too large, we just
     ! use bisection:
     IF( nnodes /= n-l-1 .or. ctp == Nr .or. imax < ctp ) THEN 
+
+      WRITE(*,'(1x,A,2F18.10)') 'DEBUG: before, Emin, Emax = ', Emin, Emax
+
       CALL is_E_above(n, l, nnodes, isbig)
+      !
+      WRITE(*,*) 'DEBUG: isbig = ', isbig
+      !
       IF( isbig ) THEN 
         Emax = E
       ELSE 
         Emin = E
       ENDIF 
+      
+      WRITE(*,'(1x,A,2F18.10)') 'DEBUG: after , Emin, Emax = ', Emin, Emax
+      
+      WRITE(*,*) 'DEBUG: Updating E via bisection'
       E = (Emin + Emax) / 2
       last_bisect = .true.
       WRITE(*,*) 'Need to cycle the loop'
@@ -155,6 +175,8 @@ SUBROUTINE solve_radial_eigenproblem(n, l, Ein, eps, max_iter, &
     ENDIF 
   
     ! Perturbation theory correction
+    WRITE(*,*) 'DEBUG: Perturbation theory correction'
+    WRITE(*,*) 'DEBUG: perturb = ', perturb
     CALL integrate_rproblem_inward( &
       Nr-ctp+1, l, E, R(ctp:), Rp(ctp:), V(ctp:), c, &
       relat, Pr(ctp:), Qr(ctp:), imin )

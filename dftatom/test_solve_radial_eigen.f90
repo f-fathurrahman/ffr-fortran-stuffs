@@ -3,7 +3,7 @@ PROGRAM test_solve
   IMPLICIT NONE 
 
   ! Atomic number:
-  INTEGER, PARAMETER :: Z = 5
+  INTEGER :: Z
   
   ! Mesh parameters:
   REAL(8), PARAMETER :: r_min = 1.0d-8, r_max = 50.d0, a = 1.0d6
@@ -13,7 +13,7 @@ PROGRAM test_solve
   REAL(8), ALLOCATABLE :: R(:), u(:)
   REAL(8), ALLOCATABLE :: P(:), Q(:), Rp(:)
   REAL(8) :: Ein, E, E_exact, error
-  LOGICAL, PARAMETER :: perturb = .true.
+  LOGICAL, PARAMETER :: perturb = .false. !.true.
 
   !
   ALLOCATE( R(Nr) )
@@ -27,6 +27,7 @@ PROGRAM test_solve
   CALL gen_drmesh_exp(r_min, r_max, a, Nr, Rp)
   
   ! Potential
+  Z = 1
   u(:) = -Z/r
 
   WRITE(*,*) "Hydrogen like energies for Z = ", Z
@@ -36,8 +37,8 @@ PROGRAM test_solve
   WRITE(*,"(1x,A3, A3, A15, A15, A10)") "n", "l", "E", "E_exact", "Error"
   WRITE(*,*)
   
-  n = 3 ! hardcoded
-  l = 1
+  n = 1 ! hardcoded
+  l = 0
   !do l = 0, n-1
     E_exact = - Z**2 / (2.d0 * n**2)
     Ein = -1000.d0
@@ -51,6 +52,10 @@ PROGRAM test_solve
     ENDIF 
     WRITE(*,"(I3, I3, F15.6, F15.6, ES10.2)") n, l, E, E_exact, error
   !end do
+
+  WRITE(1000,*) r
+  WRITE(1003,*) P
+  WRITE(1004,*) Q
 
 
   DEALLOCATE( R )
