@@ -142,7 +142,9 @@ SUBROUTINE solve_radial_eigenproblem(n, l, Ein, eps, max_iter, &
     WRITE(*,*) 'DEBUG: integrate the problem outward until ctp = ', ctp
     CALL integrate_rproblem_outward( ctp, l, E, R(:ctp), Rp(:ctp), V(:ctp), &
       Z, c, relat, P(:ctp), Q(:ctp), imax )
-    
+
+    WRITE(*,*) 'imax = ', imax
+
     CALL get_n_nodes( imax, P(:imax), nnodes )
     WRITE(*,*) 'DEBUG: nnodes = ', nnodes
 

@@ -35,8 +35,22 @@ PROGRAM test
 
   CALL get_midpoints( Nr, rmesh, V, Vmid )
 
-  WRITE(*,*) 'V = ', V(1:4)
-  WRITE(*,*) 'Vmid = ', Vmid(1:3)
+  WRITE(*,*)
+  WRITE(*,*) 'Some V'
+  DO i = 1,4
+    WRITE(*,*) 'V = ', V(i)
+  ENDDO 
+
+  WRITE(*,*)
+  WRITE(*,*) 'Some Vmid'
+  DO i = 1,4
+    WRITE(*,'(1x,I8,ES20.10)') i, Vmid(i)
+  ENDDO 
+  WRITE(*,*)
+  DO i = Nr-4,Nr-1
+    WRITE(*,'(1x,I8,ES20.10)') i, Vmid(i)
+  ENDDO 
+
 
   WRITE(1000,*) rmesh
   WRITE(1001,*) V
