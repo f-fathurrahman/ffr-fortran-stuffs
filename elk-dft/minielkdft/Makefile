@@ -197,6 +197,8 @@ gauntyry.f90 gaunt.f90 \
 genkpakq.f90 \
 genidxlo.f90 \
 potks.f90 \
+poly3.f90 \
+poly4i.f90 \
 minielkdft.f90
 
 OBJ = $(SRC:.f90=.o)
