@@ -1,388 +1,56 @@
+SUBROUTINE init0()
+  USE modmain
+  USE modxcifc
+  USE moddftu
+  USE modtddft
+  USE modphonon
+  USE modulr
+  USE modtest
+  USE modvars
+  USE modmpi
+  USE modomp
+  !   Performs basic consistency checks as well as allocating and initialising
+  !   global variables not dependent on the $k$-point set.
+  IMPLICIT NONE 
+  ! local variables
+  INTEGER :: is,ia,ias,ist
+  INTEGER :: nr,l,i
+  REAL(8) :: rsum,t1
+  REAL(8) :: ts0,ts1
+  
+  WRITE(*,*)
+  WRITE(*,*) '*** ffr: Entering init0 ***'
+  WRITE(*,*)
+  
+  
+  !-------------------------------!
+  !     zero timing variables     !
+  !-------------------------------!
+  timeinit=0.d0
+  timemat=0.d0
+  timefv=0.d0
+  timesv=0.d0
+  timerho=0.d0
+  timepot=0.d0
+  timefor=0.d0
+  CALL timesec(ts0)
+  
+  CALL init_am_variables()
+  
+  CALL init_idx_atom_species()
+  
+  CALL init_spin_variables()
 
-! Copyright (C) 2002-2005 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
+  CALL init_crystal_structure()
 
-!BOP
-! !ROUTINE: init0
-! !INTERFACE:
-subroutine init0
-! !USES:
-use modmain
-use modxcifc
-use moddftu
-use modtddft
-use modphonon
-use modulr
-use modtest
-use modvars
-use modmpi
-use modomp
-! !DESCRIPTION:
-!   Performs basic consistency checks as well as allocating and initialising
-!   global variables not dependent on the $k$-point set.
-!
-! !REVISION HISTORY:
-!   Created January 2004 (JKD)
-!EOP
-!BOC
-implicit none
-! local variables
-integer is,ia,ias,ist
-integer nr,l,m,lm,i
-real(8) rsum,t1
-real(8) ts0,ts1
+  CALL init_vector_field_E_A()
 
-write(*,*)
-write(*,*) '*** ffr: Entering init0 ***'
-write(*,*)
+  !---------------------------------!
+  !     crystal symmetry set up     !
+  !---------------------------------!
+  CALL symmetry()
 
-
-!-------------------------------!
-!     zero timing variables     !
-!-------------------------------!
-timeinit=0.d0
-timemat=0.d0
-timefv=0.d0
-timesv=0.d0
-timerho=0.d0
-timepot=0.d0
-timefor=0.d0
-call timesec(ts0)
-
-!------------------------------------!
-!     angular momentum variables     !
-!------------------------------------!
-if (lmaxo.gt.lmaxapw) then
-  write(*,*)
-  write(*,'("Error(init0): lmaxo > lmaxapw : ",2I8)') lmaxo,lmaxapw
-  write(*,*)
-  stop
-end if
-lmaxi=min(lmaxi,lmaxo)
-lmmaxapw=(lmaxapw+1)**2
-lmmaxi=(lmaxi+1)**2
-lmmaxo=(lmaxo+1)**2
-! check DOS lmax is within range
-lmaxdos=min(lmaxdos,lmaxo)
-! index to (l,m) pairs
-if (allocated(idxlm)) deallocate(idxlm)
-allocate(idxlm(0:lmaxapw,-lmaxapw:lmaxapw))
-if (allocated(idxil)) deallocate(idxil)
-allocate(idxil(lmmaxapw))
-if (allocated(idxim)) deallocate(idxim)
-allocate(idxim(lmmaxapw))
-lm=0
-do l=0,lmaxapw
-  do m=-l,l
-    lm=lm+1
-    idxlm(l,m)=lm
-    idxil(lm)=l
-    idxim(lm)=m
-  end do
-end do
-! array of i^l and (-i)^l values
-if (allocated(zil)) deallocate(zil)
-if (allocated(zilc)) deallocate(zilc)
-allocate(zil(0:lmaxapw),zilc(0:lmaxapw))
-do l=0,lmaxapw
-  zil(l)=zi**l
-  zilc(l)=conjg(zil(l))
-end do
-! write to VARIABLES.OUT
-call writevars('lmaxapw',iv=lmaxapw)
-call writevars('lmaxi',iv=lmaxi)
-call writevars('lmaxo',iv=lmaxo)
-
-!------------------------------------!
-!     index to atoms and species     !
-!------------------------------------!
-natmmax=0
-ias=0
-do is=1,nspecies
-  do ia=1,natoms(is)
-    ias=ias+1
-    idxas(ia,is)=ias
-    idxis(ias)=is
-    idxia(ias)=ia
-  end do
-! maximum number of atoms over all species
-  natmmax=max(natmmax,natoms(is))
-end do
-! total number of atoms
-natmtot=ias
-! number of phonon branches
-nbph=3*natmtot
-! write to VARIABLES.OUT
-call writevars('nspecies',iv=nspecies)
-call writevars('natoms',nv=nspecies,iva=natoms)
-call writevars('spsymb',nv=nspecies,sva=spsymb)
-call writevars('spname',nv=nspecies,sva=spname)
-call writevars('spzn',nv=nspecies,rva=spzn)
-
-!------------------------!
-!     spin variables     !
-!------------------------!
-if (spinsprl) then
-  spinpol=.true.
-  spinorb=.false.
-  if (any(task.eq.[51,52,53,61,62,63,700,701])) then
-    write(*,*)
-    write(*,'("Error(init0): spin-spirals do not work with task ",I4)') task
-    write(*,*)
-    stop
-  end if
-  if (xctype(1).lt.0) then
-    write(*,*)
-    write(*,'("Error(init0): spin-spirals do not work with the OEP method")')
-    write(*,*)
-    stop
-  end if
-  if (tefvit) then
-    write(*,*)
-    write(*,'("Error(init0): spin-spirals do not work with iterative &
-     &diagonalisation")')
-    write(*,*)
-    stop
-  end if
-end if
-! de-phasing required only for spin-spirals
-if (.not.spinsprl) ssdph=.false.
-! spin-orbit coupling, fixed spin moment, spin spirals or spin-polarised cores
-! requires a spin-polarised calculation
-if ((spinorb).or.(fsmtype.ne.0).or.(spinsprl).or.(spincore)) spinpol=.true.
-! number of spinor components and maximum allowed occupancy
-if (spinpol) then
-  nspinor=2
-  occmax=1.d0
-else
-  nspinor=1
-  occmax=2.d0
-end if
-! number of spin-dependent first-variational functions per state and map from
-! second- to first-variational spin index
-if (spinsprl) then
-  nspnfv=2
-  jspnfv(1)=1
-  jspnfv(2)=2
-else
-  nspnfv=1
-  jspnfv(1)=1
-  jspnfv(2)=1
-end if
-! no calculation of second-variational eigenvectors by default
-tevecsv=.false.
-! spin-polarised calculations require second-variational eigenvectors
-if (spinpol) tevecsv=.true.
-! Hartree-Fock/RDMFT/TDDFT/GW requires second-variational eigenvectors
-if (any(task.eq.[5,10,170,300,460,461,600,620,630])) then
-  tevecsv=.true.
-end if
-! get exchange-correlation functional data
-call getxcdata(xctype,xcdescr,xcspin,xcgrad,hybrid,hybridc)
-if ((spinpol).and.(xcspin.eq.0)) then
-  write(*,*)
-  write(*,'("Error(init0): requested spin-polarised run with &
-   &spin-unpolarised")')
-  write(*,'(" exchange-correlation functional")')
-  write(*,*)
-  stop
-end if
-! check for collinearity in the z-direction and set the dimension of the
-! magnetisation and exchange-correlation vector fields
-if (spinpol) then
-  ndmag=1
-  if ((abs(bfieldc0(1)).gt.epslat).or.(abs(bfieldc0(2)).gt.epslat)) ndmag=3
-  do is=1,nspecies
-    do ia=1,natoms(is)
-      if ((abs(bfcmt0(1,ia,is)).gt.epslat).or. &
-          (abs(bfcmt0(2,ia,is)).gt.epslat)) ndmag=3
-    end do
-  end do
-! spin-orbit coupling is non-collinear in general
-  if (spinorb) ndmag=3
-! source-free fields and spin-spirals must be non-collinear
-  if ((nosource).or.(spinsprl)) then
-    ndmag=3
-    cmagz=.false.
-  end if
-! force collinear magnetism along the z-axis if required
-  if (cmagz) ndmag=1
-else
-  ndmag=0
-end if
-! set the non-collinear flag
-if (ndmag.eq.3) then
-  ncmag=.true.
-else
-  ncmag=.false.
-end if
-! check for meta-GGA with non-collinearity
-if (((xcgrad.eq.3).or.(xcgrad.eq.4)).and.ncmag) then
-  write(*,*)
-  write(*,'("Error(init0): meta-GGA is not valid for non-collinear magnetism")')
-  write(*,*)
-  stop
-end if
-if (ncmag.or.spinorb) then
-! spins are coupled in the second-variational Hamiltonian
-  spcpl=.true.
-else
-! spins are decoupled
-  spcpl=.false.
-end if
-! spin-polarised cores
-if (.not.spinpol) spincore=.false.
-if (fsmtype.ne.0) then
-! set fixed spin moment effective field to zero
-  bfsmc(:)=0.d0
-! set muffin-tin FSM fields to zero
-  if (allocated(bfsmcmt)) deallocate(bfsmcmt)
-  allocate(bfsmcmt(3,natmtot))
-  bfsmcmt(:,:)=0.d0
-  if (mp_mpi.and.(mixtype.ne.1)) then
-    write(*,*)
-    write(*,'("Info(init0): mixtype changed to 1 for FSM calculation")')
-  end if
-  mixtype=1
-end if
-! number of independent spin components of the f_xc spin tensor
-if (spinpol) then
-  if (ncmag) then
-    nscfxc=10
-  else
-    nscfxc=3
-  end if
-else
-  nscfxc=1
-end if
-! set the magnetic fields to the initial values
-bfieldc(:)=bfieldc0(:)
-bfcmt(:,:,:)=bfcmt0(:,:,:)
-! if reducebf < 1 then reduce the external magnetic fields immediately for
-! non-self-consistent calculations or resumptions
-if (reducebf.lt.1.d0-1.d-4) then
-  if (all(task.ne.[0,1,2,3,5,28,200,201,350,351,360,630])) then
-    bfieldc(:)=0.d0
-    bfcmt(:,:,:)=0.d0
-  end if
-end if
-! set the fixed tensor moment spatial and spin rotation matrices equal for the
-! case of spin-orbit coupling; parity for spin is ignored by rotdmat
-if (spinorb) then
-  do i=1,ntmfix
-    rtmfix(:,:,2,i)=rtmfix(:,:,1,i)
-  end do
-end if
-
-! generate the fixed tensor moment density matrices if required
-!call gendmftm
-
-! write to VARIABLES.OUT
-call writevars('nspinor',iv=nspinor)
-call writevars('ndmag',iv=ndmag)
-
-!----------------------------------!
-!     crystal structure set up     !
-!----------------------------------!
-! generate the reciprocal lattice vectors and unit cell volume
-call reciplat(avec,bvec,omega,omegabz)
-! inverse of the lattice vector matrix
-call r3minv(avec,ainv)
-! inverse of the reciprocal vector matrix
-call r3minv(bvec,binv)
-! Cartesian coordinates of the spin-spiral vector
-call r3mv(bvec,vqlss,vqcss)
-do is=1,nspecies
-  do ia=1,natoms(is)
-! map atomic lattice coordinates to [0,1)
-    call r3frac(epslat,atposl(:,ia,is))
-! determine atomic Cartesian coordinates
-    call r3mv(avec,atposl(:,ia,is),atposc(:,ia,is))
-  end do
-end do
-
-! check for overlapping muffin-tins and adjust radii if required
-call checkmt()
-
-! compute the total muffin-tin volume (M. Meinert)
-omegamt=0.d0
-do is=1,nspecies
-  omegamt=omegamt+dble(natoms(is))*(fourpi/3.d0)*rmt(is)**3
-end do
-
-! input q-vector in Cartesian coordinates
-call r3mv(bvec,vecql,vecqc)
-
-! write to VARIABLES.OUT
-call writevars('avec',nv=9,rva=avec)
-call writevars('bvec',nv=9,rva=bvec)
-call writevars('omega',rv=omega)
-do is=1,nspecies
-  call writevars('atposl',l=is,nv=3*natoms(is),rva=atposl(:,:,is))
-end do
-
-!-------------------------------!
-!     vector fields E and A     !
-!-------------------------------!
-tefield=.false.
-if (sum(abs(efieldc(:))).gt.epslat) then
-! no shift of the atomic positions
-  tshift=.false.
-! electric field vector in lattice coordinates
-  call r3mv(ainv,efieldc,efieldl)
-  tefield=.true.
-end if
-tafield=.false.
-if (sum(abs(afieldc(:))).gt.epslat) then
-  tafield=.true.
-! A-field in lattice coordinates
-  call r3mv(ainv,afieldc,afieldl)
-! vector potential added in second-variational step
-  tevecsv=.true.
-end if
-tafieldt=.false.
-if (any(task.eq.[460,461,480,481])) then
-! generate the time-step grid
-  call gentimes
-! read time-dependent A-field from file
-  call readafieldt
-  tafieldt=.true.
-end if
-
-!---------------------------------!
-!     crystal symmetry set up     !
-!---------------------------------!
-call symmetry()
-
-!-----------------------!
-!     radial meshes     !
-!-----------------------!
-nrmtmax=1
-nrcmtmax=1
-do is=1,nspecies
-! make the muffin-tin mesh commensurate with lradstp
-  nrmt(is)=nrmt(is)-mod(nrmt(is)-1,lradstp)
-  nrmtmax=max(nrmtmax,nrmt(is))
-! number of coarse radial mesh points
-  nrcmt(is)=(nrmt(is)-1)/lradstp+1
-  nrcmtmax=max(nrcmtmax,nrcmt(is))
-end do
-
-! set up atomic and muffin-tin radial meshes
-call genrmesh()
-
-! number of points in packed muffin-tins
-npmtmax=1
-npcmtmax=1
-do is=1,nspecies
-  npmti(is)=lmmaxi*nrmti(is)
-  npmt(is)=npmti(is)+lmmaxo*(nrmt(is)-nrmti(is))
-  npmtmax=max(npmtmax,npmt(is))
-  npcmti(is)=lmmaxi*nrcmti(is)
-  npcmt(is)=npcmti(is)+lmmaxo*(nrcmt(is)-nrcmti(is))
-  npcmtmax=max(npcmtmax,npcmt(is))
-end do
+  CALL init_radial_meshes()
 
 !--------------------------------------!
 !     charges and number of states     !
