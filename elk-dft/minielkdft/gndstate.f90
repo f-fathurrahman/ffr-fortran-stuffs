@@ -17,7 +17,6 @@ SUBROUTINE gndstate
   CALL init0()
   CALL init1()
 
-
   ! initialise q-vector-dependent variables if required
   IF( xctype(1) < 0 ) THEN 
     WRITE(*,*) '*** Should call init2'
@@ -63,390 +62,363 @@ SUBROUTINE gndstate
     ENDIF 
   ENDIF 
 
-if (mp_mpi) flush(6)
+  IF( mp_mpi ) flush(6)
 
-call genvsig()
+  ! Fourier transform of KS effective potential
+  CALL genvsig() 
 
-! size of mixing vector
-n = npmtmax*natmtot + ngtot
-if (spinpol) n = n + (npcmtmax*natmtot+ngtot)*ndmag
-if (tvmatmt) n = n + 2*((lmmaxdm*nspinor)**2)*natmtot
+  ! size of mixing vector
+  n = npmtmax*natmtot + ngtot
+  IF( spinpol ) n = n + (npcmtmax*natmtot+ngtot)*ndmag
+  IF( tvmatmt ) n = n + 2*((lmmaxdm*nspinor)**2)*natmtot
 
-! allocate mixing array
-allocate(v(n))
+  ! allocate mixing array
+  ALLOCATE( v(n) )
 
-! determine the size of the mixer work array
-nwork=-1
-call mixerifc(mixtype,n,v,dv,nwork,v)
-allocate(work(nwork))
+  ! determine the size of the mixer work array
+  nwork=-1
+  CALL mixerifc(mixtype,n,v,dv,nwork,v)
+  ALLOCATE( work(nwork) )
 
-! initialise the mixer
-iscl=0
-call mixpack(.true.,n,v)
-call mixerifc(mixtype,n,v,dv,nwork,work)
+  ! initialise the mixer
+  iscl = 0
+  CALL mixpack(.true.,n,v)
+  CALL mixerifc(mixtype,n,v,dv,nwork,work)
 
-! set the stop signal to .false.
-tstop=.false.
+  ! set the stop signal to .false.
+  tstop = .false.
 
-! set last self-consistent loop flag
-tlast=.false.
-etp=0.d0
+  ! set last self-consistent loop flag
+  tlast = .false.
+  etp = 0.d0
 
-! begin the self-consistent loop
-if (mp_mpi) then
-  write(6,*)
-  write(6,'("+------------------------------+")')
-  write(6,'("| Self-consistent loop started |")')
-  write(6,'("+------------------------------+")')
-end if
+  ! begin the self-consistent loop
+  IF( mp_mpi ) THEN 
+    WRITE(6,*)
+    WRITE(6,'("+------------------------------+")')
+    WRITE(6,'("| Self-consistent loop started |")')
+    WRITE(6,'("+------------------------------+")')
+  ENDIF
 
-do iscl=1,maxscl
+  DO iscl = 1,maxscl
   
-  if (mp_mpi) then
-    write(6,*)
-    write(6,'("+--------------------+")')
-    write(6,'("| Loop number : ",I4," |")') iscl
-    write(6,'("+--------------------+")')
-  end if
+    IF( mp_mpi ) THEN 
+      WRITE(6,*)
+      WRITE(6,'("+--------------------+")')
+      WRITE(6,'("| Loop number : ",I4," |")') iscl
+      WRITE(6,'("+--------------------+")')
+    ENDIF 
   
-  if (iscl.ge.maxscl) then
-    if (mp_mpi) then
-      write(6,*)
-      write(6,'("Reached self-consistent loops maximum")')
-    end if
-    write(*,*)
-    write(*,'("Warning(gndstate): failed to reach self-consistency after ",I4,&
-     &" loops")') iscl
-    tlast=.true.
-  end if
-  if (mp_mpi) flush(6)
+    IF( iscl >= maxscl ) THEN 
+      IF( mp_mpi ) THEN 
+        WRITE(6,*)
+        WRITE(6,'("Reached self-consistent loops maximum")')
+      ENDIF 
+      WRITE(*,*)
+      WRITE(*,'("Warning(gndstate): failed to reach self-consistency after ",I4," loops")') iscl
+      tlast = .true.
+    ENDIF 
+    IF( mp_mpi ) flush(6)
   
-  ! reset the OpenMP thread variables
-  call omp_reset
+    ! reset the OpenMP thread variables
+    CALL omp_reset()
   
-  ! generate the core wavefunctions and densities
-  call gencore
+    ! generate the core wavefunctions and densities
+    CALL gencore()
   
-  ! find the new linearisation energies
-  call linengy
+    ! find the new linearisation energies
+    CALL linengy()
   
-  ! write out the linearisation energies
-  if (mp_mpi) call writelinen
+    ! write out the linearisation energies
+    IF( mp_mpi ) CALL writelinen()
   
-  ! generate the APW and local-orbital radial functions and integrals
-  call genapwlofr
+    ! generate the APW and local-orbital radial functions and integrals
+    CALL genapwlofr()
   
-  ! generate the spin-orbit coupling radial functions
-  call gensocfr()
+    ! generate the spin-orbit coupling radial functions
+    CALL gensocfr()
   
-  ! generate the first- and second-variational eigenvectors and eigenvalues
-  call genevfsv()
+    ! generate the first- and second-variational eigenvectors and eigenvalues
+    CALL genevfsv()
   
-  ! find the occupation numbers and Fermi energy
-  call occupy()
+    ! find the occupation numbers and Fermi energy
+    CALL occupy()
   
-  if (mp_mpi .and. autoswidth) then
-    write(6,*)
-    write(6,'("New smearing width : ",G18.10)') swidth
-  end if
+    IF( mp_mpi .and. autoswidth ) THEN 
+      WRITE(6,*)
+      WRITE(6,'("New smearing width : ",G18.10)') swidth
+    ENDIF 
   
-  if (mp_mpi) then
-    ! write the occupation numbers to file
-    do ik=1,nkpt
-      call putoccsv(filext,ik,occsv(:,ik))
-    end do
-    ! write eigenvalues to file
-    call writeeval
-    ! write the Fermi energy to file
-    call writefermi
-  endif
+    IF( mp_mpi ) THEN 
+      ! write the occupation numbers to file
+      DO ik=1,nkpt
+        CALL putoccsv(filext,ik,occsv(:,ik))
+      ENDDO 
+      ! write eigenvalues to file
+      CALL writeeval
+      ! write the Fermi energy to file
+      CALL writefermi
+    ENDIF
   
-  ! synchronise MPI processes
-  call mpi_barrier(mpicom,ierror)
+    ! synchronise MPI processes
+    CALL mpi_barrier(mpicom,ierror)
 
-  ! generate the density and magnetisation
-  call rhomag()
+    ! generate the density and magnetisation
+    CALL rhomag()
 
-  ! DFT+U or fixed tensor moment calculation
-  !if ((dftu.ne.0).or.(ftmtype.ne.0)) then
-  !  !
-  !  ! generate the muffin-tin density matrix used for computing the potential matrix
-  !  call gendmatmt()
-  !  !
-  !  ! write the FTM tensor moments to file
-  !  if (ftmtype.ne.0) call writeftm
-  !  !
-  !  ! generate the DFT+U or FTM muffin-tin potential matrices
-  !  call genvmatmt()
-  !  !
-  !endif
-  
-!  if (dftu.ne.0) then
-!    if (mp_mpi) then
-!      ! write the DFT+U matrices to file
-!      call writedftu
-!      ! calculate and write tensor moments to file
-!      if (tmwrite) then
-!        if (spinorb) then
-!          call writetm3du(67)
-!        else
-!          call writetm2du(67)
-!        end if
-!      end if
-!    end if
-!  end if
+    ! DFT+U or fixed tensor moment calculation
+    ! .... SKIPPED ....
+    ! Write DFT+U
+    ! .... SKIPPED ....
 
-  ! compute the Kohn-Sham potentials and magnetic fields
-  call potks(.true.)
+    ! compute the Kohn-Sham potentials and magnetic fields
+    CALL potks(.true.)
 
-  if (mp_mpi) then
-    if ((xcgrad.eq.3).and.(c_tb09.ne.0.d0)) then
-      write(6,*)
-      write(6,'("Tran-Blaha ''09 constant c : ",G18.10)') c_tb09
-    end if
-  end if
+    IF( mp_mpi ) THEN 
+      IF( (xcgrad == 3) .and. (c_tb09 /= 0.d0)) THEN 
+        WRITE(6,*)
+        WRITE(6,'("Tran-Blaha ''09 constant c : ",G18.10)') c_tb09
+      ENDIF 
+    ENDIF 
 
-  ! pack interstitial and muffin-tin potential and field into one array
-  call mixpack(.true.,n,v)
+    ! pack interstitial and muffin-tin potential and field into one array
+    CALL mixpack(.true.,n,v)
 
-  ! mix in the old potential and field with the new
-  call mixerifc(mixtype,n,v,dv,nwork,work)
+    ! mix in the old potential and field with the new
+    CALL mixerifc(mixtype, n, v, dv, nwork, work)
 
-  ! make sure every MPI process has a numerically identical potential
-  if (np_mpi.gt.1) then
-    call mpi_bcast(v,n,mpi_double_precision,0,mpicom,ierror)
-  end if
+    ! make sure every MPI process has a numerically identical potential
+    IF(np_mpi > 1) THEN 
+      CALL mpi_bcast(v,n,mpi_double_precision,0,mpicom,ierror)
+    ENDIF 
 
-  ! unpack potential and field
-  call mixpack(.false.,n,v)
+    ! unpack potential and field
+    CALL mixpack(.false.,n,v)
 
-  ! calculate and add the fixed spin moment effective field (after mixing)
-  !call fsmbfield()
-  !call addbfsm()
+    ! calculate and add the fixed spin moment effective field (after mixing)
+    ! .... SKIPPED ....
 
-  ! Fourier transform Kohn-Sham potential to G-space
-  call genvsig()
+    ! Fourier transform Kohn-Sham potential to G-space
+    CALL genvsig()
 
-  ! reduce the external magnetic fields if required
-  if (reducebf.lt.1.d0) then
-    bfieldc(:)=bfieldc(:)*reducebf
-    bfcmt(:,:,:)=bfcmt(:,:,:)*reducebf
-  end if
+    ! reduce the external magnetic fields if required
+    ! .... SKIPPED .... 
 
-  ! compute the energy components
-  call energy()
+    ! compute the energy components
+    CALL energy()
 
-  if (mp_mpi) then
-    ! output energy components
-    call writeengy(6)
-    write(6,*)
-    write(6,'("Density of states at Fermi energy : ",G18.10)') fermidos
-    write(6,'(" (states/Hartree/unit cell)")')
-    write(6,*)
-    write(6,'("Estimated indirect band gap : ",G18.10)') bandgap(1)
-    write(6,'(" from k-point ",I6," to k-point ",I6)') ikgap(1),ikgap(2)
-    write(6,'("Estimated direct band gap   : ",G18.10)') bandgap(2)
-    write(6,'(" at k-point ",I6)') ikgap(3)
+    IF( mp_mpi ) THEN 
+      ! output energy components
+      CALL writeengy(6)
+      WRITE(6,*)
+      WRITE(6,'("Density of states at Fermi energy : ",G18.10)') fermidos
+      WRITE(6,'(" (states/Hartree/unit cell)")')
+      WRITE(6,*)
+      WRITE(6,'("Estimated indirect band gap : ",G18.10)') bandgap(1)
+      WRITE(6,'(" from k-point ",I6," to k-point ",I6)') ikgap(1),ikgap(2)
+      WRITE(6,'("Estimated direct band gap   : ",G18.10)') bandgap(2)
+      WRITE(6,'(" at k-point ",I6)') ikgap(3)
 
-    ! write total energy to TOTENERGY.OUT
-    write(61,'(G22.12)') engytot
-    flush(61)
+      ! write total energy to TOTENERGY.OUT
+      WRITE(61,'(G22.12)') engytot
+      flush(61)
 
-    ! write DOS at Fermi energy to FERMIDOS.OUT
-    write(62,'(G18.10)') fermidos
-    flush(62)
+      ! write DOS at Fermi energy to FERMIDOS.OUT
+      WRITE(62,'(G18.10)') fermidos
+      flush(62)
     
-    ! output charges and moments
-    call writechg(6)
+      ! output charges and moments
+      CALL writechg(6)
     
-    if (spinpol) then
-      call writemom(6)
-      ! write total moment to MOMENT.OUT
-      write(63,'(3G18.10)') momtot(1:ndmag)
-      flush(63)
-      ! write total moment magnitude to MOMENTM.OUT
-      write(68,'(G18.10)') momtotm
-      flush(68)
-    end if
+      IF( spinpol ) THEN 
+        CALL writemom(6)
+        ! write total moment to MOMENT.OUT
+        WRITE(63,'(3G18.10)') momtot(1:ndmag)
+        flush(63)
+        ! write total moment magnitude to MOMENTM.OUT
+        WRITE(68,'(G18.10)') momtotm
+        flush(68)
+      ENDIF 
     
-    ! write estimated Kohn-Sham indirect band gap
-    write(64,'(G22.12)') bandgap(1)
-    flush(64)
+      ! write estimated Kohn-Sham indirect band gap
+      WRITE(64,'(G22.12)') bandgap(1)
+      flush(64)
     
-    ! output effective fields for fixed spin moment calculations
-    if (fsmtype.ne.0) call writefsm(6)
+      ! output effective fields for fixed spin moment calculations
+      IF( fsmtype /= 0 ) CALL writefsm(6)
     
-    ! check for WRITE file
-    inquire(file='WRITE',exist=exist)
-    if (exist) then
-      write(6,*)
-      write(6,'("WRITE file exists - writing STATE.OUT")')
-      call writestate
-      open(50,file='WRITE')
-      close(50,status='DELETE')
-    end if
-    ! write STATE.OUT file if required
-    if (nwrite.ge.1) then
-      if (mod(iscl,nwrite).eq.0) then
-        call writestate
-        write(6,*)
-        write(6,'("Wrote STATE.OUT")')
-      end if
-    end if
-    ! write OEP residual
-    if (xctype(1).lt.0) then
-      write(6,*)
-      write(6,'("Magnitude of OEP residual : ",G18.10)') resoep
-      write(69,'(G18.10)') resoep
-      flush(69)
-    end if
-  end if
+      ! check for WRITE file
+      inquire(file='WRITE',exist=exist)
+      IF( exist ) THEN 
+        WRITE(6,*)
+        WRITE(6,'("WRITE file exists - writing STATE.OUT")')
+        CALL writestate
+        OPEN(50,file='WRITE')
+        CLOSE(50,status='DELETE')
+      ENDIF 
+      ! write STATE.OUT file if required
+      IF( nwrite >= 1) THEN 
+        IF(mod(iscl,nwrite) == 0) THEN 
+          call writestate()
+          WRITE(6,*)
+          WRITE(6,'("Wrote STATE.OUT")')
+        ENDIF 
+      ENDIF 
 
-  ! exit self-consistent loop if required
-  if (tlast) goto 10
+      ! write OEP residual
+      IF( xctype(1) < 0) THEN 
+        WRITE(6,*)
+        WRITE(6,'("Magnitude of OEP residual : ",G18.10)') resoep
+        WRITE(69,'(G18.10)') resoep
+        flush(69)
+      ENDIF 
+    ENDIF 
 
-  ! check for convergence
-  if (iscl.ge.2) then
-    if (mp_mpi) then
-      write(6,*)
-      write(6,'("RMS change in Kohn-Sham potential (target) : ",G18.10," (",&
-       &G18.10,")")') dv,epspot
-      write(65,'(G18.10)') dv
-      flush(65)
-    end if
-    de=abs(engytot-etp)
-    if (mp_mpi) then
-      write(6,'("Absolute change in total energy (target)   : ",G18.10," (",&
-       &G18.10,")")') de,epsengy
-      write(66,'(G18.10)') de
-      flush(66)
-    end if
-    if ((dv.lt.epspot).and.(de.lt.epsengy)) then
-      if (mp_mpi) then
-        write(6,*)
-        write(6,'("Convergence targets achieved")')
-      end if
-      tlast=.true.
-    end if
-  end if
+    ! exit self-consistent loop if required
+    IF( tlast ) GOTO 10
 
-  ! average the current and previous total energies and store
-  if (iscl.gt.1) then
-    etp = 0.75d0*engytot + 0.25d0*etp
-  else
-    etp = engytot
-  end if
+    ! check for convergence
+    IF( iscl >= 2) THEN 
+      IF( mp_mpi ) THEN 
+        WRITE(6,*)
+        WRITE(6,'("RMS change in Kohn-Sham potential (target) : ",G18.10," (",G18.10,")")') dv,epspot
+        WRITE(65,'(G18.10)') dv
+        flush(65)
+      ENDIF
+      de = abs(engytot - etp)
+      IF( mp_mpi ) THEN 
+        WRITE(6,'("Absolute change in total energy (target)   : ",G18.10," (",G18.10,")")') de,epsengy
+        WRITE(66,'(G18.10)') de
+        flush(66)
+      ENDIF 
+      !
+      IF( (dv < epspot) .and. (de < epsengy) ) THEN 
+        IF( mp_mpi ) THEN 
+          WRITE(6,*)
+          WRITE(6,'("Convergence targets achieved")')
+        ENDIF 
+        tlast=.true.
+      ENDIF 
+    ENDIF ! check for convergence
+
+    ! average the current and previous total energies and store
+    IF (iscl.gt.1) THEN 
+      etp = 0.75d0*engytot + 0.25d0*etp
+    ELSE 
+      etp = engytot
+    ENDIF 
   
-  ! check for STOP file (only master process)
-  if (mp_mpi) then
-    inquire(file='STOP',exist=exist)
-    if (exist) then
-      write(6,*)
-      write(6,'("STOP file exists - stopping self-consistent loop")')
-      open(50,file='STOP')
-      close(50,status='DELETE')
-      tstop=.true.
-      tlast=.true.
-    end if
-  end if
+    ! check for STOP file (only master process)
+    IF( mp_mpi ) THEN 
+      inquire(file='STOP',exist=exist)
+      IF( exist ) THEN 
+        WRITE(6,*)
+        WRITE(6,'("STOP file exists - stopping self-consistent loop")')
+        OPEN(50,file='STOP')
+        CLOSE(50,status='DELETE')
+        tstop=.true.
+        tlast=.true.
+      ENDIF 
+    ENDIF 
 
-  ! broadcast tlast and tstop from master process to all other processes
-  call mpi_bcast(tlast,1,mpi_logical,0,mpicom,ierror)
-  call mpi_bcast(tstop,1,mpi_logical,0,mpicom,ierror)
+    ! broadcast tlast and tstop from master process to all other processes
+    CALL mpi_bcast(tlast,1,mpi_logical,0,mpicom,ierror)
+    CALL mpi_bcast(tstop,1,mpi_logical,0,mpicom,ierror)
 
-! output the current total CPU time
-  timetot=timeinit+timemat+timefv+timesv+timerho+timepot+timefor
-  if (mp_mpi) then
-    write(6,*)
-    write(6,'("Time (CPU seconds) : ",F12.2)') timetot
-  end if
+    ! output the current total CPU time
+    timetot = timeinit + timemat + timefv + timesv + timerho + timepot + timefor
+    IF( mp_mpi ) THEN 
+      WRITE(6,*)
+      WRITE(6,'("Time (CPU seconds) : ",F12.2)') timetot
+    ENDIF 
+  
   ! end the self-consistent loop
-end do
+  ENDDO 
 
-10 continue
+  10 CONTINUE
 
-! synchronise MPI processes
-call mpi_barrier(mpicom,ierror)
-if (mp_mpi) then
-  write(6,*)
-  write(6,'("+------------------------------+")')
-  write(6,'("| Self-consistent loop stopped |")')
-  write(6,'("+------------------------------+")')
-! write density and potentials to file only if maxscl > 1
-  if (maxscl.gt.1) then
-    call writestate
-    write(6,*)
-    write(6,'("Wrote STATE.OUT")')
-  end if
-end if
+  ! synchronise MPI processes
+  CALL mpi_barrier(mpicom,ierror)
+  IF( mp_mpi ) THEN 
+    WRITE(6,*)
+    WRITE(6,'("+------------------------------+")')
+    WRITE(6,'("| Self-consistent loop stopped |")')
+    WRITE(6,'("+------------------------------+")')
+    ! write density and potentials to file only if maxscl > 1
+    IF( maxscl > 1) THEN 
+      CALL writestate()
+      WRITE(6,*)
+      WRITE(6,'("Wrote STATE.OUT")')
+    ENDIF 
+  ENDIF 
 
-! compute forces if required
-!if (tforce) then
-!  call force()
-!  ! output forces to INFO.OUT
-!  if (mp_mpi) call writeforces(6)
-!end if
+  ! compute forces if required
+  !if (tforce) then
+  !  call force()
+  !  ! output forces to INFO.OUT
+  !  if (mp_mpi) call writeforces(6)
+  !end IF
 
-! compute the current density and total current if required
-!if (tcden) then
-!  call curden(afieldc)
-!  if (mp_mpi) then
-!    write(6,*)
-!    write(6,'("Total current per unit cell")')
-!    write(6,'(3G18.10)') curtot
-!    write(6,'(" magnitude : ",G18.10)') curtotm
-!  end if
-!end if
+  ! compute the current density and total current if required
+  !if (tcden) then
+  !  call curden(afieldc)
+  !  if (mp_mpi) then
+  !    write(6,*)
+  !    write(6,'("Total current per unit cell")')
+  !    write(6,'(3G18.10)') curtot
+  !    write(6,'(" magnitude : ",G18.10)') curtotm
+  !  end if
+  !end IF
 
-! total time used
-timetot=timeinit+timemat+timefv+timesv+timerho+timepot+timefor
+  ! total time used
+  timetot = timeinit + timemat + timefv + timesv + timerho + timepot + timefor
 
-if (mp_mpi) then
-! output timing information
-  write(6,*)
-  write(6,'("Timings (CPU seconds) :")')
-  write(6,'(" initialisation",T40,": ",F12.2)') timeinit
-  write(6,'(" Hamiltonian and overlap matrix set up",T40,": ",F12.2)') timemat
-  write(6,'(" first-variational eigenvalue equation",T40,": ",F12.2)') timefv
-  if (tevecsv) then
-    write(6,'(" second-variational calculation",T40,": ",F12.2)') timesv
-  end if
-  write(6,'(" charge density calculation",T40,": ",F12.2)') timerho
-  write(6,'(" potential calculation",T40,": ",F12.2)') timepot
-  if (tforce) then
-    write(6,'(" force calculation",T40,": ",F12.2)') timefor
-  end if
-  write(6,'(" total",T40,": ",F12.2)') timetot
-  write(6,*)
-  write(6,'("+----------------------------+")')
-  write(6,'("| Elk version ",I1.1,".",I1.1,".",I2.2," stopped |")') version
-  write(6,'("+----------------------------+")')
+  IF( mp_mpi ) THEN 
+    ! output timing information
+    WRITE(6,*)
+    WRITE(6,'("Timings (CPU seconds) :")')
+    WRITE(6,'(" initialisation",T40,": ",F12.2)') timeinit
+    write(6,'(" Hamiltonian and overlap matrix set up",T40,": ",F12.2)') timemat
+    WRITE(6,'(" first-variational eigenvalue equation",T40,": ",F12.2)') timefv
+    IF( tevecsv ) THEN 
+      WRITE(6,'(" second-variational calculation",T40,": ",F12.2)') timesv
+    ENDIF 
+    WRITE(6,'(" charge density calculation",T40,": ",F12.2)') timerho
+    WRITE(6,'(" potential calculation",T40,": ",F12.2)') timepot
+    IF( tforce ) THEN 
+      WRITE(6,'(" force calculation",T40,": ",F12.2)') timefor
+    ENDIF 
+    WRITE(6,'(" total",T40,": ",F12.2)') timetot
+    WRITE(6,*)
+    WRITE(6,'("+----------------------------+")')
+    WRITE(6,'("| Elk version ",I1.1,".",I1.1,".",I2.2," stopped |")') version
+    WRITE(6,'("+----------------------------+")')
 
-! close the INFO.OUT file ! ffr
-!  close(60)
+    ! close the INFO.OUT file ! ffr
+    !  close(60)
 
-! close the TOTENERGY.OUT file
-  close(61)
+    ! close the TOTENERGY.OUT file
+    CLOSE(61)
 
-! close the FERMIDOS.OUT file
-  close(62)
-! close the MOMENT.OUT and MOMENTM.OUT files
-  if (spinpol) then
-    close(63); close(68)
-  end if
-! close the GAP.OUT file
-  close(64)
-! close the RMSDVS.OUT file
-  close(65)
-! close the DTOTENERGY.OUT file
-  close(66)
-! close TMDFTU.OUT file
-  if (tmwrite) close(67)
-! close the RESIDUAL.OUT file
-  if (xctype(1).lt.0) close(69)
-end if
+    ! close the FERMIDOS.OUT file
+    CLOSE(62)
+    ! close the MOMENT.OUT and MOMENTM.OUT files
+    IF( spinpol ) THEN 
+      CLOSE(63); close(68)
+    ENDIF 
+    ! close the GAP.OUT file
+    CLOSE(64)
+    ! close the RMSDVS.OUT file
+    CLOSE(65)
+    ! close the DTOTENERGY.OUT file
+    CLOSE(66)
+    ! close TMDFTU.OUT file
+    IF(tmwrite) CLOSE(67)
+    ! close the RESIDUAL.OUT file
+    IF( xctype(1) < 0 ) CLOSE(69)
+  ENDIF 
 
-deallocate(v,work)
+  deallocate(v,work)
 
 ! synchronise MPI processes
 call mpi_barrier(mpicom,ierror)
