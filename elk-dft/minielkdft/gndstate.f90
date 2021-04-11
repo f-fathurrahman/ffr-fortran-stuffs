@@ -29,10 +29,10 @@ SUBROUTINE gndstate
 
   ! apply strain to the G, k, G+k and q-vectors if required
   ! FIXME: Check this again
-  IF( (istrain < 1) .or. ( istrain > nstrain) ) THEN 
-    WRITE(*,*)
-    WRITE(*,*) '*** Not calling straingkq'
-  ENDIF 
+  !IF( (istrain < 1) .or. ( istrain > nstrain) ) THEN 
+  !  WRITE(*,*)
+  !  WRITE(*,*) '*** Not calling straingkq'
+  !ENDIF 
   !call straingkq()
 
   !

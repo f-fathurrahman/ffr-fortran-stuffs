@@ -276,6 +276,12 @@ init_spin_variables.f90 \
 init_crystal_structure.f90 \
 init_vector_field_E_A.f90 \
 init_radial_meshes.f90 \
+init_charges_states.f90 \
+init_gvector_arrays.f90 \
+init_atoms_cores.f90 \
+init_chgden_pot_xc.f90 \
+init_forces.f90 \
+init_dftu_fmt.f90 \
 minielkdft.f90
 
 OBJ = $(SRC:.f90=.o)
