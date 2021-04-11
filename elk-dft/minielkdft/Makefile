@@ -282,6 +282,11 @@ init_atoms_cores.f90 \
 init_chgden_pot_xc.f90 \
 init_forces.f90 \
 init_dftu_fmt.f90 \
+init_kpoints.f90 \
+init_Gk_vectors.f90 \
+init_APW_LO.f90 \
+init_dftu_k.f90 \
+init_eigensystems.f90 \
 minielkdft.f90
 
 OBJ = $(SRC:.f90=.o)
