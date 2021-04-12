@@ -4,7 +4,27 @@ include ../make.inc
 # Elk program
 SRC_elk = minielkdft.f90
 
-SRC = modmain.f90 modmpi.f90 modomp.f90 modvars.f90 \
+SRC = m_lattice.f90 \
+m_atomic.f90 \
+m_mt_rad_am.f90 \
+m_spin.f90 \
+m_electric_vector_pot.f90 \
+m_symmetry.f90 \
+m_gvectors.f90 \
+m_kpoints.f90 \
+m_gkvectors.f90 \
+m_qpoints.f90 \
+m_sht.f90 \
+m_density_pot_xc.f90 \
+m_mixing.f90 \
+m_charge_moment_current.f90 \
+m_apwlo.f90 \
+m_hamiltonian.f90 \
+m_states.f90 \
+m_core_states.f90 \
+m_energy.f90 \
+m_force_stress.f90 \
+modmain.f90 modmpi.f90 modomp.f90 modvars.f90 \
 moddftu.f90 \
 modrdm.f90 \
 modphonon.f90 \
@@ -312,3 +332,17 @@ main:	$(OBJ)
 clean:
 	rm -f *.o *.mod 
 
+libxcifc_stub.o: libxcifc_stub.f90
+	$(F90) $(F90_OPTS_NO_WARN) -c libxcifc_stub.f90
+
+mkl_stub.o: mkl_stub.f90
+	$(F90) $(F90_OPTS_NO_WARN) -c mkl_stub.f90
+
+oblas_stub.o: oblas_stub.f90
+	$(F90) $(F90_OPTS_NO_WARN) -c oblas_stub.f90
+
+blis_stub.o: oblas_stub.f90
+	$(F90) $(F90_OPTS_NO_WARN) -c blis_stub.f90
+
+zfftifc.o: oblas_stub.f90
+	$(F90) $(F90_OPTS_NO_WARN) -c zfftifc.f90
