@@ -1,21 +1,21 @@
-subroutine ztorfmt(nr,nri,zfmt,rfmt)
-use modmain
-implicit none
-! arguments
-integer, intent(in) :: nr,nri
-complex(8), intent(in) :: zfmt(*)
-real(8), intent(out) :: rfmt(*)
-! local variables
-integer ir,i
-i=1
-do ir=1,nri
-  call ztorflm(lmaxi,zfmt(i),rfmt(i))
-  i=i+lmmaxi
-end do
-do ir=nri+1,nr
-  call ztorflm(lmaxo,zfmt(i),rfmt(i))
-  i=i+lmmaxo
-end do
-return
-end subroutine
+SUBROUTINE ztorfmt(nr,nri,zfmt,rfmt)
+  use modmain, ONLY: lmmaxi, lmmaxo, lmaxo, lmaxi
+  IMPLICIT NONE 
+  ! arguments
+  INTEGER, INTENT(in) :: nr,nri
+  COMPLEX(8), INTENT(in) :: zfmt(*)
+  REAL(8), INTENT(out) :: rfmt(*)
+  ! local variables
+  INTEGER :: ir,i
+  i = 1
+  DO ir = 1,nri
+    CALL ztorflm(lmaxi, zfmt(i), rfmt(i))
+    i = i + lmmaxi
+  ENDDO 
+  DO ir = nri+1,nr
+    CALL ztorflm(lmaxo, zfmt(i), rfmt(i))
+    i = i + lmmaxo
+  ENDDO 
+  RETURN 
+END SUBROUTINE 
 

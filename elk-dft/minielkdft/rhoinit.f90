@@ -1,4 +1,4 @@
-subroutine rhoinit
+SUBROUTINE rhoinit()
 ! !USES:
 use modmain, only: rhoir, rhomt, rhosp, nrmti, nrmt, idxis, idxas, ylmg, zil, &
                    rcmt, igfft, sfacg, gc, npcmtmax, npcmt, nspecies, nrcmt, nrcmti, &
