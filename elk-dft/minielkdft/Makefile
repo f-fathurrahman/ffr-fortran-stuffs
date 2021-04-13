@@ -4,7 +4,8 @@ include ../make.inc
 # Elk program
 SRC_elk = minielkdft.f90
 
-SRC = m_lattice.f90 \
+SRC = mpi_stub.f90 \
+m_lattice.f90 \
 m_atomic.f90 \
 m_mt_rad_am.f90 \
 m_spin.f90 \

@@ -1,5 +1,5 @@
 
-include ../make.inc
+include ../make.inc.flang
 
 # modules
 SRC_modules = modmain.f90 $(SRC_MPI) modmpi.f90 $(SRC_libxc) \

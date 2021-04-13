@@ -108,7 +108,6 @@ SUBROUTINE gndstate
       WRITE(6,'("| Loop number : ",I4," |")') iscl
       WRITE(6,'("+--------------------+")')
     ENDIF 
-  
     IF( iscl >= maxscl ) THEN 
       IF( mp_mpi ) THEN 
         WRITE(6,*)
@@ -122,7 +121,7 @@ SUBROUTINE gndstate
   
     ! reset the OpenMP thread variables
     CALL omp_reset()
-  
+
     ! generate the core wavefunctions and densities
     CALL gencore()
   
