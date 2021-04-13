@@ -25,6 +25,15 @@ m_states.f90 \
 m_core_states.f90 \
 m_energy.f90 \
 m_force_stress.f90 \
+m_convergence.f90 \
+m_dos_optics_response.f90 \
+m_plotting.f90 \
+m_oep_hf.f90 \
+m_respfunc_perturb.f90 \
+m_bse.f90 \
+m_timing.f90 \
+m_constants.f90 \
+m_misc.f90 \
 modmain.f90 modmpi.f90 modomp.f90 modvars.f90 \
 moddftu.f90 \
 modrdm.f90 \
@@ -332,6 +341,9 @@ main:	$(OBJ)
 
 clean:
 	rm -f *.o *.mod 
+
+mpi_stub.o: mpi_stub.f90
+	$(F90) $(F90_OPTS_NO_WARN) -c mpi_stub.f90
 
 libxcifc_stub.o: libxcifc_stub.f90
 	$(F90) $(F90_OPTS_NO_WARN) -c libxcifc_stub.f90
