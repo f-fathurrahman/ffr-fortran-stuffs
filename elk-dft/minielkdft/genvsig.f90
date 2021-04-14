@@ -1,5 +1,6 @@
 SUBROUTINE genvsig()
-  USE modmain, ONLY: ngtot, ngridg, cfunir, vsir, vsig, igfft, ngvec
+  USE m_gvectors, ONLY: ngtot, ngridg, cfunir, igfft, ngvec
+  USE m_density_pot_xc, ONLY: vsig, vsir
   !
   ! Generates the Fourier transform of the Kohn-Sham effective potential in the
   ! interstitial region. The potential is first multiplied by the characteristic

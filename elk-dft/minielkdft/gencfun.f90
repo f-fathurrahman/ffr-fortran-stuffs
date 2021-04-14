@@ -1,15 +1,3 @@
-
-! Copyright (C) 2002-2005 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: gencfun
-! !INTERFACE:
-subroutine gencfun
-! !USES:
-use modmain, only: natoms, cfunig, cfunir, ffacg, atposc, nspecies, ngtot, &
-                   ngridg, igfft, vgc
 ! !DESCRIPTION:
 !   Generates the smooth characteristic function. This is the function which is
 !   0 within the muffin-tins and 1 in the intersitial region and is constructed
@@ -24,11 +12,9 @@ use modmain, only: natoms, cfunig, cfunir, ffacg, atposc, nspecies, ngtot, &
 !   $$ \tilde{\Theta}({\bf G})=\delta_{G,0}-\sum_{ij}\exp(-i{\bf G}\cdot
 !    {\bf r}_{ij})\tilde{\Theta}_i(G), $$
 !   where ${\bf r}_{ij}$ is the position of the $j$th atom of the $i$th species.
-!
-! !REVISION HISTORY:
-!   Created January 2003 (JKD)
-!EOP
-!BOC
+SUBROUTINE gencfun()
+  USE m_atomic, ONLY: natoms, nspecies, atposc
+  use m_gvectors, ONLY: cfunig, cfunir, ffacg, ngtot, ngridg, igfft, vgc
 implicit none
 ! local variables
 integer is,ia,ig
