@@ -1,15 +1,3 @@
-! Calculates the radial Hamiltonian integrals of the APW and local-orbital
-! basis functions. In other words, for atom $\alpha$, it computes integrals of
-! the form
-! $$ h^{\alpha}_{qq';ll'l''m''}=\begin{cases}
-! \int_0^{R_i}u^{\alpha}_{q;l}(r)H u^{\alpha}_{q';l'}(r)r^2dr & l''=0 \\
-! \int_0^{R_i}u^{\alpha}_{q;l}(r)V^{\alpha}_{l''m''}(r)
-! u^{\alpha}_{q';l'}(r)r^2dr & l''>0 \end{cases}, $$
-! where $u^{\alpha}_{q;l}$ is the $q$th APW radial function for angular
-! momentum $l$; $H$ is the Hamiltonian of the radial Schr\"{o}dinger equation;
-! and $V^{\alpha}_{l''m''}$ is the muffin-tin Kohn-Sham potential. Similar
-! integrals are calculated for APW-local-orbital and
-! local-orbital-local-orbital contributions.
 SUBROUTINE hmlrad()
   USE m_atomic, ONLY: idxis, natmtot
   USE m_mt_rad_am, ONLY: nrmt, nrmti, nrmtmax, npmti, lmmaxi, lmmaxo, lmaxo, lmaxi, &
@@ -192,10 +180,7 @@ SUBROUTINE hmlrad()
         ENDDO 
       ENDDO 
     ENDDO 
-    ! end loops over atoms and species
-  ENDDO 
+  ENDDO     ! end loops over atoms and species
   DEALLOCATE(fr)
   RETURN 
 END SUBROUTINE 
-
-

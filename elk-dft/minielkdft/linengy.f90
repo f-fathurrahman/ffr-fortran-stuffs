@@ -123,5 +123,3 @@ SUBROUTINE linengy()
   
   RETURN 
 END SUBROUTINE 
-!EOC
-

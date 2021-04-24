@@ -1,48 +1,38 @@
-
-! Copyright (C) 2012 J. K. Dewhurst, S. Sharma and E. K. U. Gross.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
-
-subroutine genevfsv
-use modmain
-use modmpi
-use modomp
-implicit none
-! local variables
-integer ik,lp,nthd
-! allocatable arrays
-real(8), allocatable :: evalfv(:,:)
-complex(8), allocatable :: evecfv(:,:,:),evecsv(:,:)
-! begin parallel loop over k-points
-call holdthd(nkpt/np_mpi,nthd)
-!$OMP PARALLEL DEFAULT(SHARED) &
-!$OMP PRIVATE(evalfv,evecfv,evecsv) &
-!$OMP NUM_THREADS(nthd)
-allocate(evalfv(nstfv,nspnfv))
-allocate(evecfv(nmatmax,nstfv,nspnfv),evecsv(nstsv,nstsv))
-!$OMP DO
-do ik=1,nkpt
-! distribute among MPI processes
-  if (mod(ik-1,np_mpi).ne.lp_mpi) cycle
-! solve the first- and second-variational eigenvalue equations
-  call eveqn(ik,evalfv,evecfv,evecsv)
-! write the eigenvalues/vectors to file
-  call putevalfv(filext,ik,evalfv)
-  call putevalsv(filext,ik,evalsv(:,ik))
-  call putevecfv(filext,ik,evecfv)
-  call putevecsv(filext,ik,evecsv)
-end do
-!$OMP END DO
-deallocate(evalfv,evecfv,evecsv)
-!$OMP END PARALLEL
-call freethd(nthd)
-! broadcast eigenvalue array to every MPI process
-if (np_mpi.gt.1) then
-  do ik=1,nkpt
-    lp=mod(ik-1,np_mpi)
-    call mpi_bcast(evalsv(:,ik),nstsv,mpi_double_precision,lp,mpicom,ierror)
-  end do
-end if
-return
-end subroutine
+SUBROUTINE genevfsv()
+  USE m_states, ONLY: nstsv, nstfv, evalsv
+  USE m_spin, ONLY: nspnfv
+  USE m_hamiltonian, ONLY: nmatmax
+  USE m_kpoints, ONLY: nkpt
+  use modmpi, ONLY: np_mpi, lp_mpi, mpicom, mpi_double_precision, ierror
+  USE m_misc, ONLY: filext
+  IMPLICIT NONE 
+  ! local variables
+  INTEGER :: ik,lp
+  ! ALLOCATABLE arrays
+  REAL(8), ALLOCATABLE :: evalfv(:,:)
+  COMPLEX(8), ALLOCATABLE :: evecfv(:,:,:),evecsv(:,:)
+  ! begin parallel loop over k-points
+  ALLOCATE(evalfv(nstfv,nspnfv))
+  ALLOCATE(evecfv(nmatmax,nstfv,nspnfv),evecsv(nstsv,nstsv))
+  DO ik=1,nkpt
+    ! distribute among MPI processes
+    IF(mod(ik-1,np_mpi).ne.lp_mpi) cycle
+    ! solve the first- and second-variational eigenvalue equations
+    CALL eveqn(ik,evalfv,evecfv,evecsv)
+    ! write the eigenvalues/vectors to file
+    CALL putevalfv(filext,ik,evalfv)
+    CALL putevalsv(filext,ik,evalsv(:,ik))
+    CALL putevecfv(filext,ik,evecfv)
+    CALL putevecsv(filext,ik,evecsv)
+  ENDDO 
+  DEALLOCATE(evalfv,evecfv,evecsv)
+  ! broadcast eigenvalue array to every MPI process
+  IF(np_mpi > 1) THEN 
+    DO ik=1,nkpt
+      lp=mod(ik-1,np_mpi)
+      CALL mpi_bcast(evalsv(:,ik),nstsv,mpi_double_precision,lp,mpicom,ierror)
+    ENDDO 
+  ENDIF 
+  RETURN 
+END SUBROUTINE 
 

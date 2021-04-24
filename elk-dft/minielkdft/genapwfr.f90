@@ -1,12 +1,3 @@
-! Generates the APW radial functions. This is done by integrating the scalar
-! relativistic Schr\"{o}dinger equation (or its energy derivatives) at the
-! current linearisation energies using the spherical part of the Kohn-Sham
-! potential. The number of radial functions at each $l$-value is given by the
-! variable {\tt apword} (at the muffin-tin boundary, the APW functions have
-! continuous derivatives up to order (apword-1). Within each $l$, these
-! functions are orthonormalised with the Gram-Schmidt method. The radial
-! Hamiltonian is applied to the orthonormalised functions and the results are
-! stored in the global array apwfr.
 SUBROUTINE genapwfr()
   USE m_atomic, ONLY: natmmax, natoms, idxas, nspecies
   USE m_symmetry, ONLY: eqatoms

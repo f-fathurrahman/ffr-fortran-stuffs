@@ -1,34 +1,33 @@
-
-! Copyright (C) 2002-2005 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
-
-subroutine olpalo(ias,ngp,apwalm,ld,o)
-use modmain
-implicit none
-! arguments
-integer, intent(in) :: ias,ngp
-complex(8), intent(in) :: apwalm(ngkmax,apwordmax,lmmaxapw)
-integer, intent(in) :: ld
-complex(8), intent(inout) :: o(*)
-! local variables
-integer is,ilo,io
-integer l,m,lm,i,j,k
-is=idxis(ias)
-do ilo=1,nlorb(is)
-  l=lorbl(ilo,is)
-  do m=-l,l
-    lm=idxlm(l,m)
-    j=ngp+idxlo(lm,ilo,ias)
-    k=(j-1)*ld
-    do i=1,ngp
-      k=k+1
-      do io=1,apword(l,is)
-        o(k)=o(k)+conjg(apwalm(i,io,lm))*oalo(io,ilo,ias)
-      end do
-    end do
-  end do
-end do
-return
-end subroutine
+SUBROUTINE olpalo(ias,ngp,apwalm,ld,o)
+  USE m_gkvectors, ONLY: ngkmax
+  USE m_mt_rad_am, ONLY: lmmaxapw, idxlm
+  USE m_atomic, ONLY: idxis
+  USE m_apwlo, ONLY: apwordmax, nlorb, apword, lorbl
+  USE m_hamiltonian, ONLY: oalo, idxlo
+  IMPLICIT NONE 
+  ! arguments
+  INTEGER, intent(in) :: ias,ngp
+  COMPLEX(8), intent(in) :: apwalm(ngkmax,apwordmax,lmmaxapw)
+  INTEGER, intent(in) :: ld
+  COMPLEX(8), intent(inout) :: o(*)
+  ! local variables
+  INTEGER is,ilo,io
+  INTEGER l,m,lm,i,j,k
+  is=idxis(ias)
+  DO ilo=1,nlorb(is)
+    l=lorbl(ilo,is)
+    DO m=-l,l
+      lm=idxlm(l,m)
+      j=ngp+idxlo(lm,ilo,ias)
+      k=(j-1)*ld
+      DO i=1,ngp
+        k=k+1
+        DO io=1,apword(l,is)
+          o(k)=o(k)+conjg(apwalm(i,io,lm))*oalo(io,ilo,ias)
+        ENDDO 
+      ENDDO 
+    ENDDO 
+  ENDDO 
+  RETURN 
+END SUBROUTINE 
 

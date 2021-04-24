@@ -1,13 +1,3 @@
-! Calculates the radial overlap integrals of the APW and local-orbital basis
-! functions. In other words, for atom $\alpha$, it computes integrals of the
-! form
-! $$ o^{\alpha}_{qp}=\int_0^{R_i}u^{\alpha}_{q;l_p}(r)v^{\alpha}_p(r)r^2dr $$
-! and
-! $$ o^{\alpha}_{pp'}=\int_0^{R_i}v^{\alpha}_p(r)v^{\alpha}_{p'}(r)r^2dr,
-! \quad l_p=l_{p'} $$
-! where $u^{\alpha}_{q;l}$ is the $q$th APW radial function for angular
-! momentum $l$; and $v^{\alpha}_p$ is the $p$th local-orbital radial function
-! and has angular momentum $l_p$.
 SUBROUTINE olprad()
   USE m_atomic, ONLY: natmtot, idxis
   USE m_mt_rad_am, ONLY: nrmtmax, nrmt, wrmt
@@ -49,5 +39,3 @@ SUBROUTINE olprad()
 
   RETURN 
 END SUBROUTINE 
-
-

@@ -154,9 +154,9 @@ SUBROUTINE gndstate
         CALL putoccsv(filext,ik,occsv(:,ik))
       ENDDO 
       ! write eigenvalues to file
-      CALL writeeval
+      CALL writeeval()
       ! write the Fermi energy to file
-      CALL writefermi
+      CALL writefermi()
     ENDIF
   
     ! synchronise MPI processes
