@@ -75,6 +75,3 @@ SUBROUTINE hmlaa(thr,ias,ngp,apwalm,ld,h)
   DEALLOCATE(a,b)
   RETURN 
 END SUBROUTINE 
-
-!EOC
-
