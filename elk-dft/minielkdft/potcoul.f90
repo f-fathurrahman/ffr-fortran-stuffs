@@ -81,7 +81,7 @@ vclir(:)=dble(zvclir(:))
 deallocate(zrhoir,zvclmt,zvclir)
 
 ! apply constant electric field if required
-if (tefield) call potefield
+if (tefield) call potefield()
 
 return
 

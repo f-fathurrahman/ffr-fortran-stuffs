@@ -317,6 +317,10 @@ init_Gk_vectors.f90 \
 init_APW_LO.f90 \
 init_dftu_k.f90 \
 init_eigensystems.f90 \
+genbs.f90 \
+bdipole.f90 \
+curden.f90 \
+curdenk.f90 \
 minielkdft.f90
 
 OBJ = $(SRC:.f90=.o)

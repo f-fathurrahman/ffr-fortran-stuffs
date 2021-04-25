@@ -107,6 +107,7 @@ SUBROUTINE rhomag()
 
   ! calculate the charges
   CALL charge()
+
   ! normalise the density
   CALL rhonorm()
 

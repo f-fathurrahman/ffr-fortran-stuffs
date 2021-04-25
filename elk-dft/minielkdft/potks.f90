@@ -1,11 +1,3 @@
-
-! Copyright (C) 2002-2005 J. K. Dewhurst, S. Sharma and C. Ambrosch-Draxl.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
-
-!BOP
-! !ROUTINE: potks
-! !INTERFACE:
 subroutine potks(txc)
 ! !USES:
 use modmain
@@ -76,7 +68,7 @@ vsir(:)=vclir(:)+vxcir(:)
 call rfirsm(msmooth,vsir)
 
 ! generate the effective magnetic fields
-!call genbs()
+call genbs()
 
 ! generate the tau-DFT effective potential
 call genws()

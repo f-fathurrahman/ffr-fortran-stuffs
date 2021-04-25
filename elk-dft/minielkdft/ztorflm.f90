@@ -1,25 +1,17 @@
+! !INPUT/OUTPUT PARAMETERS:
+!   lmax : maximum angular momentum (in,integer)
+!   zflm : coefficients of complex spherical harmonic expansion
+!          (in,complex((lmax+1)**2)))
+!   rflm : coefficients of real spherical harmonic expansion
+!          (out,real((lmax+1)**2)))
 PURE SUBROUTINE ztorflm(lmax, zflm, rflm)
-  ! !INPUT/OUTPUT PARAMETERS:
-  !   lmax : maximum angular momentum (in,integer)
-  !   zflm : coefficients of complex spherical harmonic expansion
-  !          (in,complex((lmax+1)**2)))
-  !   rflm : coefficients of real spherical harmonic expansion
-  !          (out,real((lmax+1)**2)))
-  ! !DESCRIPTION:
-  !   Converts a real function, $z_{lm}$, expanded in terms of complex spherical
-  !   harmonics into a real spherical harmonic expansion, $r_{lm}$:
-  !   $$ r_{lm}=\begin{cases}\frac{1}{\sqrt{2}}\Re(z_{lm}+(-1)^m z_{l-m}) & m>0 \\
-  !    \frac{1}{\sqrt{2}}\Im(-z_{lm}+(-1)^m z_{l-m}) & m<0 \\
-  !    \Re(z_{lm}) & m=0 \end{cases}\;. $$
-  !   See routine {\tt genrlm}.
-  !
   IMPLICIT NONE 
   ! arguments
   INTEGER, INTENT(in) :: lmax
   COMPLEX(8), INTENT(in) :: zflm(*)
   REAL(8), INTENT(out) :: rflm(*)
   ! local variables
-  integer :: l,m,lm1,lm2
+  INTEGER :: l,m,lm1,lm2
   ! real constant 1/sqrt(2)
   REAL(8), PARAMETER :: c1=0.7071067811865475244d0
   
@@ -50,4 +42,3 @@ PURE SUBROUTINE ztorflm(lmax, zflm, rflm)
   ENDDO 
   RETURN 
 END SUBROUTINE 
-

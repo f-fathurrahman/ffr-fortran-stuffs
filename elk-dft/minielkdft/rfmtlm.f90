@@ -1,36 +1,34 @@
+SUBROUTINE rfmtlm(lm,nr,nri,rfmt,fr)
+  USE m_mt_rad_am, ONLY: nrmtmax, npmtmax, lmmaxo, lmmaxi
+  IMPLICIT NONE 
+  ! arguments
+  INTEGER, intent(in) :: lm,nr,nri
+  REAL(8), intent(in) :: rfmt(npmtmax)
+  REAL(8), intent(out) :: fr(nrmtmax)
+  ! local variables
+  INTEGER iro,ir,i
 
-! Copyright (C) 2016 J. K. Dewhurst, S. Sharma and E. K. U. Gross.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
+  IF(lm > lmmaxi) THEN 
+    fr(1:nri)=0.d0
+  ELSE 
+    i=lm
+    DO ir=1,nri
+      fr(ir)=rfmt(i)
+      i=i+lmmaxi
+    ENDDO 
+  ENDIF 
+  
+  iro=nri+1
+  IF(lm > lmmaxo) THEN 
+    fr(iro:nr)=0.d0
+  ELSE 
+    i=lmmaxi*nri+lm
+    DO ir=iro,nr
+      fr(ir)=rfmt(i)
+      i=i+lmmaxo
+    ENDDO 
+  ENDIF 
 
-subroutine rfmtlm(lm,nr,nri,rfmt,fr)
-use modmain
-implicit none
-! arguments
-integer, intent(in) :: lm,nr,nri
-real(8), intent(in) :: rfmt(npmtmax)
-real(8), intent(out) :: fr(nrmtmax)
-! local variables
-integer iro,ir,i
-if (lm.gt.lmmaxi) then
-  fr(1:nri)=0.d0
-else
-  i=lm
-  do ir=1,nri
-    fr(ir)=rfmt(i)
-    i=i+lmmaxi
-  end do
-end if
-iro=nri+1
-if (lm.gt.lmmaxo) then
-  fr(iro:nr)=0.d0
-else
-  i=lmmaxi*nri+lm
-  do ir=iro,nr
-    fr(ir)=rfmt(i)
-    i=i+lmmaxo
-  end do
-end if
-return
-end subroutine
+  RETURN 
+END SUBROUTINE 
 
