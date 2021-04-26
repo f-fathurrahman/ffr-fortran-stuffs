@@ -1,3 +1,5 @@
+! poly3 is an inner function
+! It is not exported in libelk.a
 program test_poly3
   implicit none
   real(8) :: xa(3), ya(3), x

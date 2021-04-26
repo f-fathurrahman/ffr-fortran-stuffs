@@ -1,3 +1,5 @@
+! poly4i is an inner function
+! It is not exported in libelk.a
 program test_poly4i
   implicit none
   real(8) :: xa(4), ya(4), x
