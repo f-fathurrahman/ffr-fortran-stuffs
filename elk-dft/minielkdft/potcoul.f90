@@ -1,88 +1,66 @@
-subroutine potcoul()
+SUBROUTINE potcoul()
 ! !USES:
 use modmain
-use modomp
 
-! !DESCRIPTION:
-!   Calculates the Coulomb potential of the real charge density stored in the
-!   global variables {\tt rhomt} and {\tt rhoir} by solving Poisson's equation.
-!   These variables are coverted to complex representations and passed to the
-!   routine {\tt zpotcoul}.
-
-implicit none
+IMPLICIT NONE 
 ! local variables
-integer is,ias,nthd
-integer nr,nri,ir,i
-! allocatable arrays
-complex(8), allocatable :: zrhomt(:,:),zrhoir(:)
-complex(8), allocatable :: zvclmt(:,:),zvclir(:)
+INTEGER :: is,ias
+INTEGER :: nr,nri,ir,i
+! ALLOCATABLE arrays
+COMPLEX(8), ALLOCATABLE :: zrhomt(:,:),zrhoir(:)
+COMPLEX(8), ALLOCATABLE :: zvclmt(:,:),zvclir(:)
 
-allocate(zrhomt(npmtmax,natmtot))
-
-write(*,*) 'potcoul: npmtmax = ', npmtmax
-write(*,*) 'potcoul: natmtot = ', natmtot
+ALLOCATE(zrhomt(npmtmax,natmtot))
 
 ! convert real muffin-tin charge density to complex spherical harmonic expansion
-call holdthd(natmtot,nthd)
-!$OMP PARALLEL DO DEFAULT(SHARED) &
-!$OMP PRIVATE(is) &
-!$OMP NUM_THREADS(nthd)
-do ias=1,natmtot
+DO ias=1,natmtot
   is=idxis(ias)
-  call rtozfmt(nrmt(is),nrmti(is),rhomt(:,ias),zrhomt(:,ias))
-end do
-!$OMP END PARALLEL DO
-call freethd(nthd)
+  CALL rtozfmt(nrmt(is),nrmti(is),rhomt(:,ias),zrhomt(:,ias))
+ENDDO 
 
 ! solve the complex Poisson's equation in the muffin-tins
-allocate(zvclmt(npmtmax,natmtot))
-call genzvclmt(nrmt,nrmti,nrmtmax,rlmt,wprmt,npmtmax,zrhomt,zvclmt)
-deallocate(zrhomt)
+ALLOCATE(zvclmt(npmtmax,natmtot))
+CALL genzvclmt(nrmt,nrmti,nrmtmax,rlmt,wprmt,npmtmax,zrhomt,zvclmt)
+DEALLOCATE(zrhomt)
 
 ! add the nuclear monopole potentials
-do ias=1,natmtot
+DO ias=1,natmtot
   is=idxis(ias)
   nr=nrmt(is)
   nri=nrmti(is)
   i=1
-  do ir=1,nri
+  DO ir=1,nri
     zvclmt(i,ias) = zvclmt(i,ias) + vcln(ir,is)
     i = i + lmmaxi
-  end do
-  do ir=nri+1,nr
+  ENDDO 
+  DO ir=nri+1,nr
     zvclmt(i,ias) = zvclmt(i,ias)+vcln(ir,is)
     i=i+lmmaxo
-  end do
-end do
+  ENDDO 
+ENDDO 
 
 ! store real interstitial charge density in complex array
-allocate(zrhoir(ngtot))
+ALLOCATE(zrhoir(ngtot))
 zrhoir(:)=rhoir(:)
 
 ! solve Poisson's equation in the entire unit cell
-allocate(zvclir(ngtot))
-call zpotcoul(nrmt,nrmti,npmt,npmti,nrmtmax,rlmt,ngridg,igfft,ngvec,gc,gclg, &
+ALLOCATE(zvclir(ngtot))
+CALL zpotcoul(nrmt,nrmti,npmt,npmti,nrmtmax,rlmt,ngridg,igfft,ngvec,gc,gclg, &
  ngvec,jlgrmt,ylmg,sfacg,zrhoir,npmtmax,zvclmt,zvclir)
 
 ! convert complex muffin-tin potential to real spherical harmonic expansion
-call holdthd(natmtot,nthd)
-!$OMP PARALLEL DO DEFAULT(SHARED) &
-!$OMP PRIVATE(is) &
-!$OMP NUM_THREADS(nthd)
-do ias=1,natmtot
+DO ias=1,natmtot
   is=idxis(ias)
-  call ztorfmt(nrmt(is),nrmti(is),zvclmt(:,ias),vclmt(:,ias))
-end do
-!$OMP END PARALLEL DO
-call freethd(nthd)
+  CALL ztorfmt(nrmt(is),nrmti(is),zvclmt(:,ias),vclmt(:,ias))
+ENDDO 
 
 ! store complex interstitial potential in real array
 vclir(:)=dble(zvclir(:))
-deallocate(zrhoir,zvclmt,zvclir)
+DEALLOCATE(zrhoir,zvclmt,zvclir)
 
 ! apply constant electric field if required
-if (tefield) call potefield()
+IF(tefield) CALL potefield()
 
-return
+RETURN 
 
-end subroutine
+END SUBROUTINE 

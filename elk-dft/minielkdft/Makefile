@@ -191,11 +191,7 @@ gencfun.f90 \
 allatoms.f90 \
 nuclei.f90 \
 energynn.f90 \
-sdelta.f90 \
-sdelta_mp.f90 \
-sdelta_sq.f90 \
-sdelta_lr.f90 \
-sdelta_fd.f90 \
+sdelta.f90 sdelta_mp.f90 sdelta_sq.f90 sdelta_lr.f90 sdelta_fd.f90 \
 sphcover.f90 \
 genrlmv.f90 \
 mtdmin.f90 \
@@ -211,10 +207,7 @@ mixerifc.f90 mixadapt.f90 \
 mixbroyden.f90 mixlinear.f90 \
 sctovec.f90 \
 rminv.f90 zminv.f90 \
-findsym.f90 \
-findsymlat.f90 \
-findsymcrys.f90 \
-findsymsite.f90 \
+findsym.f90 findsymlat.f90 findsymcrys.f90 findsymsite.f90 \
 r3mm.f90 \
 r3mtm.f90 \
 i3mdet.f90 \
@@ -262,43 +255,23 @@ rhocore.f90 \
 moment.f90 \
 gengclgq.f90 \
 rhonorm.f90 \
-stheta_sq.f90 \
-stheta_lr.f90 \
-stheta_mp.f90 \
-stheta_fd.f90 \
+stheta_sq.f90 stheta_lr.f90 stheta_mp.f90 stheta_fd.f90 \
 eveqn.f90 \
-putevalfv.f90 \
-putevalsv.f90 \
-putevecfv.f90 \
-putevecsv.f90 \
+putevalfv.f90 putevalsv.f90 putevecfv.f90 putevecsv.f90 \
 chargemt.f90 \
 rfpack.f90 \
 findband.f90 \
-eveqnit.f90 \
-eveqnfv.f90 \
-eveqnss.f90 \
-eveqnsv.f90 \
-eveqnz.f90 \
+eveqnit.f90 eveqnfv.f90 eveqnss.f90 eveqnsv.f90 eveqnz.f90 \
 lopzflm.f90 \
-eveqnfvz.f90 \
-eveqnfvr.f90 \
-hmlfv.f90 \
-olpfv.f90 \
+eveqnfvz.f90 eveqnfvr.f90 \
+hmlfv.f90 olpfv.f90 \
 rschrodint.f90 \
-hmlaa.f90 \
-hmlalo.f90 \
-hmllolo.f90 \
-hmlistl.f90 \
-olpaa.f90 \
-olpalo.f90 \
-olplolo.f90 \
-olpistl.f90 \
+hmlaa.f90 hmlalo.f90 hmllolo.f90 hmlistl.f90 \
+olpaa.f90 olpalo.f90 olplolo.f90 olpistl.f90 \
 getevalfv.f90 \
 zmctmu.f90 \
-olprad.f90 \
-hmlrad.f90 \
-genapwfr.f90 \
-genlofr.f90 \
+olprad.f90 hmlrad.f90 \
+genapwfr.f90 genlofr.f90 \
 erf.f90 \
 init_am_variables.f90 \
 init_idx_atom_species.f90 \
@@ -317,10 +290,10 @@ init_Gk_vectors.f90 \
 init_APW_LO.f90 \
 init_dftu_k.f90 \
 init_eigensystems.f90 \
-genbs.f90 \
-bdipole.f90 \
-curden.f90 \
-curdenk.f90 \
+genbs.f90 bdipole.f90 curden.f90 curdenk.f90 \
+oepmain.f90 oepresk.f90 rfinpc.f90 rfint0.f90 initoep.f90 \
+rzfinp.f90 genzfrm.f90 getevalsv.f90 oepvcl.f90 genzrm.f90 oepvclk.f90 rzfmtinp.f90 \
+rotdmat.f90 r3mdet.f90 z2mm.f90 z2mmct.f90 \
 minielkdft.f90
 
 OBJ = $(SRC:.f90=.o)
