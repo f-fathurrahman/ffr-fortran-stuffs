@@ -1,26 +1,21 @@
-
-! Copyright (C) 2013 J. K. Dewhurst, S. Sharma and E. K. U. Gross.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
-
-subroutine rtozfmt(nr,nri,rfmt,zfmt)
-use modmain
-implicit none
-! arguments
-integer, intent(in) :: nr,nri
-real(8), intent(in) :: rfmt(*)
-complex(8), intent(out) :: zfmt(*)
-! local variables
-integer ir,i
-i=1
-do ir=1,nri
-  call rtozflm(lmaxi,rfmt(i),zfmt(i))
-  i=i+lmmaxi
-end do
-do ir=nri+1,nr
-  call rtozflm(lmaxo,rfmt(i),zfmt(i))
-  i=i+lmmaxo
-end do
-return
-end subroutine
+SUBROUTINE rtozfmt(nr,nri,rfmt,zfmt)
+  USE m_mt_rad_am, ONLY: lmaxi, lmmaxo, lmmaxi, lmaxo
+  IMPLICIT NONE 
+  ! arguments
+  INTEGER, intent(in) :: nr,nri
+  REAL(8), intent(in) :: rfmt(*)
+  COMPLEX(8), intent(out) :: zfmt(*)
+  ! local variables
+  INTEGER ir,i
+  i=1
+  DO ir=1,nri
+    CALL rtozflm(lmaxi,rfmt(i),zfmt(i))
+    i=i+lmmaxi
+  ENDDO 
+  DO ir=nri+1,nr
+    CALL rtozflm(lmaxo,rfmt(i),zfmt(i))
+    i=i+lmmaxo
+  ENDDO 
+  RETURN 
+END SUBROUTINE 
 

@@ -1,5 +1,5 @@
 SUBROUTINE ztorfmt(nr,nri,zfmt,rfmt)
-  use modmain, ONLY: lmmaxi, lmmaxo, lmaxo, lmaxi
+  USE m_mt_rad_am, ONLY: lmmaxi, lmmaxo, lmaxo, lmaxi
   IMPLICIT NONE 
   ! arguments
   INTEGER, INTENT(in) :: nr,nri
@@ -18,4 +18,3 @@ SUBROUTINE ztorfmt(nr,nri,zfmt,rfmt)
   ENDDO 
   RETURN 
 END SUBROUTINE 
-
