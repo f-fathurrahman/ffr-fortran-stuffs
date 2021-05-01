@@ -17,10 +17,6 @@ integer is,ist,ios
 integer nlx,ilx,lx,ilo
 integer io,jo,ko,l,i,j
 
-write(*,*)
-write(*,*) '*** ffr: Entering readspecies ***'
-write(*,*)
-
 e0min=0.d0
 do is=1,nspecies
   open(50,file=trim(sppath)//trim(spfname(is)),status='OLD',form='FORMATTED', &
@@ -355,10 +351,6 @@ call addlorbcnd
 
 ! subtract 2 Hartree from the minimum energy
 e0min=e0min-2.d0
-
-write(*,*)
-write(*,*) '*** ffr: Leaving readspecies ***'
-write(*,*)
 
 return
 end subroutine

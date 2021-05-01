@@ -23,7 +23,7 @@ PURE SUBROUTINE ztorflm(lmax, zflm, rflm)
       lm2 = lm2-1
       IF(mod(m,2) /= 0) THEN 
         rflm(lm1) = -c1*(aimag(zflm(lm1)) + aimag(zflm(lm2)))
-      else
+      ELSE 
         rflm(lm1) = c1*(aimag(zflm(lm2)) - aimag(zflm(lm1)))
       ENDIF 
     ENDDO 

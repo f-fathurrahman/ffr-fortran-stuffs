@@ -1,7 +1,8 @@
 include 'elk_init.f90'
 include 'elk_stop.f90'
 include 'prepare_all.f90'
-include 'write_apwlo_vars.f90'
+include 'info_muffin_tins.f90'
+include 'info_apwlo.f90'
 
 !------------------------------------------------------------------------------
 program test
@@ -12,53 +13,8 @@ program test
 
   call prepare_all()
 
-  !call write_apwlo_vars()
+  call info_muffin_tins()
+  call info_apwlo()
   
-  ! Packed MT arrays
-  !write(*,*) "lmmaxi   ", lmmaxi
-  !write(*,*) "npcmtmax ", npcmtmax
-  !write(*,*) 'npmtmax  ', npmtmax
-  
-  write(*,*) 'nrspmax = ', nrspmax
-
-  do is = 1,nspecies
-    write(*,*) 'Species = ', trim(spfname(is))
-    
-    write(*,*) 'spzn = ', spzn(is)
-    write(*,'(1x,A,5ES18.10)') 'vcln = ', vcln(1:5,is)
-
-    !write(*,*) 'npmt     ', npmt(is)
-    !write(*,*) 'npcmt    ', npcmt(is)
-
-    write(*,*) 'nrsp = ', nrsp(is)
-    !write(*,*) 'nrmt = ', nrmt(is)
-    !write(*,*) 'rminsp = ', rminsp(is)
-    !write(*,*) 'rmaxsp = ', rmaxsp(is)
-    
-    !write(*,*)
-    !write(*,'(1x,A,5ES18.10)') 'wrmt = ', wrmt(1:5,is)
-    !write(*,'(1x,A,5ES18.10)') 'wrcmt = ', wrcmt(1:5,is)
-
-    !write(*,'(1x,A,5ES18.10)') 'wprmt = ', wprmt(1,1:5,is)
-    !write(*,*)
-    !write(*,'(1x,A,5ES18.10)') 'wprmt = ', wprmt(2,1:5,is)
-    !write(*,*)
-    !write(*,'(1x,A,5ES18.10)') 'wprmt = ', wprmt(3,1:5,is)
-    !write(*,*)
-    !write(*,'(1x,A,5ES18.10)') 'wprmt = ', wprmt(4,1:5,is)
-
-    !write(*,'(1x,A,5ES18.10)') 'wprcmt 1 = ', wprcmt(1,1:5,is)
-    !write(*,'(1x,A,5ES18.10)') 'wprcmt 2 = ', wprcmt(2,1:5,is)
-    !write(*,'(1x,A,5ES18.10)') 'wprcmt 3 = ', wprcmt(3,1:5,is)
-    !write(*,'(1x,A,5ES18.10)') 'wprcmt 4 = ', wprcmt(4,1:5,is)
-
-    !write(*,*)
-    !write(*,'(1x,A,5ES18.10)') 'wprmt = ', wprcmt(2,1:5,is)
-    !write(*,*)
-    !write(*,'(1x,A,5ES18.10)') 'wprmt = ', wprcmt(3,1:5,is)
-    !write(*,*)
-    !write(*,'(1x,A,5ES18.10)') 'wprmt = ', wprcmt(4,1:5,is)
-  enddo
-
   call elk_stop()
 end program

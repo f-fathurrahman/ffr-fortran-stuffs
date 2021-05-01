@@ -1,8 +1,15 @@
-SUBROUTINE write_apwlo_vars()
-  USE modmain
-  implicit none
+SUBROUTINE info_apwlo()
+  USE m_atoms
+  USE m_apwlo
+  USE m_muffin_tins
+  IMPLICIT NONE 
 
   integer :: is, l, iord, ia, iorb, ias
+
+  write(*,*)
+  write(*,*) '----------'
+  write(*,*) 'APWLO info'
+  write(*,*) '----------'
 
   WRITE(*,*) 'energy step used for numerical calculation of energy derivatives'
   WRITE(*,*) 'deapwlo = ', deapwlo
@@ -17,7 +24,7 @@ SUBROUTINE write_apwlo_vars()
   DO is = 1,nspecies
     WRITE(*,*) 'Species: ', trim(spfname(is))
     DO l = 0,lmaxapw
-        WRITE(*,*) 'apword = ', apword(l,is)
+      WRITE(*,*) 'apword = ', apword(l,is)
     ENDDO
   ENDDO
 

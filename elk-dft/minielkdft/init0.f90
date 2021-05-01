@@ -15,12 +15,7 @@ SUBROUTINE init0()
   ! local variables
   INTEGER :: is,ia,ias
   INTEGER :: l,i
-  REAL(8) :: ts0,ts1
-  
-  WRITE(*,*)
-  WRITE(*,*) '*** ffr: Entering init0 ***'
-  WRITE(*,*)
-  
+  REAL(8) :: ts0,ts1  
   
   !-------------------------------!
   !     zero timing variables     !
@@ -99,10 +94,6 @@ SUBROUTINE init0()
   
   CALL timesec(ts1)
   timeinit = timeinit + ts1 - ts0
-
-  WRITE(*,*)
-  WRITE(*,*) '*** ffr: Leaving init0 ***'
-  WRITE(*,*)
 
   RETURN 
 END SUBROUTINE 
