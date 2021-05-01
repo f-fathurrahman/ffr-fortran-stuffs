@@ -1,7 +1,7 @@
 SUBROUTINE rhomag()
-  USE m_atomic, ONLY: natmtot, idxis
+  USE m_atoms, ONLY: natmtot, idxis
   USE m_spin, ONLY: spinpol, nspnfv, ndmag, ncmag
-  USE m_mt_rad_am, ONLY: npcmt, nrcmti, nrcmt, npmtmax, lmmaxapw
+  USE m_muffin_tins, ONLY: npcmt, nrcmti, nrcmt, npmtmax, lmmaxapw
   USE m_density_pot_xc, ONLY: rhomt, rhoir, magir, magmt
   USE m_apwlo, ONLY: apwordmax
   USE m_states, ONLY: nstfv, nstsv, occsv

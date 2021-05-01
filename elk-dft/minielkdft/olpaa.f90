@@ -1,8 +1,8 @@
 SUBROUTINE olpaa(tor,ias,ngp,apwalm,ld,o)
-  USE m_atomic, ONLY: idxis
+  USE m_atoms, ONLY: idxis
   USE m_gkvectors, ONLY: ngkmax
   USE m_apwlo, ONLY: apwordmax, apword, lmoapw
-  USE m_mt_rad_am, ONLY: lmaxapw, lmmaxapw
+  USE m_muffin_tins, ONLY: lmaxapw, lmmaxapw
   IMPLICIT NONE 
   ! arguments
   LOGICAL, intent(in) :: tor

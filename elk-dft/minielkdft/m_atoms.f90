@@ -1,4 +1,4 @@
-module m_atomic
+module m_atoms
 
 !--------------------------!
 !     atomic variables     !

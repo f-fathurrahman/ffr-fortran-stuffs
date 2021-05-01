@@ -1,6 +1,6 @@
-module m_mt_rad_am
+module m_muffin_tins
 
-use m_atomic, only: maxspecies
+use m_atoms, only: maxspecies
 
 !---------------------------------------------------------------!
 !     muffin-tin radial mesh and angular momentum variables     !

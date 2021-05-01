@@ -1,6 +1,6 @@
 SUBROUTINE olprad()
-  USE m_atomic, ONLY: natmtot, idxis
-  USE m_mt_rad_am, ONLY: nrmtmax, nrmt, wrmt
+  USE m_atoms, ONLY: natmtot, idxis
+  USE m_muffin_tins, ONLY: nrmtmax, nrmt, wrmt
   USE m_apwlo, ONLY: lofr, nlorb, lorbl, apword, apwfr
   USE m_hamiltonian, ONLY: ololo, oalo
   IMPLICIT NONE 

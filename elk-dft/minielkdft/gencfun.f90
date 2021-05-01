@@ -13,7 +13,7 @@
 !    {\bf r}_{ij})\tilde{\Theta}_i(G), $$
 !   where ${\bf r}_{ij}$ is the position of the $j$th atom of the $i$th species.
 SUBROUTINE gencfun()
-  USE m_atomic, ONLY: natoms, nspecies, atposc
+  USE m_atoms, ONLY: natoms, nspecies, atposc
   use m_gvectors, ONLY: cfunig, cfunir, ffacg, ngtot, ngridg, igfft, vgc
 implicit none
 ! local variables

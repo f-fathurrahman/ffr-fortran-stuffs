@@ -1,9 +1,9 @@
 SUBROUTINE potxcmt(tsh,ias,xctype_,rhomt_,magmt_,taumt_,exmt_,ecmt_,vxcmt_, &
  bxcmt_,wxcmt_)
   !
-  USE m_atomic, ONLY: natmtot, idxis
+  USE m_atoms, ONLY: natmtot, idxis
   USE m_spin, ONLY: ndmag, nspinor, spinpol, ncmag
-  USE m_mt_rad_am, ONLY: npmtmax, npmt, nrmt, nrmti
+  USE m_muffin_tins, ONLY: npmtmax, npmt, nrmt, nrmti
   USE m_density_pot_xc, ONLY: xcgrad, tssxc, ssxc, dncgga, c_tb09
   USE m_states, ONLY: swidth
   USE m_oep_hf, ONLY: hybridc, hybrid

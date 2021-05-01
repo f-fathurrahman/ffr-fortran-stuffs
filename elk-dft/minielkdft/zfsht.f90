@@ -6,7 +6,7 @@
 !   zfmt2 : output complex muffin-tin function in spherical harmonics
 !           (out,complex(*))
 SUBROUTINE zfsht(nr,nri,zfmt1,zfmt2)
-  USE m_mt_rad_am, ONLY: lmmaxi, lmmaxo
+  USE m_muffin_tins, ONLY: lmmaxi, lmmaxo
   USE m_sht, ONLY: zfshti, zfshto
   USE m_constants, ONLY: zone, zzero
   IMPLICIT NONE 

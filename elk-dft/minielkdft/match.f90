@@ -9,8 +9,8 @@
 SUBROUTINE match(ngp,vgpc,gpc,sfacgp,apwalm)
   USE m_constants, ONLY: zil, fourpi
   USE m_gkvectors, ONLY: ngkmax
-  USE m_atomic, ONLY: natoms, natmtot, idxas, nspecies, rsp
-  USE m_mt_rad_am, ONLY: lmmaxapw, idxlm, rmt, nrmt, lmaxapw
+  USE m_atoms, ONLY: natoms, natmtot, idxas, nspecies, rsp
+  USE m_muffin_tins, ONLY: lmmaxapw, idxlm, rmt, nrmt, lmaxapw
   USE m_lattice, ONLY: omega
   USE m_apwlo, ONLY: apwordmax, apword, apwfr, npapw
   IMPLICIT NONE 

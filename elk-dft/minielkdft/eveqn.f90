@@ -7,12 +7,12 @@
 !   Solves the first- and second-variational eigenvalue equations. See routines
 !   {\tt match}, {\tt eveqnfv}, {\tt eveqnss} and {\tt eveqnsv}.
 SUBROUTINE eveqn(ik,evalfv,evecfv,evecsv)
-  USE m_atomic, ONLY: natmtot
+  USE m_atoms, ONLY: natmtot
   USE m_gkvectors, ONLY: ngk, ngkmax, igkig, vgkc, vgkl, gkc, sfacgk
   USE m_hamiltonian, ONLY: tefvit, nmatmax, nmat
   USE m_states, ONLY: nstfv, nstsv, evalsv
   USE m_kpoints, ONLY: vkc, vkl
-  USE m_mt_rad_am, ONLY: lmmaxapw
+  USE m_muffin_tins, ONLY: lmmaxapw
   USE m_apwlo, ONLY: apwordmax
   USE m_spin, ONLY: spinsprl, nspnfv
   USE modulr

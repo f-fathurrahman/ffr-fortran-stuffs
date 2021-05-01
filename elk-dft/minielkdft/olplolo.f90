@@ -1,7 +1,7 @@
 SUBROUTINE olplolo(ias,ngp,ld,o)
-  USE m_atomic, ONLY: idxis
+  USE m_atoms, ONLY: idxis
   USE m_apwlo, ONLY: nlorb, lorbl
-  USE m_mt_rad_am, ONLY: idxlm
+  USE m_muffin_tins, ONLY: idxlm
   USE m_hamiltonian, ONLY: ololo, idxlo
   IMPLICIT NONE 
   ! arguments

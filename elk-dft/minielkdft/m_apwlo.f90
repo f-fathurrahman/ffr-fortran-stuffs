@@ -1,7 +1,7 @@
 module m_apwlo
 
-use m_atomic, only: maxspecies
-use m_mt_rad_am, only: maxlapw
+use m_atoms, only: maxspecies
+use m_muffin_tins, only: maxlapw
 
 !-----------------------------------------!
 !     APW and local-orbital variables     !

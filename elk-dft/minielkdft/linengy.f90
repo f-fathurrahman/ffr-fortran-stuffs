@@ -1,12 +1,12 @@
 ! Calculates the new linearisation energies for both the APW and local-orbital
 ! radial functions. See the routine {\tt findband}.
 SUBROUTINE linengy()
-  USE m_atomic, ONLY: natmmax, idxas, natoms, nspecies
+  USE m_atoms, ONLY: natmmax, idxas, natoms, nspecies
   USE m_apwlo, ONLY: nlorb, lorbord, lorbe, apword, apwe, &
                lorbl, lorbe0, lorbe, lorbve, apwe0, apwve, dlefe, &
                autolinengy, demaxbnd, epsband
   USE m_symmetry, ONLY: eqatoms
-  USE m_mt_rad_am, ONLY: nrmtmax, nrmti, nrmt, lmmaxi, lmmaxo, lmaxapw, rlmt
+  USE m_muffin_tins, ONLY: nrmtmax, nrmti, nrmt, lmmaxi, lmmaxo, lmaxapw, rlmt
   USE m_constants, ONLY: y00, solsc
   USE m_density_pot_xc, ONLY: vsmt
   USE m_convergence, ONLY: iscl

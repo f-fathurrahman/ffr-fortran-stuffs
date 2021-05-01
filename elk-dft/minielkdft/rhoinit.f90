@@ -1,10 +1,10 @@
 SUBROUTINE rhoinit()
   USE m_density_pot_xc, ONLY: rhoir, rhomt
-  USE m_mt_rad_am, ONLY: nrmti, nrmt, rcmt, rcmt, npcmtmax, npcmt, nrcmt, nrcmti, nrcmtmax, &
+  USE m_muffin_tins, ONLY: nrmti, nrmt, rcmt, rcmt, npcmtmax, npcmt, nrcmt, nrcmti, nrcmtmax, &
                    lmmaxi, lmmaxo, lmaxi
   USE m_constants, ONLY: zil, y00, fourpi
   USE m_lattice, ONLY: omega, epslat
-  USE m_atomic, ONLY: nrsp, nrspmax, idxis, idxas, nspecies, natoms, rsp, nrsp, natmtot, rhosp
+  USE m_atoms, ONLY: nrsp, nrspmax, idxis, idxas, nspecies, natoms, rsp, nrsp, natmtot, rhosp
   USE m_gvectors, ONLY: igfft, sfacg, gc, gmaxvr, ngvec, ngtot, ngridg, ylmg
   USE m_charge_moment_current, ONLY: chgexs
   IMPLICIT NONE 

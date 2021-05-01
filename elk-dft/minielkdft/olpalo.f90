@@ -1,7 +1,7 @@
 SUBROUTINE olpalo(ias,ngp,apwalm,ld,o)
   USE m_gkvectors, ONLY: ngkmax
-  USE m_mt_rad_am, ONLY: lmmaxapw, idxlm
-  USE m_atomic, ONLY: idxis
+  USE m_muffin_tins, ONLY: lmmaxapw, idxlm
+  USE m_atoms, ONLY: idxis
   USE m_apwlo, ONLY: apwordmax, nlorb, apword, lorbl
   USE m_hamiltonian, ONLY: oalo, idxlo
   IMPLICIT NONE 

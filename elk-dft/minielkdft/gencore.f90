@@ -1,9 +1,9 @@
 SUBROUTINE gencore()
   USE m_constants, ONLY: y00, solsc
-  USE m_atomic, ONLY: natmmax, nrspmax, natoms, nstspmax, nstsp, spcore, idxas, &
+  USE m_atoms, ONLY: natmmax, nrspmax, natoms, nstspmax, nstsp, spcore, idxas, &
                  vrsp, nrspmax, nrsp, nspecies, rsp, nsp, lsp, ksp
   USE m_symmetry, ONLY: eqatoms
-  USE m_mt_rad_am, ONLY: nrmt, nrmtmax, nrmti, rlmt
+  USE m_muffin_tins, ONLY: nrmt, nrmtmax, nrmti, rlmt
   USE m_spin, ONLY: ndmag, ncmag
   USE m_density_pot_xc, ONLY: vsmt, bxcmt
   USE m_core_states, ONLY: evalcr, rhocr, rwfcr, occcr, nspncr, spincore

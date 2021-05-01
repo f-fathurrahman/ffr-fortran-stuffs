@@ -1,6 +1,6 @@
 SUBROUTINE hmlrad()
-  USE m_atomic, ONLY: idxis, natmtot
-  USE m_mt_rad_am, ONLY: nrmt, nrmti, nrmtmax, npmti, lmmaxi, lmmaxo, lmaxo, lmaxi, &
+  USE m_atoms, ONLY: idxis, natmtot
+  USE m_muffin_tins, ONLY: nrmt, nrmti, nrmtmax, npmti, lmmaxi, lmmaxo, lmaxo, lmaxi, &
                    lmaxapw, wrmt
   USE m_apwlo, ONLY: nlorb, lofr, lorbl, apword, apwfr
   USE m_hamiltonian, ONLY: hlolo, hloa, haa

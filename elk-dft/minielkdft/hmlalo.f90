@@ -1,6 +1,6 @@
 SUBROUTINE hmlalo(ias,ngp,apwalm,ld,h)
-  USE m_atomic, ONLY: idxis
-  USE m_mt_rad_am, ONLY: lmmaxapw, idxlm, lmaxo, lmaxapw
+  USE m_atoms, ONLY: idxis
+  USE m_muffin_tins, ONLY: lmmaxapw, idxlm, lmaxo, lmaxapw
   USE m_apwlo, ONLY: apwordmax, nlorb, apword, lorbl
   USE m_gkvectors, ONLY: ngkmax
   USE m_hamiltonian, ONLY: hloa, gntyry, idxlo

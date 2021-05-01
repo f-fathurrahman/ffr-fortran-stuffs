@@ -1,6 +1,6 @@
 module m_spin
 
-use m_atomic, only: maxspecies, maxatoms
+use m_atoms, only: maxspecies, maxatoms
 
 !--------------------------------!
 !     spin related variables     !

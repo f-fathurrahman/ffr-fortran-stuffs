@@ -8,7 +8,7 @@
 !   zvclmt : muffin-tin Coulomb potential (out,complex(*))
 SUBROUTINE zpotclmt(nr,nri,ld,rl,wpr,zrhomt,zvclmt)
   USE m_constants, ONLY: fourpi
-  USE m_mt_rad_am, ONLY: lmaxo, lmmaxo, lmmaxi, lmaxi
+  USE m_muffin_tins, ONLY: lmaxo, lmmaxo, lmmaxi, lmaxi
   IMPLICIT NONE 
   ! arguments
   INTEGER, intent(in) :: nr,nri,ld

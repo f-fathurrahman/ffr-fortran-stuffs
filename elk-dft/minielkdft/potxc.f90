@@ -1,10 +1,10 @@
 SUBROUTINE potxc(tsh,xctype_,rhomt_,rhoir_,magmt_,magir_,taumt_,tauir_,exmt_, &
  exir_,ecmt_,ecir_,vxcmt_,vxcir_,bxcmt_,bxcir_,wxcmt_,wxcir_)
   !
-  USE m_atomic, ONLY: natmtot
+  USE m_atoms, ONLY: natmtot
   USE m_gvectors, ONLY: ngtot
   USE m_spin, ONLY: ndmag, nspinor, spinpol, ncmag
-  USE m_mt_rad_am, ONLY: npmtmax, npmt, nrmt, nrmti
+  USE m_muffin_tins, ONLY: npmtmax, npmt, nrmt, nrmti
   IMPLICIT NONE 
   ! arguments
   LOGICAL, intent(in) :: tsh

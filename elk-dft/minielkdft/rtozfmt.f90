@@ -1,5 +1,5 @@
 SUBROUTINE rtozfmt(nr,nri,rfmt,zfmt)
-  USE m_mt_rad_am, ONLY: lmaxi, lmmaxo, lmmaxi, lmaxo
+  USE m_muffin_tins, ONLY: lmaxi, lmmaxo, lmmaxi, lmaxo
   IMPLICIT NONE 
   ! arguments
   INTEGER, intent(in) :: nr,nri

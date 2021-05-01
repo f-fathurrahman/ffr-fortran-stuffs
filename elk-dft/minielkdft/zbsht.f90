@@ -6,7 +6,7 @@
 !   zfmt2 : output complex muffin-tin function in spherical coordinates
 !           (out,complex(*))
 SUBROUTINE zbsht(nr,nri,zfmt1,zfmt2)
-  USE m_mt_rad_am, ONLY: lmmaxi, lmmaxo
+  USE m_muffin_tins, ONLY: lmmaxi, lmmaxo
   USE m_sht, ONLY: zbshti, zbshto
   USE m_constants, ONLY: zone, zzero
   IMPLICIT NONE 

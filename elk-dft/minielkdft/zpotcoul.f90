@@ -26,8 +26,8 @@ SUBROUTINE zpotcoul(nr,nri,np,npi,ld1,rl,ngdg,igf,ngp,gpc,gclgp,ld2,jlgprmt, &
  ylmgp,sfacgp,zrhoir,ld3,zvclmt,zvclir)
   !
   USE m_constants, ONLY: zil, zilc, y00, fourpi
-  USE m_atomic, ONLY: idxas, idxis, natoms, natmtot, nspecies
-  USE m_mt_rad_am, ONLY: lmaxi, lmmaxo, rmt, lmaxo, lmmaxi
+  USE m_atoms, ONLY: idxas, idxis, natoms, natmtot, nspecies
+  USE m_muffin_tins, ONLY: lmaxi, lmmaxo, rmt, lmaxo, lmmaxi
   USE m_lattice, ONLY: omega, epslat
   USE m_density_pot_xc, ONLY: lnpsd
   use modphonon, only: tphdyn, zvnmt, iasph

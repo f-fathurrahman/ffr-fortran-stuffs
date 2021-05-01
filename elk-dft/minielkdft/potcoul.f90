@@ -1,6 +1,6 @@
 SUBROUTINE potcoul()
-  USE m_atomic, ONLY: idxis, natmtot, vcln
-  USE m_mt_rad_am, ONLY: nrmt, nrmti, nrmtmax, npmtmax, npmti, wprmt, rlmt, npmt, &
+  USE m_atoms, ONLY: idxis, natmtot, vcln
+  USE m_muffin_tins, ONLY: nrmt, nrmti, nrmtmax, npmtmax, npmti, wprmt, rlmt, npmt, &
             lmmaxi, lmmaxo
   USE m_gvectors, ONLY: ylmg, sfacg, ngtot, ngvec, ngridg, jlgrmt, igfft, gclg, gc
   USE m_electric_vector_pot, ONLY: tefield

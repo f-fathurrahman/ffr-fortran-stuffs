@@ -1,5 +1,5 @@
 SUBROUTINE genshtmat()
-  USE m_mt_rad_am, ONLY: lmmaxo, lmmaxi, lmaxo, lmaxi
+  USE m_muffin_tins, ONLY: lmmaxo, lmmaxi, lmaxo, lmaxi
   USE m_sht, ONLY: zfshto, zfshti, trotsht, rotsht, rfshto, &
                    rfshti, zbshto, zbshti, rbshto, rbshti
   IMPLICIT NONE 

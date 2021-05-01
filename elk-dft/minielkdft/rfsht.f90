@@ -1,5 +1,5 @@
 SUBROUTINE rfsht(nr,nri,rfmt1,rfmt2)
-  USE m_mt_rad_am, ONLY: lmmaxi, lmmaxo
+  USE m_muffin_tins, ONLY: lmmaxi, lmmaxo
   USE m_sht, ONLY: rfshti, rfshto
   IMPLICIT NONE 
   ! arguments

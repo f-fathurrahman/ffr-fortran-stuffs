@@ -1,7 +1,7 @@
 SUBROUTINE genapwfr()
-  USE m_atomic, ONLY: natmmax, natoms, idxas, nspecies
+  USE m_atoms, ONLY: natmmax, natoms, idxas, nspecies
   USE m_symmetry, ONLY: eqatoms
-  USE m_mt_rad_am, ONLY: rlmt, nrmt, nrmti, nrmtmax, lmmaxi, lmmaxo, lmaxapw
+  USE m_muffin_tins, ONLY: rlmt, nrmt, nrmti, nrmtmax, lmmaxi, lmmaxo, lmaxapw
   USE m_apwlo, ONLY: apword, apwfr, apwordmax, apwdfr, deapwlo, apwdm, apwe
   USE m_density_pot_xc, ONLY: vsmt
   USE m_constants, ONLY: solsc, y00

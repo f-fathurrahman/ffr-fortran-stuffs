@@ -1,5 +1,5 @@
 SUBROUTINE rfmtlm(lm,nr,nri,rfmt,fr)
-  USE m_mt_rad_am, ONLY: nrmtmax, npmtmax, lmmaxo, lmmaxi
+  USE m_muffin_tins, ONLY: nrmtmax, npmtmax, lmmaxo, lmmaxi
   IMPLICIT NONE 
   ! arguments
   INTEGER, intent(in) :: lm,nr,nri

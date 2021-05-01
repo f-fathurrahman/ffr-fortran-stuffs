@@ -9,10 +9,10 @@
 !   Calculates the APW-APW contribution to the Hamiltonian matrix.
 !
 SUBROUTINE hmlaa(thr,ias,ngp,apwalm,ld,h)
-  USE m_atomic, ONLY: idxis
+  USE m_atoms, ONLY: idxis
   USE m_gkvectors, ONLY: ngkmax
   USE m_apwlo, ONLY: apwordmax, apwfr, apwdfr, apword, lmoapw
-  USE m_mt_rad_am, ONLY: nrmt, idxlm, rmt, lmaxo, lmaxapw, lmmaxapw
+  USE m_muffin_tins, ONLY: nrmt, idxlm, rmt, lmaxo, lmaxapw, lmmaxapw
   USE m_hamiltonian, ONLY: haa, gntyry
   IMPLICIT NONE 
   ! arguments

@@ -1,6 +1,6 @@
 module m_charge_moment_current
 
-use m_atomic, only: maxspecies
+use m_atoms, only: maxspecies
 
 !----------------------------------------------!
 !     charge, moment and current variables     !

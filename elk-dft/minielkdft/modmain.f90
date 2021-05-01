@@ -6,8 +6,8 @@
 module modmain
 
 use m_lattice
-use m_atomic
-use m_mt_rad_am
+use m_atoms
+use m_muffin_tins
 use m_spin
 use m_electric_vector_pot
 use m_symmetry

@@ -1,5 +1,5 @@
 SUBROUTINE ztorfmt(nr,nri,zfmt,rfmt)
-  USE m_mt_rad_am, ONLY: lmmaxi, lmmaxo, lmaxo, lmaxi
+  USE m_muffin_tins, ONLY: lmmaxi, lmmaxo, lmaxo, lmaxi
   IMPLICIT NONE 
   ! arguments
   INTEGER, INTENT(in) :: nr,nri

@@ -2,9 +2,9 @@
 !   txc : .true. if the exchange-correlation energy density and potentials
 !         should be calculated (in,logical)
 SUBROUTINE potks(txc)
-  USE m_atomic, ONLY: idxis, natmtot
+  USE m_atoms, ONLY: idxis, natmtot
   USE m_spin, ONLY: spinpol
-  USE m_mt_rad_am, ONLY: npmt
+  USE m_muffin_tins, ONLY: npmt
   USE m_density_pot_xc, ONLY: xcgrad, xctype, wxcmt, wxcir, vxcmt, vxcir, vsir, &
              taumt, tauir, rhomt, rhoir, nosource, msmooth, magmt, magir, &
              exmt, exir, ecmt, ecir, bxcmt, bxcir, vsmt, vclir, vclmt

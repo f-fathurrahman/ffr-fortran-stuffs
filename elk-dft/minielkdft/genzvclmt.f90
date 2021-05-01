@@ -1,6 +1,6 @@
 SUBROUTINE genzvclmt(nr,nri,ld1,rl,wpr,ld2,zrhomt,zvclmt)
-  USE m_atomic, ONLY: nspecies, natmtot, idxis
-  USE m_mt_rad_am, ONLY: lmaxo
+  USE m_atoms, ONLY: nspecies, natmtot, idxis
+  USE m_muffin_tins, ONLY: lmaxo
   IMPLICIT NONE 
   ! arguments
   INTEGER, intent(in) :: nr(nspecies),nri(nspecies)

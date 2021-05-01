@@ -1,10 +1,10 @@
 SUBROUTINE genlofr()
   !USE modmain
-  USE m_atomic, ONLY: natmmax, natoms, nspecies, idxas
+  USE m_atoms, ONLY: natmmax, natoms, nspecies, idxas
   USE m_symmetry, ONLY: eqatoms
   USE m_apwlo, ONLY: nplorb, nlorb, lorbordmax, nlomax, lofr, lorbl, &
                lorbord, deapwlo, lorbdm, lorbe
-  USE m_mt_rad_am, ONLY: nrmtmax, nrmt, nrmti, rlmt, rmt, lmmaxo, lmmaxi
+  USE m_muffin_tins, ONLY: nrmtmax, nrmt, nrmti, rlmt, rmt, lmmaxo, lmmaxi
   USE m_constants, ONLY: y00, solsc
   USE m_density_pot_xc, ONLY: vsmt
   IMPLICIT NONE 

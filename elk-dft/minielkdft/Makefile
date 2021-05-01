@@ -6,8 +6,8 @@ SRC_elk = minielkdft.f90
 
 SRC = mpi_stub.f90 \
 m_lattice.f90 \
-m_atomic.f90 \
-m_mt_rad_am.f90 \
+m_atoms.f90 \
+m_muffin_tins.f90 \
 m_spin.f90 \
 m_electric_vector_pot.f90 \
 m_symmetry.f90 \

@@ -13,12 +13,12 @@
 !   $$ (H-\epsilon O)b=0, $$
 !   for the all the first-variational states of the input $p$-point.
 SUBROUTINE eveqnfv(nmatp,ngp,igpig,vpc,vgpc,apwalm,evalfv,evecfv)
-  USE m_atomic, ONLY: natmtot
+  USE m_atoms, ONLY: natmtot
   USE m_gkvectors, ONLY: ngkmax
   USE m_timing, ONLY: timemat
   USE m_hamiltonian, ONLY: tefvr, nmatmax
   USE m_states, ONLY: nstfv
-  USE m_mt_rad_am, ONLY: lmmaxapw
+  USE m_muffin_tins, ONLY: lmmaxapw
   USE m_apwlo, ONLY: apwordmax
   IMPLICIT NONE 
   ! arguments

@@ -1,6 +1,6 @@
 SUBROUTINE hmllolo(ias,ngp,ld,h)
-  USE m_atomic, ONLY: idxis
-  USE m_mt_rad_am, ONLY: idxlm, lmaxo
+  USE m_atoms, ONLY: idxis
+  USE m_muffin_tins, ONLY: idxlm, lmaxo
   USE m_apwlo, ONLY: nlorb, lorbl
   USE m_hamiltonian, ONLY: gntyry, idxlo, hlolo
   IMPLICIT NONE 
