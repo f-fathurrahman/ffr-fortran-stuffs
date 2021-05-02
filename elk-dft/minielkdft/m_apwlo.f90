@@ -15,7 +15,7 @@ integer ::apword(0:maxlapw,maxspecies)
 ! maximum of apword over all angular momenta and species
 integer apwordmax
 ! total number of APW coefficients (l, m and order) for each species
-integer lmoapw(8)
+integer lmoapw(maxspecies)
 ! polynomial order used for APW radial derivatives
 integer npapw
 ! APW initial linearisation energies
@@ -35,7 +35,7 @@ integer, parameter :: maxlorb=200
 ! maximum allowable local-orbital order
 integer, parameter :: maxlorbord=5
 ! number of local-orbitals
-integer nlorb(8)
+integer nlorb(maxspecies)
 ! maximum nlorb over all species
 integer nlomax
 ! total number of local-orbitals
