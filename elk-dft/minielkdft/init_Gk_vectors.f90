@@ -1,5 +1,12 @@
 SUBROUTINE init_Gk_vectors()
-  USE modmain
+  USE m_atoms, ONLY: natmtot
+  USE m_gvectors, ONLY: ngvec, vgc, ivg
+  USE m_gkvectors, ONLY: ngkmax, gkmax, vgkc, sfacgk, ngk, igkig, vgkl, gkc
+  USE m_kpoints, ONLY: vkc, nkpt, nkptnr, vkl
+  USE m_spin, ONLY: vqcss, vqlss
+  USE m_misc, ONLY: task
+  USE m_spin, ONLY: spinsprl, nspnfv
+  USE m_density_pot_xc, ONLY: xctype
   USE modtddft, ONLY: tddos
   IMPLICIT NONE
   INTEGER :: ik, nppt, jspn
@@ -58,14 +65,5 @@ SUBROUTINE init_Gk_vectors()
       CALL gensfacgp(ngk(jspn,ik),vgkc(:,:,jspn,ik),ngkmax,sfacgk(:,:,jspn,ik))
     ENDDO 
   ENDDO 
-
-  ! write to VARIABLES.OUT
-  !call writevars('nspnfv',iv=nspnfv)
-  !call writevars('ngk',nv=nspnfv*nkpt,iva=ngk)
-  !DO ik = 1,nkpt
-  !  DO jspn = 1,nspnfv
-  !    call writevars('igkig',l=jspn,m=ik,nv=ngk(jspn,ik),iva=igkig(:,jspn,ik))
-  !  ENDDO 
-  !ENDDO 
 
 END SUBROUTINE 

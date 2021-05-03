@@ -38,8 +38,8 @@ SUBROUTINE init_gvector_arrays()
   case(1:)
     ! use user-specified muffin-tin radius
     IF(isgkmax <= nspecies) THEN 
-      gkmax=rgkmax/rmt(isgkmax)
-    else
+      gkmax = rgkmax/rmt(isgkmax)
+    ELSE 
       WRITE(*,*)
       WRITE(*,'("Error(init0): isgkmax > nspecies : ",2I8)') isgkmax,nspecies
       WRITE(*,*)
