@@ -1,16 +1,12 @@
-
-! Copyright (C) 2017 J. K. Dewhurst, S. Sharma and E. K. U. Gross.
-! This file is distributed under the terms of the GNU General Public License.
-! See the file COPYING for license details.
-
-subroutine gengclg
-use modmain, only: gclg, ngvec, gc, fourpi
-implicit none
-! local variables
-if (allocated(gclg)) deallocate(gclg)
-allocate(gclg(ngvec))
-gclg(1)=0.d0
-gclg(2:ngvec)=fourpi/gc(2:ngvec)**2
-return
-end subroutine
+SUBROUTINE gengclg()
+  USE m_gvectors, ONLY: gclg, ngvec, gc
+  USE m_constants, ONLY: fourpi
+  IMPLICIT NONE 
+  ! local variables
+  IF(allocated(gclg)) DEALLOCATE(gclg)
+  ALLOCATE(gclg(ngvec))
+  gclg(1)=0.d0
+  gclg(2:ngvec)=fourpi/gc(2:ngvec)**2
+  RETURN 
+END SUBROUTINE 
 
