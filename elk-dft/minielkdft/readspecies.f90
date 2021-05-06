@@ -3,7 +3,7 @@
 ! This file is distributed under the terms of the GNU General Public License.
 ! See the file COPYING for license details.
 
-subroutine readspecies
+SUBROUTINE readspecies
 
 !use modmain
 use modmain, only: sppath, spfname, spsymb, spzn, spmass, nspecies, &
@@ -11,347 +11,347 @@ use modmain, only: sppath, spfname, spsymb, spzn, spmass, nspecies, &
                    nrmt, rmt, rmaxsp, nrmtscf, maxstsp, nxoapwlo, nxlo, rmtall, &
                    apword, apwe0, apwdm, apwve, nlorb, lorbord, lorbve, lorbdm, &
                    lorbe0, lorbl, maxlorbord, maxlorb, lmaxo, maxapword, lmaxapw, e0min
-implicit none
+IMPLICIT NONE 
 ! local variables
-integer is,ist,ios
-integer nlx,ilx,lx,ilo
-integer io,jo,ko,l,i,j
+INTEGER is,ist,ios
+INTEGER nlx,ilx,lx,ilo
+INTEGER io,jo,ko,l,i,j
 
 e0min=0.d0
-do is=1,nspecies
+DO is=1,nspecies
   open(50,file=trim(sppath)//trim(spfname(is)),status='OLD',form='FORMATTED', &
    iostat=ios)
-  if (ios.ne.0) then
-    write(*,*)
-    write(*,'("Error(readspecies): error opening species file ",A)') &
+  IF(ios.ne.0) THEN 
+    WRITE(*,*)
+    WRITE(*,'("Error(readspecies): error opening species file ",A)') &
      trim(sppath)//trim(spfname(is))
-    write(*,*)
+    WRITE(*,*)
     stop
-  end if
+  ENDIF 
   read(50,*) spsymb(is)
   read(50,*) spname(is)
   read(50,*) spzn(is)
   read(50,*) spmass(is)
   read(50,*) rminsp(is),rmt(is),rmaxsp(is),nrmt(is)
-  if (rminsp(is).le.0.d0) then
-    write(*,*)
-    write(*,'("Error(readspecies): rminsp <= 0 : ",G18.10)') rminsp(is)
-    write(*,'(" for species ",I4)') is
-    write(*,*)
+  IF(rminsp(is).le.0.d0) THEN 
+    WRITE(*,*)
+    WRITE(*,'("Error(readspecies): rminsp <= 0 : ",G18.10)') rminsp(is)
+    WRITE(*,'(" for species ",I4)') is
+    WRITE(*,*)
     stop
-  end if
-  if (rmt(is).le.rminsp(is)) then
-    write(*,*)
-    write(*,'("Error(readspecies): rmt <= rminsp : ",2G18.10)') rmt(is), &
+  ENDIF 
+  IF(rmt(is).le.rminsp(is)) THEN 
+    WRITE(*,*)
+    WRITE(*,'("Error(readspecies): rmt <= rminsp : ",2G18.10)') rmt(is), &
      rminsp(is)
-    write(*,'(" for species ",I4)') is
-    write(*,*)
+    WRITE(*,'(" for species ",I4)') is
+    WRITE(*,*)
     stop
-  end if
-  if (rmaxsp(is).lt.rmt(is)) then
-    write(*,*)
-    write(*,'("Error(readspecies): rmaxsp < rmt : ",2G18.10)') rmaxsp(is), &
+  ENDIF 
+  IF(rmaxsp(is).lt.rmt(is)) THEN 
+    WRITE(*,*)
+    WRITE(*,'("Error(readspecies): rmaxsp < rmt : ",2G18.10)') rmaxsp(is), &
      rmt(is)
-    write(*,*)
+    WRITE(*,*)
     stop
-  end if
-  if (nrmt(is).lt.20) then
-    write(*,*)
-    write(*,'("Error(readspecies): nrmt too small : ",I8)') nrmt(is)
-    write(*,'(" for species ",I4)') is
-    write(*,*)
+  ENDIF 
+  IF(nrmt(is).lt.20) THEN 
+    WRITE(*,*)
+    WRITE(*,'("Error(readspecies): nrmt too small : ",I8)') nrmt(is)
+    WRITE(*,'(" for species ",I4)') is
+    WRITE(*,*)
     stop
-  end if
+  ENDIF 
 ! multiply nrmt by the scale factor
   nrmt(is)=nint(dble(nrmt(is))*nrmtscf)
 ! reduce the minimum radial mesh point by the same factor
   rminsp(is)=rminsp(is)/nrmtscf
   read(50,*) nstsp(is)
-  if ((nstsp(is).le.0).or.(nstsp(is).gt.maxstsp)) then
-    write(*,*)
-    write(*,'("Error(readspecies): nstsp out of range : ",I8)') nstsp(is)
-    write(*,'(" for species ",I4)') is
-    write(*,*)
+  IF((nstsp(is).le.0).or.(nstsp(is).gt.maxstsp)) THEN 
+    WRITE(*,*)
+    WRITE(*,'("Error(readspecies): nstsp out of range : ",I8)') nstsp(is)
+    WRITE(*,'(" for species ",I4)') is
+    WRITE(*,*)
     stop
-  end if
-  do ist=1,nstsp(is)
+  ENDIF 
+  DO ist=1,nstsp(is)
     read(50,*) nsp(ist,is),lsp(ist,is),ksp(ist,is),occsp(ist,is),spcore(ist,is)
-    if (nsp(ist,is).lt.1) then
-      write(*,*)
-      write(*,'("Error(readspecies): nsp < 1 : ",I8)') nsp(ist,is)
-      write(*,'(" for species ",I4)') is
-      write(*,'(" and state ",I4)') ist
-      write(*,*)
+    IF(nsp(ist,is).lt.1) THEN 
+      WRITE(*,*)
+      WRITE(*,'("Error(readspecies): nsp < 1 : ",I8)') nsp(ist,is)
+      WRITE(*,'(" for species ",I4)') is
+      WRITE(*,'(" and state ",I4)') ist
+      WRITE(*,*)
       stop
-    end if
-    if (lsp(ist,is).lt.0) then
-      write(*,*)
-      write(*,'("Error(readspecies): lsp < 0 : ",I8)') lsp(ist,is)
-      write(*,'(" for species ",I4)') is
-      write(*,'(" and state ",I4)') ist
-      write(*,*)
+    ENDIF 
+    IF(lsp(ist,is).lt.0) THEN 
+      WRITE(*,*)
+      WRITE(*,'("Error(readspecies): lsp < 0 : ",I8)') lsp(ist,is)
+      WRITE(*,'(" for species ",I4)') is
+      WRITE(*,'(" and state ",I4)') ist
+      WRITE(*,*)
       stop
-    end if
-    if (ksp(ist,is).lt.1) then
-      write(*,*)
-      write(*,'("Error(readspecies): ksp < 1 : ",I8)') ksp(ist,is)
-      write(*,'(" for species ",I4)') is
-      write(*,'(" and state ",I4)') ist
-      write(*,*)
+    ENDIF 
+    IF(ksp(ist,is).lt.1) THEN 
+      WRITE(*,*)
+      WRITE(*,'("Error(readspecies): ksp < 1 : ",I8)') ksp(ist,is)
+      WRITE(*,'(" for species ",I4)') is
+      WRITE(*,'(" and state ",I4)') ist
+      WRITE(*,*)
       stop
-    end if
-    if (occsp(ist,is).lt.0.d0) then
-      write(*,*)
-      write(*,'("Error(readspecies): occsp < 0 : ",G18.10)') occsp(ist,is)
-      write(*,'(" for species ",I4)') is
-      write(*,'(" and state ",I4)') ist
-      write(*,*)
+    ENDIF 
+    IF(occsp(ist,is).lt.0.d0) THEN 
+      WRITE(*,*)
+      WRITE(*,'("Error(readspecies): occsp < 0 : ",G18.10)') occsp(ist,is)
+      WRITE(*,'(" for species ",I4)') is
+      WRITE(*,'(" and state ",I4)') ist
+      WRITE(*,*)
       stop
-    end if
-  end do
+    ENDIF 
+  ENDDO 
 
   read(50,*) apword(0,is)
-  if (apword(0,is).le.0) then
-    write(*,*)
-    write(*,'("Error(readspecies): apword <= 0 : ",I8)') apword(0,is)
-    write(*,'(" for species ",I4)') is
-    write(*,*)
+  IF(apword(0,is).le.0) THEN 
+    WRITE(*,*)
+    WRITE(*,'("Error(readspecies): apword <= 0 : ",I8)') apword(0,is)
+    WRITE(*,'(" for species ",I4)') is
+    WRITE(*,*)
     stop
-  end if
-  if (apword(0,is).gt.maxapword) then
-    write(*,*)
-    write(*,'("Error(readspecies): apword too large : ",I8)') apword(0,is)
-    write(*,'(" for species ",I4)') is
-    write(*,'("Adjust maxapword in modmain and recompile code")')
-    write(*,*)
+  ENDIF 
+  IF(apword(0,is).gt.maxapword) THEN 
+    WRITE(*,*)
+    WRITE(*,'("Error(readspecies): apword too large : ",I8)') apword(0,is)
+    WRITE(*,'(" for species ",I4)') is
+    WRITE(*,'("Adjust maxapword in modmain and recompile code")')
+    WRITE(*,*)
     stop
-  end if
+  ENDIF 
 ! set the APW orders for l>0
   apword(1:lmaxapw,is)=apword(0,is)
-  do io=1,apword(0,is)
+  DO io=1,apword(0,is)
     read(50,*) apwe0(io,0,is),apwdm(io,0,is),apwve(io,0,is)
-    if (apwdm(io,0,is).lt.0) then
-      write(*,*)
-      write(*,'("Error(readspecies): apwdm < 0 : ",I8)') apwdm(io,0,is)
-      write(*,'(" for species ",I4)') is
-      write(*,'(" and order ",I4)') io
-      write(*,*)
+    IF(apwdm(io,0,is).lt.0) THEN 
+      WRITE(*,*)
+      WRITE(*,'("Error(readspecies): apwdm < 0 : ",I8)') apwdm(io,0,is)
+      WRITE(*,'(" for species ",I4)') is
+      WRITE(*,'(" and order ",I4)') io
+      WRITE(*,*)
       stop
-    end if
+    ENDIF 
 ! set the APW linearisation energies, derivative orders and variability for l>0
     apwe0(io,1:lmaxapw,is)=apwe0(io,0,is)
     apwdm(io,1:lmaxapw,is)=apwdm(io,0,is)
     apwve(io,1:lmaxapw,is)=apwve(io,0,is)
     e0min=min(e0min,apwe0(io,0,is))
-  end do
+  ENDDO 
 
   read(50,*) nlx
-  if (nlx.lt.0) then
-    write(*,*)
-    write(*,'("Error(readspecies): nlx < 0 : ",I8)') nlx
-    write(*,'(" for species ",I4)') is
-    write(*,*)
+  IF(nlx.lt.0) THEN 
+    WRITE(*,*)
+    WRITE(*,'("Error(readspecies): nlx < 0 : ",I8)') nlx
+    WRITE(*,'(" for species ",I4)') is
+    WRITE(*,*)
     stop
-  end if
+  ENDIF 
 
   ! Read exceptions if any
-  do ilx=1,nlx
+  DO ilx=1,nlx
     read(50,*) lx,io
-    if (lx.lt.0) then
-      write(*,*)
-      write(*,'("Error(readspecies): lx < 0 : ",I8)') lx
-      write(*,'(" for species ",I4)') is
-      write(*,'(" and exception number ",I4)') ilx
-      write(*,*)
+    IF(lx.lt.0) THEN 
+      WRITE(*,*)
+      WRITE(*,'("Error(readspecies): lx < 0 : ",I8)') lx
+      WRITE(*,'(" for species ",I4)') is
+      WRITE(*,'(" and exception number ",I4)') ilx
+      WRITE(*,*)
       stop
-    end if
-    if (lx.gt.lmaxapw) then
-      write(*,*)
-      write(*,'("Error(readspecies): lx > lmaxapw : ",I8)') lx
-      write(*,'(" for species ",I4)') is
-      write(*,'(" and exception number ",I4)') ilx
-      write(*,*)
+    ENDIF 
+    IF(lx.gt.lmaxapw) THEN 
+      WRITE(*,*)
+      WRITE(*,'("Error(readspecies): lx > lmaxapw : ",I8)') lx
+      WRITE(*,'(" for species ",I4)') is
+      WRITE(*,'(" and exception number ",I4)') ilx
+      WRITE(*,*)
       stop
-    end if
+    ENDIF 
     apword(lx,is)=io
-    if (apword(lx,is).le.0) then
-      write(*,*)
-      write(*,'("Error(readspecies): apword <= 0 : ",I8)') apword(lx,is)
-      write(*,'(" for species ",I4)') is
-      write(*,'(" and exception number ",I4)') ilx
-      write(*,*)
+    IF(apword(lx,is).le.0) THEN 
+      WRITE(*,*)
+      WRITE(*,'("Error(readspecies): apword <= 0 : ",I8)') apword(lx,is)
+      WRITE(*,'(" for species ",I4)') is
+      WRITE(*,'(" and exception number ",I4)') ilx
+      WRITE(*,*)
       stop
-    end if
-    if (apword(lx,is).gt.maxapword) then
-      write(*,*)
-      write(*,'("Error(readspecies): apword too large : ",I8)') apword(lx,is)
-      write(*,'(" for species ",I4)') is
-      write(*,'(" and exception number ",I4)') ilx
-      write(*,'("Adjust maxapword in modmain and recompile code")')
-      write(*,*)
+    ENDIF 
+    IF(apword(lx,is).gt.maxapword) THEN 
+      WRITE(*,*)
+      WRITE(*,'("Error(readspecies): apword too large : ",I8)') apword(lx,is)
+      WRITE(*,'(" for species ",I4)') is
+      WRITE(*,'(" and exception number ",I4)') ilx
+      WRITE(*,'("Adjust maxapword in modmain and recompile code")')
+      WRITE(*,*)
       stop
-    end if
-    do io=1,apword(lx,is)
+    ENDIF 
+    DO io=1,apword(lx,is)
       read(50,*) apwe0(io,lx,is),apwdm(io,lx,is),apwve(io,lx,is)
-      if (apwdm(io,lx,is).lt.0) then
-        write(*,*)
-        write(*,'("Error(readspecies): apwdm < 0 : ",I8)') apwdm(io,lx,is)
-        write(*,'(" for species ",I4)') is
-        write(*,'(" exception number ",I4)') ilx
-        write(*,'(" and order ",I4)') io
-        write(*,*)
+      IF(apwdm(io,lx,is).lt.0) THEN 
+        WRITE(*,*)
+        WRITE(*,'("Error(readspecies): apwdm < 0 : ",I8)') apwdm(io,lx,is)
+        WRITE(*,'(" for species ",I4)') is
+        WRITE(*,'(" exception number ",I4)') ilx
+        WRITE(*,'(" and order ",I4)') io
+        WRITE(*,*)
         stop
-      end if
+      ENDIF 
       e0min=min(e0min,apwe0(io,lx,is))
-    end do
-  end do
+    ENDDO 
+  ENDDO 
 
 ! add excess order to APW functions if required
-  if (nxoapwlo.gt.0) then
-    do l=0,lmaxapw
+  IF(nxoapwlo.gt.0) THEN 
+    DO l=0,lmaxapw
       jo=apword(l,is)
       ko=jo+nxoapwlo
-      if (ko.gt.maxapword) ko=maxapword
+      IF(ko.gt.maxapword) ko=maxapword
       i=0
-      do io=jo+1,ko
+      DO io=jo+1,ko
         i=i+1
         apwe0(io,l,is)=apwe0(jo,l,is)
         apwdm(io,l,is)=apwdm(jo,l,is)+i
         apwve(io,l,is)=apwve(jo,l,is)
-      end do
+      ENDDO 
       apword(l,is)=ko
-    end do
-  end if
+    ENDDO 
+  ENDIF 
 
   read(50,*) nlorb(is)
-  if (nlorb(is).lt.0) then
-    write(*,*)
-    write(*,'("Error(readspecies): nlorb < 0 : ",I8)') nlorb(is)
-    write(*,'(" for species ",I4)') is
-    write(*,*)
+  IF(nlorb(is).lt.0) THEN 
+    WRITE(*,*)
+    WRITE(*,'("Error(readspecies): nlorb < 0 : ",I8)') nlorb(is)
+    WRITE(*,'(" for species ",I4)') is
+    WRITE(*,*)
     stop
-  end if
-  if (nlorb(is).gt.maxlorb) then
-    write(*,*)
-    write(*,'("Error(readspecies): nlorb too large : ",I8)') nlorb(is)
-    write(*,'(" for species ",I4)') is
-    write(*,'("Adjust maxlorb in modmain and recompile code")')
-    write(*,*)
+  ENDIF 
+  IF(nlorb(is).gt.maxlorb) THEN 
+    WRITE(*,*)
+    WRITE(*,'("Error(readspecies): nlorb too large : ",I8)') nlorb(is)
+    WRITE(*,'(" for species ",I4)') is
+    WRITE(*,'("Adjust maxlorb in modmain and recompile code")')
+    WRITE(*,*)
     stop
-  end if
-  do ilo=1,nlorb(is)
+  ENDIF 
+  DO ilo=1,nlorb(is)
     read(50,*) lorbl(ilo,is),lorbord(ilo,is)
-    if (lorbl(ilo,is).lt.0) then
-      write(*,*)
-      write(*,'("Error(readspecies): lorbl < 0 : ",I8)') lorbl(ilo,is)
-      write(*,'(" for species ",I4)') is
-      write(*,'(" and local-orbital ",I4)') ilo
-      write(*,*)
+    IF(lorbl(ilo,is).lt.0) THEN 
+      WRITE(*,*)
+      WRITE(*,'("Error(readspecies): lorbl < 0 : ",I8)') lorbl(ilo,is)
+      WRITE(*,'(" for species ",I4)') is
+      WRITE(*,'(" and local-orbital ",I4)') ilo
+      WRITE(*,*)
       stop
-    end if
-    if (lorbl(ilo,is).gt.lmaxo) then
-      write(*,*)
-      write(*,'("Error(readspecies): lorbl > lmaxo : ",2I8)') lorbl(ilo,is), &
+    ENDIF 
+    IF(lorbl(ilo,is).gt.lmaxo) THEN 
+      WRITE(*,*)
+      WRITE(*,'("Error(readspecies): lorbl > lmaxo : ",2I8)') lorbl(ilo,is), &
        lmaxo
-      write(*,'(" for species ",I4)') is
-      write(*,'(" and local-orbital ",I4)') ilo
-      write(*,*)
+      WRITE(*,'(" for species ",I4)') is
+      WRITE(*,'(" and local-orbital ",I4)') ilo
+      WRITE(*,*)
       stop
-    end if
-    if (lorbord(ilo,is).lt.2) then
-      write(*,*)
-      write(*,'("Error(readspecies): lorbord < 2 : ",I8)') lorbord(ilo,is)
-      write(*,'(" for species ",I4)') is
-      write(*,'(" and local-orbital ",I4)') ilo
-      write(*,*)
+    ENDIF 
+    IF(lorbord(ilo,is).lt.2) THEN 
+      WRITE(*,*)
+      WRITE(*,'("Error(readspecies): lorbord < 2 : ",I8)') lorbord(ilo,is)
+      WRITE(*,'(" for species ",I4)') is
+      WRITE(*,'(" and local-orbital ",I4)') ilo
+      WRITE(*,*)
       stop
-    end if
-    if (lorbord(ilo,is).gt.maxlorbord) then
-      write(*,*)
-      write(*,'("Error(readspecies): lorbord too large : ",I8)') lorbord(ilo,is)
-      write(*,'(" for species ",I4)') is
-      write(*,'(" and local-orbital ",I4)') ilo
-      write(*,'("Adjust maxlorbord in modmain and recompile code")')
-      write(*,*)
+    ENDIF 
+    IF(lorbord(ilo,is).gt.maxlorbord) THEN 
+      WRITE(*,*)
+      WRITE(*,'("Error(readspecies): lorbord too large : ",I8)') lorbord(ilo,is)
+      WRITE(*,'(" for species ",I4)') is
+      WRITE(*,'(" and local-orbital ",I4)') ilo
+      WRITE(*,'("Adjust maxlorbord in modmain and recompile code")')
+      WRITE(*,*)
       stop
-    end if
-    do io=1,lorbord(ilo,is)
+    ENDIF 
+    DO io=1,lorbord(ilo,is)
       read(50,*) lorbe0(io,ilo,is),lorbdm(io,ilo,is),lorbve(io,ilo,is)
-      if (lorbdm(io,ilo,is).lt.0) then
-        write(*,*)
-        write(*,'("Error(readspecies): lorbdm < 0 : ",I8)') lorbdm(io,ilo,is)
-        write(*,'(" for species ",I4)') is
-        write(*,'(" local-orbital ",I4)') ilo
-        write(*,'(" and order ",I4)') io
-        write(*,*)
+      IF(lorbdm(io,ilo,is).lt.0) THEN 
+        WRITE(*,*)
+        WRITE(*,'("Error(readspecies): lorbdm < 0 : ",I8)') lorbdm(io,ilo,is)
+        WRITE(*,'(" for species ",I4)') is
+        WRITE(*,'(" local-orbital ",I4)') ilo
+        WRITE(*,'(" and order ",I4)') io
+        WRITE(*,*)
         stop
-      end if
+      ENDIF 
       e0min=min(e0min,lorbe0(io,ilo,is))
-    end do
-  end do
+    ENDDO 
+  ENDDO 
 ! add excess local-orbitals if required
-  if (nxlo.gt.0) then
+  IF(nxlo.gt.0) THEN 
     lx=-1
-    do ilo=1,nlorb(is)
-      do io=1,lorbord(ilo,is)
-        if (lorbe0(io,ilo,is).lt.0.d0) goto 10
-      end do
-      if (lorbl(ilo,is).gt.lx) lx=lorbl(ilo,is)
+    DO ilo=1,nlorb(is)
+      DO io=1,lorbord(ilo,is)
+        IF(lorbe0(io,ilo,is).lt.0.d0) goto 10
+      ENDDO 
+      IF(lorbl(ilo,is).gt.lx) lx=lorbl(ilo,is)
 10 continue
-    end do
+    ENDDO 
     ilo=nlorb(is)
-    do i=1,nxlo
-      if (ilo.eq.maxlorb) exit
+    DO i=1,nxlo
+      IF(ilo.eq.maxlorb) exit
       l=lx+i
-      if (l.gt.lmaxo) exit
+      IF(l.gt.lmaxo) exit
       ilo=ilo+1
       lorbl(ilo,is)=l
       lorbord(ilo,is)=apword(l,is)+1
-      do io=1,lorbord(ilo,is)
+      DO io=1,lorbord(ilo,is)
         lorbe0(io,ilo,is)=apwe0(1,l,is)
         lorbdm(io,ilo,is)=io-1
         lorbve(io,ilo,is)=apwve(1,l,is)
-      end do
-    end do
+      ENDDO 
+    ENDDO 
     nlorb(is)=ilo
-  end if
+  ENDIF 
 ! add excess order to local-orbitals if required
-  if (nxoapwlo.gt.0) then
-    do ilo=1,nlorb(is)
+  IF(nxoapwlo.gt.0) THEN 
+    DO ilo=1,nlorb(is)
 ! find the maximum energy derivative
       jo=1
       j=lorbdm(jo,ilo,is)
-      do io=1,lorbord(ilo,is)
+      DO io=1,lorbord(ilo,is)
         i=lorbdm(io,ilo,is)
-        if (i.gt.j) then
+        IF(i.gt.j) THEN 
           jo=io
           j=i
-        end if
-      end do
+        ENDIF 
+      ENDDO 
       ko=lorbord(ilo,is)+nxoapwlo
-      if (ko.gt.maxlorbord) ko=maxlorbord
+      IF(ko.gt.maxlorbord) ko=maxlorbord
       i=0
-      do io=lorbord(ilo,is)+1,ko
+      DO io=lorbord(ilo,is)+1,ko
         i=i+1
         lorbe0(io,ilo,is)=lorbe0(jo,ilo,is)
         lorbdm(io,ilo,is)=lorbdm(jo,ilo,is)+i
         lorbve(io,ilo,is)=lorbve(jo,ilo,is)
-      end do
+      ENDDO 
       lorbord(ilo,is)=ko
-    end do
-  end if
+    ENDDO 
+  ENDIF 
   close(50)
-end do
+ENDDO 
 
 ! set all muffin-tin radii to single value if required
-if (rmtall.gt.0.d0) rmt(1:nspecies)=rmtall
+IF(rmtall.gt.0.d0) rmt(1:nspecies)=rmtall
 
 ! add conduction state local-orbitals if required
-call addlorbcnd
+CALL addlorbcnd
 
 ! subtract 2 Hartree from the minimum energy
 e0min=e0min-2.d0
 
-return
-end subroutine
+RETURN 
+END SUBROUTINE 
 
