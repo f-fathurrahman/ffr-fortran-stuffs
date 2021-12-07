@@ -28,9 +28,9 @@ SUBROUTINE info_apwlo()
     ENDDO
   ENDDO
 
-  write(*,*)
-  write(*,*) 'maximum of apword over all angular momenta and species'
-  write(*,*) 'apwordmax = ', apwordmax
+  WRITE(*,*)
+  WRITE(*,*) 'maximum of apword over all angular momenta and species'
+  WRITE(*,*) 'apwordmax = ', apwordmax
 
   write(*,*) 'total number of APW coefficients (l, m and order) for each species'
   do is = 1,nspecies
@@ -91,6 +91,9 @@ SUBROUTINE info_apwlo()
   write(*,*) 'nrmtmax = ', nrmtmax
   write(*,*) 'nrmt = ', nrmt
   !real(8), allocatable :: apwfr(:,:,:,:,:)
+
+  write(*,*) 'nlorb = ', nlorb
+  write(*,*) 'nlotot = ', nlotot
 
   !! derivate of radial functions at the muffin-tin surface
 !real(8), allocatable :: apwdfr(:,:,:)
